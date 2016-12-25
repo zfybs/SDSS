@@ -16,6 +16,9 @@ namespace SDSS
         [STAThread]
         static void Main()
         {
+            test();
+            return;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
@@ -23,11 +26,7 @@ namespace SDSS
 
         private static void test()
         {
-            string[] ss = new string[5] { "1", "1.5", "", "", "" };
-            var tt = ss.Where(r => !string.IsNullOrEmpty(r)).Select(Convert.ToSingle).ToArray();
             var c = Color.FromArgb(1, Color.Pink);
-
-            var t = ss.Select(Convert.ToSingle).ToArray();
         }
     }
 }
