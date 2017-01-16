@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SDSS.Properties {
+namespace SocketedShafts.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
