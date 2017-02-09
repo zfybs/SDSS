@@ -34,7 +34,7 @@ namespace SocketedShafts.Forms
             this.buttonExportToXML = new System.Windows.Forms.Button();
             this._pictureBoxSystem = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.dataGridViewShaft = new eZstd.UserControls.eZDataGridViewUIAdd();
+            this.dataGridViewShaft = new eZstd.UserControls.eZDataGridView();
             this.ColumnSegTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSegBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSegment = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -43,7 +43,7 @@ namespace SocketedShafts.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonSoilManager = new System.Windows.Forms.Button();
-            this.dataGridViewSoilLayers = new eZstd.UserControls.eZDataGridViewUIAdd();
+            this.dataGridViewSoilLayers = new eZstd.UserControls.eZDataGridView();
             this.ColumnSoilTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSoilBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSoil = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -284,8 +284,8 @@ namespace SocketedShafts.Forms
         #endregion
         private System.Windows.Forms.Button buttonExportToXML;
         private System.Windows.Forms.PictureBox _pictureBoxSystem;
-        private eZDataGridViewUIAdd dataGridViewSoilLayers;
-        private eZDataGridViewUIAdd dataGridViewShaft;
+        private eZDataGridView dataGridViewSoilLayers;
+        private eZDataGridView dataGridViewShaft;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

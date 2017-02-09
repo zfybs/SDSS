@@ -313,12 +313,10 @@ namespace SocketedShafts.Forms
 
         #endregion
 
-
         private void buttonShaft_Click(object sender, EventArgs e)
         {
             AddDefinition<SocketedShaft> dds = new AddDefinition<SocketedShaft>(_sss.SocketedShaft);
             dds.ShowDialog();
         }
-        
     }
 }

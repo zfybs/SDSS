@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using SDSS.StationModel;
 
@@ -13,18 +6,31 @@ namespace SDSS.UIControls
 {
     public partial class MainForm : Form
     {
+        private StationModel.StationModel _stationModel;
 
-        public MainForm()
+        public MainForm(StationModel.StationModel sm)
         {
             InitializeComponent();
+            //
+            _stationModel = sm;
+            // 对不同的车站模型，在界面中进行绘图显示
+            RefreshModel(_stationModel);
         }
 
-        //获取车站模型参数类
-        private SoilStructureGeometry ConstructSSG()
+        /// <summary> 对不同的车站模型，在界面中进行绘图显示 </summary>
+        /// <param name="sm"></param>
+        private void RefreshDataGridView(StationModel.StationModel sm)
         {
-            SoilStructureGeometry ssg = null;
-            ssg = new SoilStructureGeometry(60, new float[] { 3, 6, 5, 4, 6, 6 }, 3, new float[] { 3, 3, 3 }, new float[] { 6, 6 });
-            return ssg;
+
+        }
+
+        #region ---   前处理界面效果显示
+
+        /// <summary> 对不同的车站模型，在界面中进行绘图显示 </summary>
+        /// <param name="sm"></param>
+        private void RefreshModel(StationModel.StationModel sm)
+        {
+
         }
 
         private void modelDrawer1_Paint(object sender, PaintEventArgs e)
@@ -33,5 +39,18 @@ namespace SDSS.UIControls
             Graphics g = e.Graphics;
             modelDrawer1.DrawSoilStructureModel(g, ssg);
         }
+
+        //获取车站模型参数类
+        private SoilStructureGeometry ConstructSSG()
+        {
+            var geo = _stationModel.GetStationGeometry();
+
+            return geo as SoilStructureGeometry;
+        }
+
+
+
+        #endregion
+
     }
 }

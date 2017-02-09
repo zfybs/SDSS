@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using eZstd.Enumerable;
 using eZstd;
 using eZstd.API;
+using SDSS.StationModel;
 using SDSS.UIControls;
 
 namespace SDSS
@@ -22,7 +23,11 @@ namespace SDSS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            //
+            var sm = StationModel1.GetUniqueInstance();
+            var mf = new MainForm(sm);
+
+            Application.Run(mf);
             
         }
     }

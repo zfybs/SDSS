@@ -9,7 +9,7 @@ namespace SDSS.StationModel
     /// <summary>
     /// 地层-结构时程分析法 计算简图的相关参数
     /// </summary>
-    public class SoilStructureGeometry
+    public class SoilStructureGeometry : StationGeometry
     {
         #region ---   Properties
 
@@ -52,7 +52,8 @@ namespace SDSS.StationModel
         /// 检查车站模型几何参数是否能够形成一个有效的车站，而不会出现车站宽度大于土体宽度等问题
         /// </summary>
         /// <returns></returns>
-        public bool CheckGeometry()
+        public override bool CheckGeometry()
         { return true; }
+
     }
 }
