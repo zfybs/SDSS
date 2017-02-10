@@ -38,9 +38,10 @@
             // buttonAdd
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Location = new System.Drawing.Point(229, 12);
+            this.buttonAdd.Location = new System.Drawing.Point(305, 15);
+            this.buttonAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd.Size = new System.Drawing.Size(100, 29);
             this.buttonAdd.TabIndex = 4;
             this.buttonAdd.Text = "添加";
             this.buttonAdd.UseVisualStyleBackColor = true;
@@ -52,18 +53,22 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(13, 13);
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(17, 16);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(210, 328);
+            this.listBox1.Size = new System.Drawing.Size(279, 409);
             this.listBox1.TabIndex = 5;
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
+         
             // 
             // buttonRemove
             // 
             this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRemove.Location = new System.Drawing.Point(229, 41);
+            this.buttonRemove.Location = new System.Drawing.Point(305, 51);
+            this.buttonRemove.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemove.Size = new System.Drawing.Size(100, 29);
             this.buttonRemove.TabIndex = 4;
             this.buttonRemove.Text = "删除";
             this.buttonRemove.UseVisualStyleBackColor = true;
@@ -72,9 +77,10 @@
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImport.Location = new System.Drawing.Point(229, 317);
+            this.buttonImport.Location = new System.Drawing.Point(305, 396);
+            this.buttonImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonImport.Name = "buttonImport";
-            this.buttonImport.Size = new System.Drawing.Size(75, 23);
+            this.buttonImport.Size = new System.Drawing.Size(100, 29);
             this.buttonImport.TabIndex = 2;
             this.buttonImport.Text = "导入";
             this.buttonImport.UseVisualStyleBackColor = true;
@@ -83,9 +89,10 @@
             // buttonEdit
             // 
             this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEdit.Location = new System.Drawing.Point(229, 70);
+            this.buttonEdit.Location = new System.Drawing.Point(305, 88);
+            this.buttonEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonEdit.Name = "buttonEdit";
-            this.buttonEdit.Size = new System.Drawing.Size(75, 23);
+            this.buttonEdit.Size = new System.Drawing.Size(100, 29);
             this.buttonEdit.TabIndex = 4;
             this.buttonEdit.Text = "编辑";
             this.buttonEdit.UseVisualStyleBackColor = true;
@@ -93,14 +100,15 @@
             // 
             // DefinitionManager
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(316, 352);
+            this.ClientSize = new System.Drawing.Size(421, 440);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.buttonImport);
             this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.buttonRemove);
             this.Controls.Add(this.buttonAdd);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DefinitionManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "参数管理器";

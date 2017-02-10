@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 using eZstd.Data;
 using SDSS.Definitions;
 using SDSS.Entities;
-using SocketedShafts.Definitions;
 
 namespace SDSS.StationModel
 {

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.buttonOk = new System.Windows.Forms.Button();
-            this.buttonMaterials = new System.Windows.Forms.Button();
-            this.button_Profile = new System.Windows.Forms.Button();
+            this.button_Materials = new System.Windows.Forms.Button();
+            this.button_Profiles = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxNum_layers = new eZstd.UserControls.TextBoxNum();
@@ -41,8 +41,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.eZDataGridViewFrame = new eZstd.UserControls.eZDataGridView();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.button_assignMat = new System.Windows.Forms.Button();
+            this.button_assignProfile = new System.Windows.Forms.Button();
             this.eZDataGridViewSoilLayers = new eZstd.UserControls.eZDataGridView();
             this.label8 = new System.Windows.Forms.Label();
             this.buttonSavePic = new System.Windows.Forms.Button();
@@ -68,23 +68,25 @@
             this.buttonOk.Text = "确定";
             this.buttonOk.UseVisualStyleBackColor = true;
             // 
-            // buttonMaterials
+            // button_Materials
             // 
-            this.buttonMaterials.Location = new System.Drawing.Point(538, 19);
-            this.buttonMaterials.Name = "buttonMaterials";
-            this.buttonMaterials.Size = new System.Drawing.Size(75, 30);
-            this.buttonMaterials.TabIndex = 2;
-            this.buttonMaterials.Text = "材料";
-            this.buttonMaterials.UseVisualStyleBackColor = true;
+            this.button_Materials.Location = new System.Drawing.Point(538, 19);
+            this.button_Materials.Name = "button_Materials";
+            this.button_Materials.Size = new System.Drawing.Size(75, 30);
+            this.button_Materials.TabIndex = 2;
+            this.button_Materials.Text = "材料";
+            this.button_Materials.UseVisualStyleBackColor = true;
+            this.button_Materials.Click += new System.EventHandler(this.button_Materials_Click);
             // 
-            // button_Profile
+            // button_Profiles
             // 
-            this.button_Profile.Location = new System.Drawing.Point(619, 19);
-            this.button_Profile.Name = "button_Profile";
-            this.button_Profile.Size = new System.Drawing.Size(75, 30);
-            this.button_Profile.TabIndex = 2;
-            this.button_Profile.Text = "截面";
-            this.button_Profile.UseVisualStyleBackColor = true;
+            this.button_Profiles.Location = new System.Drawing.Point(619, 19);
+            this.button_Profiles.Name = "button_Profiles";
+            this.button_Profiles.Size = new System.Drawing.Size(75, 30);
+            this.button_Profiles.TabIndex = 2;
+            this.button_Profiles.Text = "截面";
+            this.button_Profiles.UseVisualStyleBackColor = true;
+            this.button_Profiles.Click += new System.EventHandler(this.button_Profiles_Click);
             // 
             // label1
             // 
@@ -112,11 +114,12 @@
             this.textBoxNum_layers.PositiveOnly = true;
             this.textBoxNum_layers.Size = new System.Drawing.Size(75, 25);
             this.textBoxNum_layers.TabIndex = 4;
+            this.textBoxNum_layers.Text = "2";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(619, 67);
+            this.label3.Location = new System.Drawing.Point(617, 70);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(22, 15);
             this.label3.TabIndex = 3;
@@ -125,7 +128,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(728, 67);
+            this.label4.Location = new System.Drawing.Point(726, 70);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(22, 15);
             this.label4.TabIndex = 3;
@@ -139,6 +142,7 @@
             this.textBoxNum_spans.PositiveOnly = true;
             this.textBoxNum_spans.Size = new System.Drawing.Size(75, 25);
             this.textBoxNum_spans.TabIndex = 4;
+            this.textBoxNum_spans.Text = "3";
             // 
             // button_Boundary
             // 
@@ -155,7 +159,7 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Location = new System.Drawing.Point(419, 95);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -164,8 +168,8 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.eZDataGridViewFrame);
             this.splitContainer1.Panel1.Controls.Add(this.label7);
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
-            this.splitContainer1.Panel1.Controls.Add(this.button2);
+            this.splitContainer1.Panel1.Controls.Add(this.button_assignMat);
+            this.splitContainer1.Panel1.Controls.Add(this.button_assignProfile);
             // 
             // splitContainer1.Panel2
             // 
@@ -202,23 +206,23 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "构件参数";
             // 
-            // button1
+            // button_assignMat
             // 
-            this.button1.Location = new System.Drawing.Point(76, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 25);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "材料";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_assignMat.Location = new System.Drawing.Point(76, 5);
+            this.button_assignMat.Name = "button_assignMat";
+            this.button_assignMat.Size = new System.Drawing.Size(75, 25);
+            this.button_assignMat.TabIndex = 2;
+            this.button_assignMat.Text = "材料";
+            this.button_assignMat.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // button_assignProfile
             // 
-            this.button2.Location = new System.Drawing.Point(157, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 25);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "截面";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button_assignProfile.Location = new System.Drawing.Point(157, 5);
+            this.button_assignProfile.Name = "button_assignProfile";
+            this.button_assignProfile.Size = new System.Drawing.Size(75, 25);
+            this.button_assignProfile.TabIndex = 2;
+            this.button_assignProfile.Text = "截面";
+            this.button_assignProfile.UseVisualStyleBackColor = true;
             // 
             // eZDataGridViewSoilLayers
             // 
@@ -292,11 +296,11 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button_Profile);
+            this.Controls.Add(this.button_Profiles);
             this.Controls.Add(this.buttonSysInfo);
             this.Controls.Add(this.buttonSavePic);
             this.Controls.Add(this.button_Boundary);
-            this.Controls.Add(this.buttonMaterials);
+            this.Controls.Add(this.button_Materials);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.modelDrawer1);
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -321,8 +325,8 @@
 
         private ModelDrawer modelDrawer1;
         private System.Windows.Forms.Button buttonOk;
-        private System.Windows.Forms.Button buttonMaterials;
-        private System.Windows.Forms.Button button_Profile;
+        private System.Windows.Forms.Button button_Materials;
+        private System.Windows.Forms.Button button_Profiles;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private eZstd.UserControls.TextBoxNum textBoxNum_layers;
@@ -337,8 +341,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonSavePic;
         private System.Windows.Forms.Button buttonSysInfo;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button_assignMat;
+        private System.Windows.Forms.Button button_assignProfile;
     }
 }
 

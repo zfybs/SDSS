@@ -25,12 +25,6 @@ namespace SocketedShafts.Forms
         /// <summary> 模型画板 </summary>
         private SssDrawing _drawing;
 
-
-        /// <summary> 整个模型中每一个具体土层的信息 </summary>
-        private BindingList<SoilLayerEntity> _soilLayers;
-        /// <summary> 整个模型中每一个具体桩截面的信息 </summary>
-        private BindingList<ShaftSectionEntity> _shaftSections;
-
         #endregion
 
         #region ---   构造函数
@@ -86,7 +80,7 @@ namespace SocketedShafts.Forms
             DefinitionManager<ShaftSection> dm = new DefinitionManager<ShaftSection>(_sss.SectionDefinitions);
             dm.ShowDialog();
             // 刷新表格界面
-            RefreshComboBox(ColumnSegment, _sss.SectionDefinitions);
+            RefreshComboBox(ColumnProfile, _sss.SectionDefinitions);
         }
 
         private void buttonSystemProperty_Click(object sender, EventArgs e)

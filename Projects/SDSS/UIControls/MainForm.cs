@@ -1,10 +1,12 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using SDSS.Definitions;
+using SDSS.Entities;
 using SDSS.StationModel;
 
 namespace SDSS.UIControls
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         private StationModel.StationModel _stationModel;
 
@@ -17,12 +19,6 @@ namespace SDSS.UIControls
             RefreshModel(_stationModel);
         }
 
-        /// <summary> 对不同的车站模型，在界面中进行绘图显示 </summary>
-        /// <param name="sm"></param>
-        private void RefreshDataGridView(StationModel.StationModel sm)
-        {
-
-        }
 
         #region ---   前处理界面效果显示
 
@@ -48,9 +44,22 @@ namespace SDSS.UIControls
             return geo as SoilStructureGeometry;
         }
 
-
-
         #endregion
 
+        private void button_Profiles_Click(object sender, System.EventArgs e)
+        {
+            DefinitionManager<Profile> dm = new DefinitionManager<Profile>(_stationModel.ProfileDefinitions);
+            dm.ShowDialog();
+            // 刷新表格界面
+            //RefreshComboBox(ColumnSegment, _stationModel.ProfileDefinitions);
+        }
+
+        private void button_Materials_Click(object sender, System.EventArgs e)
+        {
+            DefinitionManager<Material> dm = new DefinitionManager<Material>(_stationModel.MaterialDefinitions);
+            dm.ShowDialog();
+            // 刷新表格界面
+            //RefreshComboBox(ColumnSegment, _stationModel.ProfileDefinitions);
+        }
     }
 }

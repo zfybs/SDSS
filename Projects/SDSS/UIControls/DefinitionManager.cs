@@ -1,14 +1,10 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Serialization;
-using eZstd.Miscellaneous;
 using SDSS.Definitions;
-using SDSS.Entities;
 
 namespace SDSS.UIControls
 {
@@ -36,7 +32,9 @@ namespace SDSS.UIControls
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             //
-            EditDefinition<T> formAddDefinition = new EditDefinition<T>();
+            object newDefIns = GetInitialDefinitionObject();
+            EditDefinition formAddDefinition = new EditDefinition(newDefIns);
+            //
             var res = formAddDefinition.ShowDialog();
             T def = (T)formAddDefinition.Instance;
             if (res == DialogResult.OK)
@@ -53,6 +51,24 @@ namespace SDSS.UIControls
             }
         }
 
+        private Definition GetInitialDefinitionObject()
+        {
+            Definition d;
+            if (typeof(T) == typeof(Profile))
+            {
+                d = new Rectangular("Rec1", 1, 0.8);
+            }
+            else if (typeof(T) == typeof(Material))
+            {
+                d = new Material("Mat1", density: 1.9e3, elastic: 200e6, poissonRatio: 0.3, type: MaterialType.Elastic);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+            return d;
+        }
+
         /// <summary> 检查添加后的定义集合是否符合命名的唯一性规范 </summary>
         private bool CheckAddDefinition(BindingList<T> originaldefinitions, Definition defToAdd, out string errorMessage)
         {
@@ -62,7 +78,7 @@ namespace SDSS.UIControls
                 return false;
             }
             // 检查有没有重复的名称
-            int namesCount = originaldefinitions.Count + 1;  // 如果添加成功的话，那整个集合中应该有这么多名称
+            int namesCount = originaldefinitions.Count + 1; // 如果添加成功的话，那整个集合中应该有这么多名称
             SortedSet<string> names = new SortedSet<string>();
             foreach (var def in originaldefinitions)
             {
@@ -78,33 +94,44 @@ namespace SDSS.UIControls
             return true;
         }
 
-        #endregion
-
         #region ---   编辑
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listBox1.SelectedIndex >= 0)
+            {
+                EditItem((T)listBox1.SelectedItem);
+            }
+        }
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex >= 0)
             {
-                T item = (T)listBox1.SelectedItem;
-                T itemClone = (T)item.Clone();
-                //
-                EditDefinition<T> formAddDefinition = new EditDefinition<T>(itemClone);
-                var res = formAddDefinition.ShowDialog();
-                if (res == DialogResult.OK)
+                EditItem((T)listBox1.SelectedItem);
+            }
+        }
+
+        private void EditItem(T item)
+        {
+            T itemClone = (T)item.Clone();
+            //
+            EditDefinition formAddDefinition = new EditDefinition(itemClone);
+            var res = formAddDefinition.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                string errorMessage;
+                if (CheckEditDefinition(_definitions, item, itemClone, out errorMessage))
                 {
-                    string errorMessage;
-                    if (CheckEditDefinition(_definitions, item, itemClone, out errorMessage))
-                    {
-                        _definitions[listBox1.SelectedIndex] = (T)formAddDefinition.Instance;
-                    }
-                    else
-                    {
-                        MessageBox.Show(errorMessage, "编辑参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    _definitions[listBox1.SelectedIndex] = (T)formAddDefinition.Instance;
+                }
+                else
+                {
+                    MessageBox.Show(errorMessage, "编辑参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
 
         /// <summary> 检查编辑后的定义集合是否符合命名的唯一性规范 </summary>
         /// <param name="originaldefinitions"></param>
@@ -152,66 +179,69 @@ namespace SDSS.UIControls
             }
         }
 
+        #endregion
+
         #region ---   导入定义
 
         private void buttonImport_Click(object sender, EventArgs e)
         {
-        //    string filePath = Utils.ChooseOpenSSS("导入水平受荷嵌岩桩文件");
-        //    if (filePath.Length > 0)
-        //    {
-        //        try
-        //        {
-        //            //
-        //            XmlReader xr = XmlReader.Create(filePath);
-        //            //
-        //            XmlSerializer ss = new XmlSerializer(typeof(SocketedShaftSystem));
-        //            var sss = (SocketedShaftSystem)ss.Deserialize(xr);
-        //            xr.Close();
+            //    string filePath = Utils.ChooseOpenSSS("导入水平受荷嵌岩桩文件");
+            //    if (filePath.Length > 0)
+            //    {
+            //        try
+            //        {
+            //            //
+            //            XmlReader xr = XmlReader.Create(filePath);
+            //            //
+            //            XmlSerializer ss = new XmlSerializer(typeof(SocketedShaftSystem));
+            //            var sss = (SocketedShaftSystem)ss.Deserialize(xr);
+            //            xr.Close();
 
-        //            // 对于是桩截面还是土层参数定义的不同来分别进行导入
-        //            StringBuilder sb = new StringBuilder();
-        //            string errorMessage;
-        //            if (typeof(T) == typeof(ShaftSection))
-        //            {
-        //                foreach (ShaftSection s in sss.SectionDefinitions)
-        //                {
-        //                    if (CheckAddDefinition(_definitions, s, out errorMessage))
-        //                    {
-        //                        _definitions.Add(s as T);
-        //                        sb.AppendLine((s as T).Name + " : 成功");
-        //                    }
-        //                    else
-        //                    {
-        //                        sb.AppendLine((s as T).Name + " : "+ errorMessage );
-        //                    }
-        //                }
-        //            }
-        //            else if (typeof(T) == typeof(SoilLayer))
-        //            {
-        //                foreach (SoilLayer s in sss.SoilDefinitions)
-        //                {
-        //                    if (CheckAddDefinition(_definitions, s, out errorMessage))
-        //                    {
-        //                        _definitions.Add(s as T);
-        //                        sb.AppendLine((s as T).Name + " : 成功");
-        //                    }
-        //                    else
-        //                    {
-        //                        sb.AppendLine((s as T).Name + " : "+ errorMessage );
-        //                    }
-        //                }
-        //            }
+            //            // 对于是桩截面还是土层参数定义的不同来分别进行导入
+            //            StringBuilder sb = new StringBuilder();
+            //            string errorMessage;
+            //            if (typeof(T) == typeof(ShaftSection))
+            //            {
+            //                foreach (ShaftSection s in sss.SectionDefinitions)
+            //                {
+            //                    if (CheckAddDefinition(_definitions, s, out errorMessage))
+            //                    {
+            //                        _definitions.Add(s as T);
+            //                        sb.AppendLine((s as T).Name + " : 成功");
+            //                    }
+            //                    else
+            //                    {
+            //                        sb.AppendLine((s as T).Name + " : "+ errorMessage );
+            //                    }
+            //                }
+            //            }
+            //            else if (typeof(T) == typeof(SoilLayer))
+            //            {
+            //                foreach (SoilLayer s in sss.SoilDefinitions)
+            //                {
+            //                    if (CheckAddDefinition(_definitions, s, out errorMessage))
+            //                    {
+            //                        _definitions.Add(s as T);
+            //                        sb.AppendLine((s as T).Name + " : 成功");
+            //                    }
+            //                    else
+            //                    {
+            //                        sb.AppendLine((s as T).Name + " : "+ errorMessage );
+            //                    }
+            //                }
+            //            }
 
-        //            MessageBox.Show("参数导入结束，导入结果： \n\r" + sb.ToString(), "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //            MessageBox.Show("参数导入结束，导入结果： \n\r" + sb.ToString(), "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        //            // _definitions
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            DebugUtils.ShowDebugCatch(ex, "指定的文件不能正常提取其中的定义信息。");
-        //        }
-        //    }
-        }  
-    #endregion
+            //            // _definitions
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            DebugUtils.ShowDebugCatch(ex, "指定的文件不能正常提取其中的定义信息。");
+            //        }
+            //    }
+        }
+
+        #endregion
     }
 }

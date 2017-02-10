@@ -37,7 +37,7 @@ namespace SocketedShafts.Forms
             this.dataGridViewShaft = new eZstd.UserControls.eZDataGridView();
             this.ColumnSegTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSegBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSegment = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.ColumnProfile = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.buttonShaft = new System.Windows.Forms.Button();
             this.buttonSectionManager = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -62,9 +62,10 @@ namespace SocketedShafts.Forms
             // buttonExportToXML
             // 
             this.buttonExportToXML.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExportToXML.Location = new System.Drawing.Point(578, 442);
+            this.buttonExportToXML.Location = new System.Drawing.Point(771, 552);
+            this.buttonExportToXML.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonExportToXML.Name = "buttonExportToXML";
-            this.buttonExportToXML.Size = new System.Drawing.Size(75, 23);
+            this.buttonExportToXML.Size = new System.Drawing.Size(100, 29);
             this.buttonExportToXML.TabIndex = 1;
             this.buttonExportToXML.Text = "导出";
             this.buttonExportToXML.UseVisualStyleBackColor = true;
@@ -73,15 +74,17 @@ namespace SocketedShafts.Forms
             // _pictureBoxSystem
             // 
             this._pictureBoxSystem.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this._pictureBoxSystem.Location = new System.Drawing.Point(12, 12);
+            this._pictureBoxSystem.Location = new System.Drawing.Point(16, 15);
+            this._pictureBoxSystem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this._pictureBoxSystem.Name = "_pictureBoxSystem";
-            this._pictureBoxSystem.Size = new System.Drawing.Size(266, 416);
+            this._pictureBoxSystem.Size = new System.Drawing.Size(355, 520);
             this._pictureBoxSystem.TabIndex = 2;
             this._pictureBoxSystem.TabStop = false;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(284, 12);
+            this.splitContainer1.Location = new System.Drawing.Point(379, 15);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -97,8 +100,9 @@ namespace SocketedShafts.Forms
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.buttonSoilManager);
             this.splitContainer1.Panel2.Controls.Add(this.dataGridViewSoilLayers);
-            this.splitContainer1.Size = new System.Drawing.Size(369, 416);
-            this.splitContainer1.SplitterDistance = 208;
+            this.splitContainer1.Size = new System.Drawing.Size(492, 520);
+            this.splitContainer1.SplitterDistance = 260;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 4;
             // 
             // dataGridViewShaft
@@ -107,15 +111,17 @@ namespace SocketedShafts.Forms
             this.dataGridViewShaft.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnSegTop,
             this.ColumnSegBottom,
-            this.ColumnSegment});
+            this.ColumnProfile});
             this.dataGridViewShaft.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewShaft.KeyDelete = false;
-            this.dataGridViewShaft.Location = new System.Drawing.Point(0, 42);
+            this.dataGridViewShaft.Location = new System.Drawing.Point(0, 52);
+            this.dataGridViewShaft.ManipulateRows = false;
+            this.dataGridViewShaft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewShaft.Name = "dataGridViewShaft";
             this.dataGridViewShaft.RowTemplate.Height = 23;
             this.dataGridViewShaft.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewShaft.ShowRowNumber = false;
-            this.dataGridViewShaft.Size = new System.Drawing.Size(369, 166);
+            this.dataGridViewShaft.Size = new System.Drawing.Size(492, 208);
             this.dataGridViewShaft.SupportPaste = false;
             this.dataGridViewShaft.TabIndex = 3;
             // 
@@ -131,15 +137,16 @@ namespace SocketedShafts.Forms
             // 
             // ColumnSegment
             // 
-            this.ColumnSegment.HeaderText = "截面";
-            this.ColumnSegment.Name = "ColumnSegment";
+            this.ColumnProfile.HeaderText = "截面";
+            this.ColumnProfile.Name = "ColumnSegment";
             // 
             // buttonShaft
             // 
             this.buttonShaft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonShaft.Location = new System.Drawing.Point(236, 10);
+            this.buttonShaft.Location = new System.Drawing.Point(197, 15);
+            this.buttonShaft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonShaft.Name = "buttonShaft";
-            this.buttonShaft.Size = new System.Drawing.Size(52, 23);
+            this.buttonShaft.Size = new System.Drawing.Size(69, 29);
             this.buttonShaft.TabIndex = 5;
             this.buttonShaft.Text = "桩";
             this.buttonShaft.UseVisualStyleBackColor = true;
@@ -148,38 +155,42 @@ namespace SocketedShafts.Forms
             // buttonSectionManager
             // 
             this.buttonSectionManager.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSectionManager.Location = new System.Drawing.Point(297, 10);
+            this.buttonSectionManager.Location = new System.Drawing.Point(274, 15);
+            this.buttonSectionManager.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSectionManager.Name = "buttonSectionManager";
-            this.buttonSectionManager.Size = new System.Drawing.Size(52, 23);
+            this.buttonSectionManager.Size = new System.Drawing.Size(114, 29);
             this.buttonSectionManager.TabIndex = 1;
-            this.buttonSectionManager.Text = "管理";
+            this.buttonSectionManager.Text = "桩截面管理";
             this.buttonSectionManager.UseVisualStyleBackColor = true;
             this.buttonSectionManager.Click += new System.EventHandler(this.buttonSectionManager_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 15);
+            this.label2.Location = new System.Drawing.Point(16, 19);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(137, 12);
+            this.label2.Size = new System.Drawing.Size(173, 15);
             this.label2.TabIndex = 4;
             this.label2.Text = "桩截面信息 （单位：m）";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 14);
+            this.label1.Location = new System.Drawing.Point(16, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 12);
+            this.label1.Size = new System.Drawing.Size(158, 15);
             this.label1.TabIndex = 4;
             this.label1.Text = "土层信息 （单位：m）";
             // 
             // buttonSoilManager
             // 
             this.buttonSoilManager.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSoilManager.Location = new System.Drawing.Point(297, 9);
+            this.buttonSoilManager.Location = new System.Drawing.Point(396, 11);
+            this.buttonSoilManager.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSoilManager.Name = "buttonSoilManager";
-            this.buttonSoilManager.Size = new System.Drawing.Size(52, 23);
+            this.buttonSoilManager.Size = new System.Drawing.Size(69, 29);
             this.buttonSoilManager.TabIndex = 1;
             this.buttonSoilManager.Text = "管理";
             this.buttonSoilManager.UseVisualStyleBackColor = true;
@@ -194,12 +205,14 @@ namespace SocketedShafts.Forms
             this.ColumnSoil});
             this.dataGridViewSoilLayers.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewSoilLayers.KeyDelete = false;
-            this.dataGridViewSoilLayers.Location = new System.Drawing.Point(0, 38);
+            this.dataGridViewSoilLayers.Location = new System.Drawing.Point(0, 47);
+            this.dataGridViewSoilLayers.ManipulateRows = false;
+            this.dataGridViewSoilLayers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewSoilLayers.Name = "dataGridViewSoilLayers";
             this.dataGridViewSoilLayers.RowTemplate.Height = 23;
             this.dataGridViewSoilLayers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewSoilLayers.ShowRowNumber = false;
-            this.dataGridViewSoilLayers.Size = new System.Drawing.Size(369, 166);
+            this.dataGridViewSoilLayers.Size = new System.Drawing.Size(492, 208);
             this.dataGridViewSoilLayers.SupportPaste = false;
             this.dataGridViewSoilLayers.TabIndex = 3;
             // 
@@ -221,9 +234,10 @@ namespace SocketedShafts.Forms
             // buttonSystemProperty
             // 
             this.buttonSystemProperty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSystemProperty.Location = new System.Drawing.Point(12, 442);
+            this.buttonSystemProperty.Location = new System.Drawing.Point(16, 552);
+            this.buttonSystemProperty.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSystemProperty.Name = "buttonSystemProperty";
-            this.buttonSystemProperty.Size = new System.Drawing.Size(75, 23);
+            this.buttonSystemProperty.Size = new System.Drawing.Size(100, 29);
             this.buttonSystemProperty.TabIndex = 1;
             this.buttonSystemProperty.Text = "系统信息";
             this.buttonSystemProperty.UseVisualStyleBackColor = true;
@@ -232,9 +246,10 @@ namespace SocketedShafts.Forms
             // buttonImportFromXML
             // 
             this.buttonImportFromXML.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImportFromXML.Location = new System.Drawing.Point(497, 442);
+            this.buttonImportFromXML.Location = new System.Drawing.Point(663, 552);
+            this.buttonImportFromXML.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonImportFromXML.Name = "buttonImportFromXML";
-            this.buttonImportFromXML.Size = new System.Drawing.Size(75, 23);
+            this.buttonImportFromXML.Size = new System.Drawing.Size(100, 29);
             this.buttonImportFromXML.TabIndex = 6;
             this.buttonImportFromXML.Text = "导入";
             this.buttonImportFromXML.UseVisualStyleBackColor = true;
@@ -242,9 +257,10 @@ namespace SocketedShafts.Forms
             // 
             // buttonSavePicture
             // 
-            this.buttonSavePicture.Location = new System.Drawing.Point(203, 442);
+            this.buttonSavePicture.Location = new System.Drawing.Point(271, 552);
+            this.buttonSavePicture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSavePicture.Name = "buttonSavePicture";
-            this.buttonSavePicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonSavePicture.Size = new System.Drawing.Size(100, 29);
             this.buttonSavePicture.TabIndex = 7;
             this.buttonSavePicture.Text = "保存图片";
             this.buttonSavePicture.UseVisualStyleBackColor = true;
@@ -252,9 +268,9 @@ namespace SocketedShafts.Forms
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 477);
+            this.ClientSize = new System.Drawing.Size(887, 596);
             this.Controls.Add(this.buttonSavePicture);
             this.Controls.Add(this.buttonImportFromXML);
             this.Controls.Add(this._pictureBoxSystem);
@@ -263,6 +279,7 @@ namespace SocketedShafts.Forms
             this.Controls.Add(this.buttonExportToXML);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
@@ -296,7 +313,7 @@ namespace SocketedShafts.Forms
         private System.Windows.Forms.DataGridViewComboBoxColumn ColumnSoil;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSegTop;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSegBottom;
-        private System.Windows.Forms.DataGridViewComboBoxColumn ColumnSegment;
+        private System.Windows.Forms.DataGridViewComboBoxColumn ColumnProfile;
         private System.Windows.Forms.Button buttonSystemProperty;
         private System.Windows.Forms.Button buttonImportFromXML;
         private System.Windows.Forms.Button buttonSavePicture;

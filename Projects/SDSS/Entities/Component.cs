@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Serialization;
 using SDSS.Constants;
 using SDSS.Definitions;
+using SDSS.Definitions;
 
 namespace SDSS.Entities
 {

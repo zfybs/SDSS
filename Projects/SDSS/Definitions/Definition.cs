@@ -37,13 +37,14 @@ namespace SDSS.Definitions
         public Definition()
         {
             _id = Guid.NewGuid();
+            Name = _id.ToString();
         }
 
         public override bool Equals(object obj)
         {
             return _id.Equals((obj as Definition).ID);
         }
-
+        /// <summary> 返回一个<seealso cref="Definition"/>对象 </summary>
         public object Clone()
         {
             return this.MemberwiseClone();

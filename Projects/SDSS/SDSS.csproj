@@ -55,12 +55,15 @@
   <ItemGroup>
     <Compile Include="Definitions\SoilLayer.cs" />
     <Compile Include="StationModel\StationGeometry.cs" />
+    <Compile Include="UIControls\MainForm.DataGridViews.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utility\Constants.cs" />
     <Compile Include="Definitions\Definition.cs" />
     <Compile Include="Definitions\ProfileType.cs" />
-    <Compile Include="Entities\AbqEntity.cs" />
-    <Compile Include="Entities\Material.cs" />
-    <Compile Include="Entities\Profile.cs" />
+    <Compile Include="Definitions\IGeomObject.cs" />
+    <Compile Include="Definitions\Material.cs" />
+    <Compile Include="Definitions\Profile.cs" />
     <Compile Include="Entities\Component.cs" />
     <Compile Include="Entities\Vertise.cs" />
     <Compile Include="StationModel\StationModel.cs" />

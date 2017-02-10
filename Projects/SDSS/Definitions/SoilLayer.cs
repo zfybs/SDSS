@@ -5,7 +5,7 @@ using SDSS.Constants;
 using SDSS.Definitions;
 using SDSS.Entities;
 
-namespace SocketedShafts.Definitions
+namespace SDSS.Definitions
 {
     /// <summary> 水中桩段或者嵌岩桩段的截面参数 </summary>
     [Serializable()]

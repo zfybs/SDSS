@@ -14,6 +14,12 @@ namespace SocketedShafts.Forms
 {
     internal partial class MainForm
     {
+        /// <summary> 整个模型中每一个具体土层的信息 </summary>
+        private BindingList<SoilLayerEntity> _soilLayers;
+        /// <summary> 整个模型中每一个具体桩截面的信息 </summary>
+        private BindingList<ShaftSectionEntity> _shaftSections;
+
+
         #region ---   dataGridViewSoilLayers  土层
 
         private void ConstructdataGridViewSoilLayers()
@@ -71,13 +77,13 @@ namespace SocketedShafts.Forms
             // 数据列的绑定
             ColumnSegTop.DataPropertyName = "Top";
             ColumnSegBottom.DataPropertyName = "Bottom";
-            ColumnSegment.DataPropertyName = "Section";
+            ColumnProfile.DataPropertyName = "Section";
 
             // DataGridViewComboBoxColumn
-            ColumnSegment.DataPropertyName = "Section";
-            ColumnSegment.DisplayMember = "Name";  // 桩截面定义的标识名称
-            ColumnSegment.ValueMember = "Self";    // 土层定义的标识名称
-            ColumnSegment.DataSource = _sss.SectionDefinitions;
+            ColumnProfile.DataPropertyName = "Section";
+            ColumnProfile.DisplayMember = "Name";  // 桩截面定义的标识名称
+            ColumnProfile.ValueMember = "Self";    // 土层定义的标识名称
+            ColumnProfile.DataSource = _sss.SectionDefinitions;
         }
 
         private void DataGridViewShaftOnDataError(object sender, DataGridViewDataErrorEventArgs e)
