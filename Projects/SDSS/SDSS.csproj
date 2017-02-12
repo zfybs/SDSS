@@ -55,6 +55,12 @@
   <ItemGroup>
     <Compile Include="Definitions\SoilLayer.cs" />
     <Compile Include="StationModel\StationGeometry.cs" />
+    <Compile Include="UIControls\FrameConstructor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIControls\FrameConstructor.Designer.cs">
+      <DependentUpon>FrameConstructor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIControls\MainForm.DataGridViews.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\DefinitionManager.resx">
       <DependentUpon>DefinitionManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIControls\FrameConstructor.resx">
+      <DependentUpon>FrameConstructor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

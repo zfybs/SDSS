@@ -15,7 +15,7 @@ namespace SDSS.StationModel
 
         #region ---   XmlElement
 
-        /// <summary> 整个系统中所有的材料定义 </summary>
+      /// <summary> 整个系统中所有的材料定义 </summary>
         [XmlElement]
         public XmlList<Material> MaterialDefinitions { get; set; }
 
@@ -36,12 +36,12 @@ namespace SDSS.StationModel
         [XmlIgnore]
         protected static StationModel _uiniqueInstance;
 
-
         protected StationModel()
         {
             MaterialDefinitions = new XmlList<Material>();
             ProfileDefinitions = new XmlList<Profile>();
             SoilLayers = new XmlList<SoilLayer>();
+
         }
 
         #endregion

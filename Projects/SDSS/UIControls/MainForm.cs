@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using SDSS.Definitions;
 using SDSS.Entities;
@@ -8,9 +9,9 @@ namespace SDSS.UIControls
 {
     internal partial class MainForm : Form
     {
-        private StationModel.StationModel _stationModel;
+        private StationModel1 _stationModel;
 
-        public MainForm(StationModel.StationModel sm)
+        public MainForm(StationModel1 sm)
         {
             InitializeComponent();
             //
@@ -61,5 +62,32 @@ namespace SDSS.UIControls
             // 刷新表格界面
             //RefreshComboBox(ColumnSegment, _stationModel.ProfileDefinitions);
         }
+
+        private void button_GenerateFrame_Click(object sender, System.EventArgs e)
+        {
+            // create a new form
+            var layerCount = (ushort)textBoxNum_layers.ValueNumber;
+            var spanCount = (ushort)textBoxNum_spans.ValueNumber;
+            if (layerCount > 0 && spanCount > 0)
+            {
+                FrameConstructor fc = FrameConstructor.GetUniqueInstance(layerCount, spanCount);
+                //
+                var res = fc.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    _stationModel.GenerateFrame(fc.LayerHeights, fc.SpanWidths);
+
+
+                    // 将生成好的框架模型显示在 Datagridview 表格中
+                    List<Component> components = new List<Component>();
+                    components.AddRange(_stationModel.Beams);
+                    components.AddRange(_stationModel.Columns);
+                    //
+                    eZDataGridViewFrame.AutoGenerateColumns = true;
+                    eZDataGridViewFrame.DataSource = components;
+                }
+            }
+        }
+
     }
 }

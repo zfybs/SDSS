@@ -15,10 +15,10 @@ namespace SDSS.UIControls
     internal partial class MainForm
     {
 
-        //        /// <summary> 整个模型中每一个具体土层的信息 </summary>
-        //        private BindingList<Entities.Component> _components;
-        //        /// <summary> 整个模型中每一个具体桩截面的信息 </summary>
-        //        private BindingList<SoilLayer> _soilLayers;
+        /// <summary> 整个模型中每一个具体梁柱等构件的信息 </summary>
+        private BindingList<Entities.Component> _components;
+        /// <summary> 整个模型中每一个具体土层的信息 </summary>
+        private BindingList<SoilLayer> _soilLayers;
 
 
         //        #region ---   eZeZDataGridViewSoilLayers  土层参数

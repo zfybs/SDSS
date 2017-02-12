@@ -16,7 +16,7 @@ namespace SDSS
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //
-            var sm = StationModel1.GetUniqueInstance();
+            var sm = StationModel1.GetUniqueInstance() as StationModel1;
             var mf = new MainForm(sm);
 
             Application.Run(mf);

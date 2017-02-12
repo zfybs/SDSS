@@ -30,6 +30,16 @@ namespace SDSS.Definitions
 
     /// <summary> 构件类型  </summary>
     [Serializable()]
+    public enum ComponentType
+    {
+        /// <summary> 梁  </summary>
+        Beam = 0,
+        /// <summary> 柱  </summary>
+        Column = 1,
+    }
+
+    /// <summary> 构件几何类型  </summary>
+    [Serializable()]
     public enum ComponentGeomType
     {
         /// <summary> 线型构件  </summary>

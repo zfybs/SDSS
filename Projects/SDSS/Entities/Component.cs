@@ -6,7 +6,6 @@ using System.Text;
 using System.Xml.Serialization;
 using SDSS.Constants;
 using SDSS.Definitions;
-using SDSS.Definitions;
 
 namespace SDSS.Entities
 {
@@ -22,6 +21,10 @@ namespace SDSS.Entities
         public ComponentGeomType GeomType { get; set; }
 
         [XmlAttribute()]
+        [Category(Categories.Tag), Description("构件类型")]
+        public ComponentType ComponentType { get; set; }
+
+        [XmlAttribute()]
         [Category(Categories.Property), Description("构件材料信息")]
         public Material Material { get; set; }
 
@@ -30,14 +33,22 @@ namespace SDSS.Entities
         public Profile Profile { get; set; }
 
         [XmlAttribute()]
-        [Category(Categories.Property), Description("单元构件的ID编号")]
+        [Category(Categories.Property), ReadOnly(true), Description("单元构件的ID编号")]
         public uint ID { get; set; }
+
+        /// <summary>
+        /// 用来确定此构件的定位标识的信息，比如对于框架梁，可以通过二维向量“(1,2)”表示最左跨，倒数第二层顶部梁。
+        /// </summary>
+        [XmlIgnore()]
+        [Category(Categories.Property), Description("用来确定此构件的定位标识的信息，比如对于框架梁，可以通过二维向量“(1,2)”表示最左跨，倒数第二层顶部梁。")]
+        public string LocationTag { get; set; }
         #endregion
 
         #region ---   构造函数
 
-        public Component(ComponentGeomType geomType, Material material, Profile profile)
+        public Component(ComponentType compType, ComponentGeomType geomType, Material material, Profile profile)
         {
+            ComponentType = compType;
             GeomType = geomType;
             Material = material;
             Profile = profile;
@@ -53,6 +64,11 @@ namespace SDSS.Entities
             return _MaxId;
         }
         #endregion
+
+        public override string ToString()
+        {
+            return LocationTag;
+        }
     }
 
     /// <summary> 梁构件对象 </summary>
@@ -63,12 +79,13 @@ namespace SDSS.Entities
         public Vertice RightVertice { get; set; }
 
         public Beam(Material material, Profile profile, Vertice v1, Vertice v2) :
-            base(ComponentGeomType.Line, material, profile)
+            base(ComponentType.Beam, ComponentGeomType.Line, material, profile)
         {
             if (v1.X <= v2.X)
             {
                 LeftVertice = v1;
                 RightVertice = v2;
+
             }
             else
             {
@@ -88,7 +105,7 @@ namespace SDSS.Entities
         public Vertice BottomVertice { get; set; }
 
         public Column(Material material, Profile profile, Vertice v1, Vertice v2) :
-            base(ComponentGeomType.Line, material, profile)
+            base(ComponentType.Column, ComponentGeomType.Line, material, profile)
         {
             if (v1.Y <= v2.Y)
             {
