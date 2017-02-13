@@ -11,22 +11,28 @@ namespace SDSS.Definitions
 {
     /// <summary> 水中桩段或者嵌岩桩段的截面参数 </summary>
     [Serializable()]
+    [XmlInclude(typeof(Material))]
+    [XmlInclude(typeof(Profile))]
     public class Definition : ICloneable
     {
+        #region ---   XmlAttribute
         [XmlAttribute()]
-        [Category(Categories.Tag), Description("桩截面的名称")]
+        [Category(Categories.Tag), Description("定义对象的名称")]
         public string Name { get; set; }
 
         [XmlIgnore]
         private Guid _id;
 
-        [XmlElement,ReadOnly(true),Category(Categories.Tag), Description("定义对象的唯一标识符")]
+        [XmlElement]
+        [ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
         public Guid ID
         {
             get { return _id; }
             set { _id = value; }
         }
+        #endregion
 
+        [XmlIgnore()]
         [Category(Categories.Tag)]
         public Definition Self
         {

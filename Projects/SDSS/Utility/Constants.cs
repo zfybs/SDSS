@@ -30,6 +30,6 @@ namespace SDSS.Constants
     public static  class FileExtensions
     {
         /// <summary> 模型1的信息文件 </summary>
-        public const string Model1 = ".SDSS";
+        public const string Model1 = ".sdss";
     }
 }

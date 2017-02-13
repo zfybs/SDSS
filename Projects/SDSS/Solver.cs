@@ -21,9 +21,7 @@ namespace SDSS
 
         public bool Execute()
         {
-
             var bo = RunAndWaitforExit();
-
             return bo;
         }
 
@@ -34,12 +32,11 @@ namespace SDSS
         /// <returns></returns>
         private static bool RunAndWaitforExit(string batFileName = null)
         {
-
             //batFileName = @"C:\Users\zengfy\Desktop\AbaqusScriptTest\run.cmd";
 
             // var t = IO.ShellExecute(IntPtr.Zero, "open", batFileName, "", "", ShowCommands.SW_HIDE);
             // 上面的这种方式也可以达到通过 cmd 运行 Abaqus，并隐藏 cmd窗口的效果，但是 ShellExecute() 为异步操作
-            
+
             int waitingSeconds = 100;
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo.FileName = batFileName;
@@ -67,6 +64,13 @@ namespace SDSS
             }
             return true;
         }
+        /*
+@echo off
+rem : The directory for the files created during the calcution as well as the results.
+cd /d C:\Users\zengfy\Desktop\AbaqusScriptTest
 
+rem : Execute Abaqus without showing the users interface.
+abaqus cae noGUI=beamExample.py         
+         */
     }
 }

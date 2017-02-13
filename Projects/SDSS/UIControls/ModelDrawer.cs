@@ -12,14 +12,17 @@ namespace SDSS.UIControls
     internal class ModelDrawer : PictureBox
     {
         //画图
-        public void DrawSoilStructureModel(Graphics g, SoilStructureGeometry ssg)
+        public void DrawSoilStructureModel(SoilStructureGeometry ssg, Graphics g = null)
         {
+            g = g ?? CreateGraphics();
+            g.Clear(BackColor);
+            //
             float soilHeight = 0;
             foreach (float i in ssg.SoilHeight)
             {
                 soilHeight += i;
             }
-            
+
             float scale = (this.Width * 4 / 5) / ssg.SoilWidth;
             float translatex = (this.Width - ssg.SoilWidth * scale) / 2;
             float translatey = (this.Height - soilHeight * scale) / 2;
