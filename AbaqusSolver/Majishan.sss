@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<SocketedShaftSystem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SoilDefinitions Name="soil1" Type="RockSmooth" E1="850" E2="850" PoissonRatio="0.3" EffectiveUnitWeight="21000" Disturbance="0.5" mi="10" GSI="23" CompressiveStrength="2.5E+07" EffectiveFrictionAngle="30" J="0" CU="0">
+    <ID>c556d92b-d4ca-44a8-8b03-65a59007aee9</ID>
+  </SoilDefinitions>
+  <SoilDefinitions Name="soil2" Type="RockSmooth" E1="2500" E2="2500" PoissonRatio="0.3" EffectiveUnitWeight="23000" Disturbance="0.2" mi="10" GSI="35" CompressiveStrength="2500000" EffectiveFrictionAngle="30" J="0" CU="0">
+    <ID>1e934a07-ded2-4b0a-999d-3b7e4ca31bac</ID>
+  </SoilDefinitions>
+  <SoilDefinitions Name="soil3" Type="RockSmooth" E1="9000" E2="9000" PoissonRatio="0.3" EffectiveUnitWeight="23000" Disturbance="0.2" mi="10" GSI="52" CompressiveStrength="2.5E+07" EffectiveFrictionAngle="30" J="0" CU="0">
+    <ID>7ef43cbd-9c51-4505-a905-9f24647e2e62</ID>
+  </SoilDefinitions>
+  <SoilDefinitions Name="sand1" Type="Sand" E1="20" E2="20" PoissonRatio="0.3" EffectiveUnitWeight="10000" Disturbance="0.2" mi="10" GSI="35" CompressiveStrength="2E+07" EffectiveFrictionAngle="28" J="0" CU="0">
+    <ID>91e8a241-67d4-45fb-9ad0-b57fdaf4cfd3</ID>
+  </SoilDefinitions>
+  <SectionDefinitions Name="section1" Diameter="2.8" ThicknessOfSteeltube="0.02" DBar="0.032" DSteelCage="2.46" BarsCount="40">
+    <ID>97b7eb13-5b05-439d-af50-ed80ddef36f8</ID>
+  </SectionDefinitions>
+  <SectionDefinitions Name="section2" Diameter="2.8" ThicknessOfSteeltube="0.02" DBar="0.032" DSteelCage="2.46" BarsCount="100">
+    <ID>94e6afaa-b682-471d-bb5d-bd10074ee032</ID>
+  </SectionDefinitions>
+  <SectionDefinitions Name="section3" Diameter="2.6" ThicknessOfSteeltube="0" DBar="0.032" DSteelCage="2.46" BarsCount="100">
+    <ID>5c6953db-17e0-4d00-993f-40482711d601</ID>
+  </SectionDefinitions>
+  <SystemProperty Es="2.1E+08" fy="300" fcy="21172" />
+  <SocketedShaft Name="MaJiShan S3" Description="马迹山" R="1.4">
+    <Sections>
+      <ShaftSectionEntity Top="6" Bottom="-21">
+        <Section Name="section1" Diameter="2.8" ThicknessOfSteeltube="0.02" DBar="0.032" DSteelCage="2.46" BarsCount="40">
+          <ID>97b7eb13-5b05-439d-af50-ed80ddef36f8</ID>
+        </Section>
+      </ShaftSectionEntity>
+      <ShaftSectionEntity Top="-21" Bottom="-28.33">
+        <Section Name="section2" Diameter="2.8" ThicknessOfSteeltube="0.02" DBar="0.032" DSteelCage="2.46" BarsCount="100">
+          <ID>94e6afaa-b682-471d-bb5d-bd10074ee032</ID>
+        </Section>
+      </ShaftSectionEntity>
+      <ShaftSectionEntity Top="-28.33" Bottom="-33.55">
+        <Section Name="section3" Diameter="2.6" ThicknessOfSteeltube="0" DBar="0.032" DSteelCage="2.46" BarsCount="100">
+          <ID>5c6953db-17e0-4d00-993f-40482711d601</ID>
+        </Section>
+      </ShaftSectionEntity>
+    </Sections>
+  </SocketedShaft>
+  <SoilLayers>
+    <SoilLayerEntity Top="-21" Bottom="-27.5">
+      <Layer Name="sand1" Type="Sand" E1="2E+07" E2="2E+07" PoissonRatio="0.3" EffectiveUnitWeight="10000" Disturbance="0.2" mi="10" GSI="35" CompressiveStrength="2E+07" EffectiveFrictionAngle="28" J="0" CU="0">
+        <ID>91e8a241-67d4-45fb-9ad0-b57fdaf4cfd3</ID>
+      </Layer>
+    </SoilLayerEntity>
+    <SoilLayerEntity Top="-27.5" Bottom="-28.35">
+      <Layer Name="soil1" Type="RockSmooth" E1="8.5E+08" E2="8.5E+08" PoissonRatio="0.3" EffectiveUnitWeight="21000" Disturbance="0.5" mi="10" GSI="23" CompressiveStrength="2.5E+07" EffectiveFrictionAngle="30" J="0" CU="0">
+        <ID>c556d92b-d4ca-44a8-8b03-65a59007aee9</ID>
+      </Layer>
+    </SoilLayerEntity>
+    <SoilLayerEntity Top="-28.35" Bottom="-30.35">
+      <Layer Name="soil2" Type="RockSmooth" E1="2.5E+09" E2="2.5E+09" PoissonRatio="0.3" EffectiveUnitWeight="23000" Disturbance="0.2" mi="10" GSI="35" CompressiveStrength="2500000" EffectiveFrictionAngle="30" J="0" CU="0">
+        <ID>1e934a07-ded2-4b0a-999d-3b7e4ca31bac</ID>
+      </Layer>
+    </SoilLayerEntity>
+    <SoilLayerEntity Top="-30.35" Bottom="-33.55">
+      <Layer Name="soil3" Type="RockSmooth" E1="8.999999E+09" E2="8.999999E+09" PoissonRatio="0.3" EffectiveUnitWeight="23000" Disturbance="0.2" mi="10" GSI="52" CompressiveStrength="2.5E+07" EffectiveFrictionAngle="30" J="0" CU="0">
+        <ID>7ef43cbd-9c51-4505-a905-9f24647e2e62</ID>
+      </Layer>
+    </SoilLayerEntity>
+  </SoilLayers>
+</SocketedShaftSystem>
