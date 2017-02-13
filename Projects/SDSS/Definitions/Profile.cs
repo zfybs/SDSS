@@ -11,6 +11,8 @@ namespace SDSS.Definitions
 {
     /// <summary> 构件截面信息 </summary>
     [Serializable()]
+    [XmlInclude(typeof(Rectangular))]
+    [XmlInclude(typeof(T))]
     public class Profile : Definition
     {
         #region ---   XmlAttribute
@@ -24,9 +26,9 @@ namespace SDSS.Definitions
         #region ---   构造函数
 
         public Profile() : base()
-        {}
+        { }
 
-        public Profile(string name, ProfileType tp):base()
+        public Profile(string name, ProfileType tp) : base()
         {
             Name = name;
             Type = tp;
@@ -52,7 +54,10 @@ namespace SDSS.Definitions
         #endregion
 
         #region ---   构造函数
+        public Rectangular() : base("矩形", ProfileType.Rectangular)
+        {
 
+        }
         public Rectangular(string name, double width, double height) : base(name, ProfileType.Rectangular)
         {
             Width = width;
@@ -60,7 +65,7 @@ namespace SDSS.Definitions
         }
 
         #endregion
-        
+
     }
 
     /// <summary> T形截面信息 </summary>
@@ -77,21 +82,27 @@ namespace SDSS.Definitions
         [Category(Categories.Property), Description("截面的高度，单位为 mm")]
         public double Height { get; set; }
 
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("腹板与翼缘的平均厚度，单位为 mm")]
+        public double GeneralThickness { get; set; }
         #endregion
 
         #region ---   构造函数
 
-        /// <summary>
-        /// 
-        /// </summary>
+        public T() : base("T形", ProfileType.T)
+        {
+        }
+
+        /// <summary> 构造函数 </summary>
         /// <param name="name"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="generalThickness">腹板与翼缘的平均厚度</param>
-        public T(string name, double width, double height,double generalThickness) : base(name, ProfileType.T)
+        public T(string name, double width, double height, double generalThickness) : base(name, ProfileType.T)
         {
             Width = width;
             Height = height;
+            GeneralThickness = generalThickness;
         }
 
         #endregion

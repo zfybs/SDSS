@@ -63,70 +63,120 @@ namespace SDSS.UIControls
         //        }
         //        #endregion
 
-        //        #region ---   eZDataGridViewShaft  桩截面
+        #region ---   eZDataGridViewFrame  框架构件
 
-        //        private void ConstructeZDataGridViewShaft()
-        //        {
-        //            eZDataGridViewShaft.AutoGenerateColumns = false;
-        //            eZDataGridViewShaft.ShowRowNumber = true;
-        //            eZDataGridViewShaft.SupportPaste = true;
-        //        }
+        /// <summary>  </summary>
+        private DataGridViewComboBoxColumn _comboColMat;
+        /// <summary>  </summary>
+        private DataGridViewComboBoxColumn _comboColProf;
+        /// <summary>  </summary>
+        private bool _eZDataGridViewFrameConstructed = false;
 
-        //        private void RefresheZDataGridViewShaft(SocketedShaftSystem sss)
-        //        {
-        //            _shaftSections = new BindingList<ShaftSectionEntity>(sss.SocketedShaft.Sections);
-        //            eZDataGridViewShaft.DataSource = _shaftSections;
-        //            //
-        //            // 数据列的绑定
-        //            ColumnSegTop.DataPropertyName = "Top";
-        //            ColumnSegBottom.DataPropertyName = "Bottom";
-        //            ColumnSegment.DataPropertyName = "Section";
+        private void ConstructeZDataGridViewFrame(eZDataGridView eZdgv)
+        {
+            if (_eZDataGridViewFrameConstructed) return;
 
-        //            // eZDataGridViewComboBoxColumn
-        //            ColumnSegment.DataPropertyName = "Section";
-        //            ColumnSegment.DisplayMember = "Name";  // 桩截面定义的标识名称
-        //            ColumnSegment.ValueMember = "Self";    // 土层定义的标识名称
-        //            ColumnSegment.DataSource = _sss.SectionDefinitions;
-        //        }
+            //eZdgv.DataSource = _persons;
 
-        //        private void eZDataGridViewShaftOnDataError(object sender, eZDataGridViewDataErrorEventArgs e)
-        //        {
-        //            var a = eZDataGridViewShaft.Rows[0].Cells[2];
-        //            var b = a.Value;
-        //            var c = a.ValueType;
-        //            Debug.Print(e.Exception.Message + "桩");
-        //        }
+            eZdgv.AutoGenerateColumns = false;
+            eZdgv.ShowRowNumber = true;
+            eZdgv.SupportPaste = false;
 
-        //        private void ShaftSectionsOnAddingNew(object sender, AddingNewEventArgs e)
-        //        {
-        //            var se = new ShaftSectionEntity();
-        //            se.Section = _sss.SectionDefinitions.Count > 0 ? _sss.SectionDefinitions.First() : null;
-        //            e.NewObject = se;
-        //        }
+            // 创建数据列并绑定到数据源 ----------------------------------------------
 
-        //        #endregion
+            // -------------------------
+            var column = new DataGridViewTextBoxColumn();
+            column.DataPropertyName = "ID";
+            column.Name = "ID";
+            eZdgv.Columns.Add(column);
+
+            // -------------------------
+            column = new DataGridViewTextBoxColumn();
+            column.Name = "ComponentType";
+            column.DataPropertyName = "ComponentType";
+            column.HeaderText = @"类型";
+            eZdgv.Columns.Add(column);
+
+            // -------------------------
+            column = new DataGridViewTextBoxColumn();
+            column.Name = "LocationTag";
+            column.DataPropertyName = "LocationTag";
+            column.HeaderText = @"定位";
+            eZdgv.Columns.Add(column);
+
+            // -------------------------
+            _comboColMat = new DataGridViewComboBoxColumn();
+            //combo.DataSource = Enum.GetValues(typeof(Gender));
+            _comboColMat.Name = "Material";
+            _comboColMat.DataPropertyName = "Material";
+            _comboColMat.HeaderText = @"材料";
+
+            _comboColMat.DisplayMember = "Name";
+            _comboColMat.ValueMember = "Self";
+
+            eZdgv.Columns.Add(_comboColMat);
+            // 如果要设置对应单元格的值为某枚举项：combo.Item(combo.Index,行号).Value = Gender.Male;
+
+            // -------------------------
+            _comboColProf = new DataGridViewComboBoxColumn();
+            //combo.DataSource = Enum.GetValues(typeof(Gender));
+            _comboColProf.Name = "Profile";
+            _comboColProf.DataPropertyName = "Profile";
+            _comboColProf.HeaderText = @"截面";
+
+            _comboColProf.DisplayMember = "Name";
+            _comboColProf.ValueMember = "Self";
+
+            eZdgv.Columns.Add(_comboColProf);
+            // 如果要设置对应单元格的值为某枚举项：combo.Item(combo.Index,行号).Value = Gender.Male;
+
+            _eZDataGridViewFrameConstructed = true;
+        }
+
+
+
+        private void RefresheZDataGridViewFrame(StationModel.StationModel1 sm)
+        {
+            //
+            _comboColMat.DataSource = sm.Definitions.Materials;
+            _comboColProf.DataSource = sm.Definitions.Profiles;
+            //
+
+            // 将生成好的框架模型显示在 Datagridview 表格中
+            List<Entities.Component> components = new List<Entities.Component>();
+            components.AddRange(sm.Beams);
+            components.AddRange(sm.Columns);
+            //
+            eZDataGridViewFrame.DataSource = components;
+        }
+
+        private void eZDataGridViewFrame_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+
+        }
+
+        #endregion
 
         #region ---   eZDataGridViewComboBoxColumn 的刷新
 
-        /// <summary> 将代表 土层定义 或者 截面定义 的集合转换为可以放置到表格中的 ComboBox 中的集合 </summary>
+        /// <summary> 将代表 土层定义 或者 截面定义 的集合转换为可以放置到表格中的 ComboBoxColumn 中的集合 </summary>
         /// <param name="column"></param>
         /// <param name="definitions"></param>
         /// <returns></returns>
-        private void RefreshComboBox(DataGridViewComboBoxColumn column, IEnumerable<Definition> definitions)
+        private void RefreshComboBoxColumn(DataGridViewComboBoxColumn column, IEnumerable<Definition> definitions)
         {
-
-            // 设置一个默认的定义
-            Definition defaltDef = null;
-            if (definitions != null && definitions.Any())
+            if (column != null)
             {
-                defaltDef = definitions.First();
-            }
-            //
-            // 刷新数据列中每一个单元格的选择
-            var dgv = column.DataGridView;
-            foreach (DataGridViewRow r in dgv.Rows)
-            {
-                if (r.Index < dgv.RowCount - 1)
+                // 设置一个默认的定义
+                Definition defaltDef = null;
+                if (definitions != null && definitions.Any())
+                {
+                    defaltDef = definitions.First();
+                }
+                //
+                // 刷新数据列中每一个单元格的选择
+                var dgv = column.DataGridView;
+                foreach (DataGridViewRow r in dgv.Rows)
                 {
                     DataGridViewComboBoxCell cell = r.Cells[column.Index] as DataGridViewComboBoxCell;
                     Definition df = cell.Value as Definition;
@@ -148,10 +198,7 @@ namespace SDSS.UIControls
                     else // 说明没有任何有效的定义
                     {
                         cell.Value = null;
-
                     }
-
-
                 }
             }
         }

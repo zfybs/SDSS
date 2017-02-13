@@ -12,6 +12,7 @@ namespace SDSS.Definitions
 
     /// <summary> 材料本构信息，也表示基本的弹性材料 </summary>
     [Serializable()]
+    [XmlInclude(typeof(MohrCoulomb))]
     public class Material : Definition
     {
         #region ---   XmlAttribute
@@ -57,7 +58,7 @@ namespace SDSS.Definitions
     public class MohrCoulomb : Material
     {
         #region ---   XmlAttribute
-        
+
         [XmlAttribute()]
         [Category(Categories.Property), Description("黏聚力，单位为 KPa")]
         public double Cohesion { get; set; }
@@ -65,11 +66,14 @@ namespace SDSS.Definitions
         [XmlAttribute()]
         [Category(Categories.Property), Description("摩擦角，单位为 度")]
         public double FrictionAngle { get; set; }
-        
+
         #endregion
 
         #region ---   构造函数
 
+        public MohrCoulomb()
+        {
+        }
 
         public MohrCoulomb(string name, double density, double elastic, double poissonRatio,
             double cohesion, double frictionAngle) : base()

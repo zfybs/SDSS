@@ -38,6 +38,14 @@ namespace SDSS.StationModel
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="soilWidth"></param>
+        /// <param name="soilHeight"></param>
+        /// <param name="overlyingSoilHeight">车站上覆土的厚度</param>
+        /// <param name="stationFloors">车站中每一层楼板的层高，数组中的第一个元素表示最上层</param>
+        /// <param name="stationSegments">车站中每一跨的宽度，数组中的第一个元素表示最左边一跨</param>
         public SoilStructureGeometry(float soilWidth, float[] soilHeight, float overlyingSoilHeight,
             float[] stationFloors, float[] stationSegments)
         {

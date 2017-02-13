@@ -51,6 +51,7 @@ namespace SDSS.UIControls
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -60,8 +61,9 @@ namespace SDSS.UIControls
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgv_Spans);
-            this.splitContainer1.Size = new System.Drawing.Size(467, 232);
-            this.splitContainer1.SplitterDistance = 233;
+            this.splitContainer1.Size = new System.Drawing.Size(350, 186);
+            this.splitContainer1.SplitterDistance = 174;
+            this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
             // 
             // dgv_Layers
@@ -75,11 +77,12 @@ namespace SDSS.UIControls
             this.dgv_Layers.KeyDelete = false;
             this.dgv_Layers.Location = new System.Drawing.Point(0, 0);
             this.dgv_Layers.ManipulateRows = false;
+            this.dgv_Layers.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgv_Layers.Name = "dgv_Layers";
             this.dgv_Layers.RowTemplate.Height = 27;
             this.dgv_Layers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_Layers.ShowRowNumber = false;
-            this.dgv_Layers.Size = new System.Drawing.Size(233, 232);
+            this.dgv_Layers.Size = new System.Drawing.Size(174, 186);
             this.dgv_Layers.SupportPaste = false;
             this.dgv_Layers.TabIndex = 0;
             this.dgv_Layers.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_DataError);
@@ -101,11 +104,12 @@ namespace SDSS.UIControls
             this.dgv_Spans.KeyDelete = false;
             this.dgv_Spans.Location = new System.Drawing.Point(0, 0);
             this.dgv_Spans.ManipulateRows = false;
+            this.dgv_Spans.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgv_Spans.Name = "dgv_Spans";
             this.dgv_Spans.RowTemplate.Height = 27;
             this.dgv_Spans.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_Spans.ShowRowNumber = false;
-            this.dgv_Spans.Size = new System.Drawing.Size(230, 232);
+            this.dgv_Spans.Size = new System.Drawing.Size(173, 186);
             this.dgv_Spans.SupportPaste = false;
             this.dgv_Spans.TabIndex = 0;
             this.dgv_Spans.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_DataError);
@@ -119,9 +123,10 @@ namespace SDSS.UIControls
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(380, 238);
+            this.buttonOk.Location = new System.Drawing.Point(285, 190);
+            this.buttonOk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonOk.Name = "buttonOk";
-            this.buttonOk.Size = new System.Drawing.Size(75, 23);
+            this.buttonOk.Size = new System.Drawing.Size(56, 23);
             this.buttonOk.TabIndex = 1;
             this.buttonOk.Text = "确定";
             this.buttonOk.UseVisualStyleBackColor = true;
@@ -130,9 +135,10 @@ namespace SDSS.UIControls
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(299, 238);
+            this.buttonCancel.Location = new System.Drawing.Point(224, 190);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(56, 23);
             this.buttonCancel.TabIndex = 1;
             this.buttonCancel.Text = "取消";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -141,13 +147,14 @@ namespace SDSS.UIControls
             // FrameConstructor
             // 
             this.AcceptButton = this.buttonOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 273);
+            this.ClientSize = new System.Drawing.Size(350, 225);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.splitContainer1);
-            this.MinimumSize = new System.Drawing.Size(420, 320);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MinimumSize = new System.Drawing.Size(319, 264);
             this.Name = "FrameConstructor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "矩形框架构造";

@@ -51,10 +51,10 @@ namespace SDSS
         }
 
 
-        /// <summary> 通过选择文件对话框选择要进行数据提取的Excel文件 </summary>
+        /// <summary> 通过选择文件对话框选择要进行数据提取的 xml 文件 </summary>
         /// <param name="title">对话框的标题</param>
-        /// <returns> 要进行数据提取的Excel文件的绝对路径 </returns>
-        public static string ChooseOpenSSS(string title)
+        /// <returns> 要进行数据提取的 xml 文件的绝对路径 </returns>
+        public static string ChooseOpenStationModel(string title)
         {
             string sss = FileExtensions.Model1;
             OpenFileDialog ofd = new OpenFileDialog
@@ -62,7 +62,7 @@ namespace SDSS
                 Title = title,
                 CheckFileExists = true,
                 AddExtension = true,
-                Filter = $"嵌岩桩(*{sss})| *{sss}",
+                Filter = $"车站模型(*{sss})| *{sss}",
                 FilterIndex = 2,
                 Multiselect = false,
             };
@@ -74,10 +74,10 @@ namespace SDSS
             return "";
         }
 
-        /// <summary> 通过选择文件对话框选择要进行数据写入的Excel文件 </summary>
+        /// <summary> 通过选择文件对话框选择要进行数据写入的 xml 文件 </summary>
         /// <param name="title">对话框的标题</param>
-        /// <returns> 要进行数据写入的Excel文件的绝对路径 </returns>
-        public static string ChooseSaveSSS(string title)
+        /// <returns> 要进行数据写入的 xml 文件的绝对路径 </returns>
+        public static string ChooseSaveStationModel(string title)
         {
             string sss = FileExtensions.Model1;
             SaveFileDialog ofd = new SaveFileDialog
@@ -85,7 +85,7 @@ namespace SDSS
                 Title = title,
                 CheckFileExists = false,
                 AddExtension = true,
-                Filter = $"嵌岩桩(*{sss})| *{sss}",
+                Filter = $"车站模型(*{sss})| *{sss}",
                 FilterIndex = 2,  // 默认选择第2项。
             };
             if (ofd.ShowDialog() == DialogResult.OK)

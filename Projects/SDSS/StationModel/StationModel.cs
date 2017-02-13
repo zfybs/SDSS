@@ -10,18 +10,17 @@ namespace SDSS.StationModel
 {
     /// <summary> 所有车站模型的基类 </summary>
     [Serializable()]
+    [XmlRoot()]
+    [XmlInclude(typeof(StationModel1))]
     public abstract class StationModel
     {
-
         #region ---   XmlElement
 
-      /// <summary> 整个系统中所有的材料定义 </summary>
+        /// <summary>
+        /// 整个系统中所有材料、截面等定义的集合
+        /// </summary>
         [XmlElement]
-        public XmlList<Material> MaterialDefinitions { get; set; }
-
-        /// <summary> 整个系统中所有的横截面定义 </summary>
-        [XmlElement]
-        public XmlList<Profile> ProfileDefinitions { get; set; }
+        public DefinitionCollection Definitions { get; set; }
 
         /// <summary> 与材料、水位标高等相关的系统参数 </summary>
         public SystemProperty SystemProperty { get; set; }
@@ -38,8 +37,7 @@ namespace SDSS.StationModel
 
         protected StationModel()
         {
-            MaterialDefinitions = new XmlList<Material>();
-            ProfileDefinitions = new XmlList<Profile>();
+            Definitions = DefinitionCollection.GetUniqueInstance();
             SoilLayers = new XmlList<SoilLayer>();
 
         }
@@ -49,7 +47,7 @@ namespace SDSS.StationModel
         #region ---   几何绘图
 
         /// <summary> 提取车站模型的几何信息，用于前处理界面绘图 </summary>
-        public abstract  StationGeometry GetStationGeometry();
+        public abstract StationGeometry GetStationGeometry();
 
         #endregion
 

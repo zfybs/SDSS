@@ -94,7 +94,7 @@ namespace SDSS.UIControls
             switch (newProfileType)
             {
                 case ProfileType.T:
-                    newP = new T(oriProfile.Name,width:1,height:0.8,generalThickness:0.2);
+                    newP = new T(oriProfile.Name, width: 1, height: 0.8, generalThickness: 0.2);
                     break;
                 default:  // 
                     newP = new Rectangular(oriProfile.Name, width: 1, height: 0.8);
@@ -104,5 +104,13 @@ namespace SDSS.UIControls
         }
 
         #endregion
+
+        private void EditDefinition_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
     }
 }

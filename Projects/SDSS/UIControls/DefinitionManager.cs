@@ -243,5 +243,13 @@ namespace SDSS.UIControls
         }
 
         #endregion
+
+        private void DefinitionManager_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
     }
 }

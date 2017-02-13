@@ -12,6 +12,7 @@ namespace SDSS.Entities
 
     /// <summary> 几何节点 </summary>
     [Serializable()]
+    [XmlInclude(typeof(FrameVertice))]
     public class Vertice : IGeomObject
     {
         #region ---   XmlAttribute
@@ -33,11 +34,15 @@ namespace SDSS.Entities
 
         #region ---   构造函数
 
-        public Vertice(double x, double y)
+        public Vertice()
+        {
+            ID = NewId();
+        }
+
+        public Vertice(double x, double y) : this()
         {
             X = x;
             Y = y;
-            ID = NewId();
         }
 
         /// <summary> 整个系统中的节点的最大编号值 </summary>
@@ -73,6 +78,11 @@ namespace SDSS.Entities
         #endregion
 
         #region ---   构造函数
+
+        public FrameVertice()
+        {
+
+        }
 
         /// <summary>
         /// 
