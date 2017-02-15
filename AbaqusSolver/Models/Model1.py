@@ -1,31 +1,23 @@
 # -*- coding: utf-8 -*-
+
+# sys.path.append( r'E:\GitHubProjects\SDSS\AbaqusSolver')
+
 import sys,os
-
-def environmentSetup():
-    # os.path.split(os.path.realpath(__file__))[0]
-    __file__ = r'D:\Workspace\PycharmProjects\SDSS\Model1.py'
-
-    fileDir = os.path.split(os.path.realpath(__file__))[0]
-    # fileDir = 'D:\Workspace\PycharmProjects\SDSS'
-    print(fileDir)
-    sys.path.append(fileDir)
-
-    # execfile(r'D:\Workspace\PycharmProjects\SDSS\Model1.py')
-    # os.chdir(r'D:\Workspace\PycharmProjects\SDSS')
-    # del(sys.modules["Model1"])
-    print('\n'*2 + '-'*200 + '\n'*2)
-environmentSetup()
-
 from abaqus import *
 from abaqusConstants import *
 import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
 
 from Model1Functions import *
-from SSModels import ImportUserModel1
+from  SSModels import ImportUserModel1
+from Entities.Frame import uFrame
 
-if __name__ == '__main__':
+def main(myFrame):
+    '''
 
-    myFrame = ImportUserModel1('')
+    :param myFrame:
+    :type myFrame: uFrame
+    :return:
+    '''
 
     # ============== Part =======================================================
     session.journalOptions.setValues(replayGeometry=COORDINATE,recoverGeometry= COORDINATE)
@@ -99,3 +91,11 @@ if __name__ == '__main__':
     #     variableLabel='U', outputPosition=NODAL, refinement=(INVARIANT, 'Magnitude'), )
     #
     # session.printToFile(fileName='1', format=PNG, canvasObjects=(session.viewports[vpName], ))
+
+
+if __name__ == '__main__':
+    s = os.getcwd()
+    # s= sys.argv[0]
+    #getWarningReply(s,(YES,NO))
+    main()
+

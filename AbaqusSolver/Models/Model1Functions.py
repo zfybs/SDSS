@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from uFrame import *
+from Entities.Frame import *
 
 from abaqus import *
 from abaqusConstants import *
-import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
+import regionToolset
 
 def CreateSketch(frame,model):
     ''' 创建草图

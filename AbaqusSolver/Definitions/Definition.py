@@ -1,44 +1,58 @@
 # -*- coding: utf-8 -*-
-# import enum
+# from enum import Enum
 
 from abaqus import *
 from abaqusConstants import *
 import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
-
-class uConstants(object):
-    ''' 类中保存了一些全局的常量 '''
-    g = 9.8 # 重力加速度
-
-class uVertice(object):
-    '''二维平面上的几何节点'''
-    def __init__(self, x ,y):
-        '''二维平面上的几何节点
-        :param x: 节点的二维空间坐标中的 x 值
-        :type x: float
-        :type y: float
-        :return:
-        '''
-        self.x = x
-        self.y = y
 
 class uProfileType(object):
     '''构件横截面类型'''
     rectangular = 1  # 其对应的截面参数依次为：截面宽度b、截面高度h
     T = 2  # 其对应的截面参数依次为：截面宽度b、截面高度h、翼缘厚度tf、腹板宽度tw
 
+    __nameProfile = {'Rectangular':rectangular,
+                      'T':T,
+                      }
+    @classmethod
+    def GetProfileType(cls,name):
+        '''根据截面名称获取对应的截面类型
+        :param name: 截面名称
+        :type name: str
+        '''
+        if cls.__nameProfile.has_key(name):
+            return cls.__nameProfile[name]
+        else:
+            return None
 
 class uMaterialType(object):
     '''材料类型'''
     elastic = 1  # 其对应的材料参数依次为：密度、弹性模量、泊松比
     plastic = 2
 
+    __nameMaterial = {'Elastic':elastic,
+                      'MohrCoulomb':plastic,
+                      }
+    @classmethod
+    def GetMaterialType(cls,name):
+        '''根据材料名称获取对应的材料类型
+        :param name: 材料名称
+        :type name: str
+        '''
+        if cls.__nameMaterial.has_key(name):
+            return cls.__nameMaterial[name]
+        else:
+            return None
 
 class uAbqEntity(object):
     '''abaqus 中对应的模块对象，其每一个对象都有一个名称信息，而且对应在Abaqus中的 repository 中时，这些名称都是唯一的。'''
 
     def __init__(self, name):
-        self.name = name
+        self._name = name
 
+    @property
+    def name(self):
+        ''' abaqus 中对应的模块对象，其每一个对象都有一个名称信息，而且对应在Abaqus中的 repository 中时，这些名称都是唯一的。 '''
+        return  self._name
 
 # ===============================================================================
 class uProfile(uAbqEntity):
@@ -120,33 +134,3 @@ class uSection(uAbqEntity):
                         temperatureVar= LINEAR, consistentMassMatrix=False)
             return section
 
-
-class uComponent(uAbqEntity):
-    '''梁或柱等框架构件'''
-
-    def __init__(self, name, profile, material):
-        '''
-        :type profile: uProfile
-        :type material: uMaterial
-        '''
-        super(uComponent, self).__init__(name)
-        self.profile = profile
-        self.material = material
-        self.sectionName = material.name + '_' + profile.name  # 截面与材料组成的Abaqus中的section的名称
-        self.weight = 0 # 构件的重量
-
-    def getSeedNumberByLS(self,length,minSize,fixedNumber):
-        ''' 根据构件长度与最小网格尺寸来确定此构件要划分为多少个单元
-        1. 对于柱构件，按单元个数进行划分，在保证最小网格尺寸为0.1m的前提下，将柱构件的单元个数固定为20个。
-        2. 对于各层顶板梁，其单元的划分原则与柱相同；
-        :param length: 直线构件的长度
-        :param minSize: 网格的最小尺寸
-        :param fixedNumber: 固定的单元个数
-        :rtype: int
-        :return:
-        '''
-        minLength = fixedNumber * minSize
-        if length<minLength:
-            return int(length/minSize)
-        else:
-            return fixedNumber

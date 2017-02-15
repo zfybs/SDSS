@@ -19,7 +19,6 @@ namespace SDSS.UIControls
         /// <summary> 从左往右每一跨的宽度，单位为m。 </summary>
         public double[] SpanWidths { get; private set; }
 
-        #region ---   窗口的打开与关闭
         #region ---   构造函数
 
         private static FrameConstructor _uiniqueInstance;
@@ -51,8 +50,11 @@ namespace SDSS.UIControls
             //
             dgv_Layers.KeyDelete = true;
             dgv_Layers.ShowRowNumber = true;
+            dgv_Layers.SupportPaste = true;
+            //
             dgv_Spans.KeyDelete = true;
             dgv_Spans.ShowRowNumber = true;
+            dgv_Spans.SupportPaste = true;
             //
             ColumnLayerHeight.ValueType = typeof(double);
             ColumnSpanWidth.ValueType = typeof(double);
@@ -60,10 +62,12 @@ namespace SDSS.UIControls
 
         #endregion
 
+        #region ---   窗口的打开与关闭
+
         private void FrameConstructor_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
-           // e.Cancel = true;
+            // e.Cancel = true;
         }
         private void FrameConstructor_KeyDown(object sender, KeyEventArgs e)
         {

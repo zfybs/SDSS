@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Serialization;
-using eZstd.Data;
+using eZstd.Enumerable;
 using SDSS.Entities;
 
 namespace SDSS.StationModel
@@ -106,6 +106,17 @@ namespace SDSS.StationModel
                     Columns.Add(col);
                 }
             }
+        }
+
+        #endregion
+
+        #region ---   模型检验
+
+        /// <summary> 对模型进行检查，如果此模型不满足进行计算的必备条件，则返回false </summary>
+        public override bool Validate(out string errorMessage)
+        {
+            errorMessage = "模型检验完成，可以进行计算";
+            return true;
         }
 
         #endregion

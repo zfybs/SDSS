@@ -48,7 +48,12 @@ namespace SDSS.Definitions
 
         public override bool Equals(object obj)
         {
-            return _id.Equals((obj as Definition).ID);
+            Definition def = obj as Definition;
+            if (def == null)
+            {
+                return false;
+            }
+            return _id.Equals(def.ID);
         }
         /// <summary> 返回一个<seealso cref="Definition"/>对象 </summary>
         public object Clone()

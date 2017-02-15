@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using eZstd.Data;
+using eZstd.Enumerable;
 using SDSS.Definitions;
 using SDSS.Entities;
 
@@ -44,12 +44,16 @@ namespace SDSS.StationModel
 
         #endregion
 
-        #region ---   几何绘图
+        #region ---   抽象方法
 
         /// <summary> 提取车站模型的几何信息，用于前处理界面绘图 </summary>
         public abstract StationGeometry GetStationGeometry();
 
-        #endregion
 
+        /// <summary> 对模型进行检查，如果此模型不满足进行计算的必备条件，则返回false </summary>
+        public abstract bool Validate(out string errorMessage);
+
+
+        #endregion
     }
 }

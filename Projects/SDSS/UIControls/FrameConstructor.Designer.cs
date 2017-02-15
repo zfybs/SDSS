@@ -51,7 +51,7 @@ namespace SDSS.UIControls
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -74,16 +74,13 @@ namespace SDSS.UIControls
             this.dgv_Layers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnLayerHeight});
             this.dgv_Layers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_Layers.KeyDelete = false;
             this.dgv_Layers.Location = new System.Drawing.Point(0, 0);
             this.dgv_Layers.ManipulateRows = false;
-            this.dgv_Layers.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgv_Layers.Margin = new System.Windows.Forms.Padding(2);
             this.dgv_Layers.Name = "dgv_Layers";
             this.dgv_Layers.RowTemplate.Height = 27;
             this.dgv_Layers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_Layers.ShowRowNumber = false;
             this.dgv_Layers.Size = new System.Drawing.Size(174, 186);
-            this.dgv_Layers.SupportPaste = false;
             this.dgv_Layers.TabIndex = 0;
             this.dgv_Layers.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_DataError);
             // 
@@ -101,16 +98,13 @@ namespace SDSS.UIControls
             this.dgv_Spans.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnSpanWidth});
             this.dgv_Spans.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_Spans.KeyDelete = false;
             this.dgv_Spans.Location = new System.Drawing.Point(0, 0);
             this.dgv_Spans.ManipulateRows = false;
-            this.dgv_Spans.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgv_Spans.Margin = new System.Windows.Forms.Padding(2);
             this.dgv_Spans.Name = "dgv_Spans";
             this.dgv_Spans.RowTemplate.Height = 27;
             this.dgv_Spans.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_Spans.ShowRowNumber = false;
             this.dgv_Spans.Size = new System.Drawing.Size(173, 186);
-            this.dgv_Spans.SupportPaste = false;
             this.dgv_Spans.TabIndex = 0;
             this.dgv_Spans.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_DataError);
             // 
@@ -124,7 +118,7 @@ namespace SDSS.UIControls
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOk.Location = new System.Drawing.Point(285, 190);
-            this.buttonOk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonOk.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(56, 23);
             this.buttonOk.TabIndex = 1;
@@ -136,7 +130,7 @@ namespace SDSS.UIControls
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.Location = new System.Drawing.Point(224, 190);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(56, 23);
             this.buttonCancel.TabIndex = 1;
@@ -153,7 +147,7 @@ namespace SDSS.UIControls
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(319, 264);
             this.Name = "FrameConstructor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

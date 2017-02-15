@@ -41,6 +41,11 @@ namespace SocketedShafts.Definitions
 
         public override bool Equals(object obj)
         {
+            Definition def = obj as Definition;
+            if (def == null)
+            {
+                return false;
+            }
             return _id.Equals((obj as Definition).ID);
         }
 

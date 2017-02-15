@@ -23,7 +23,6 @@ namespace SDSS.Constants
         public const string Clay = "黏性土";
     }
 
-
     /// <summary>
     /// 各种文件后缀名
     /// </summary>

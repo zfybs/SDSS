@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using eZstd.Data;
+using eZstd.Enumerable;
 using eZstd.Miscellaneous;
 using SDSS.Definitions;
 using SDSS.StationModel;
@@ -20,19 +20,34 @@ namespace SDSS
         [STAThread]
         static void Main(string[] args)
         {
+            Test(args);
+            // return;
+            StartProgram(args);
+        }
+
+        private static void StartProgram(string[] args)
+        {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //
             var sm = StationModel1.GetUniqueInstance() as StationModel1;
-            constructStationModel(sm);
+            ConstructStationModel(sm);
             //ImExportModel(sm);
-
             //
             var mf = new MainForm(sm);
             Application.Run(mf);
         }
 
-        private static void constructStationModel(StationModel1 sm)
+        #region ---   测试
+
+        private static void Test(string[] args)
+        {
+           
+        }
+
+        /// <summary> 构造一个车站模型实例 </summary>
+        /// <param name="sm"></param>
+        private static void ConstructStationModel(StationModel1 sm)
         {
             sm.GenerateFrame(new double[] { 4, 5, 6, }, new double[] { 3, 6 });
             //
@@ -59,7 +74,7 @@ namespace SDSS
             d.Add("a", 10);
             d.Add("b", 20);
             d.Add("c", 30);
-            
+
             string filePath = @"E:\GitHubProjects\SDSS\bin\m1.sdss";
             // ExportToXml(sm, filePath);
             ExportToXml(d, filePath);
@@ -128,6 +143,6 @@ namespace SDSS
         }
         #endregion
 
-
+        #endregion
     }
 }

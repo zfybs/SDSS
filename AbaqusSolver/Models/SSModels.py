@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from uFrame import uMaterialType,uMaterial,uProfile,uProfileType,uBeam,uColumn
-from uFrame import uFrame,uLoad
+from Entities.Frame import uMaterialType,uMaterial,uProfile,uProfileType,uBeam,uColumn
+from Entities import Frame,Vertice
 
 
 # ===============================================================================
@@ -12,8 +12,8 @@ def ImportUserModel1(filePath):
     pCol = uProfile('column', uProfileType.rectangular, 1, 1)
     beamLength = 10
     columnHeight = 5
-    spans = 3
-    layers = 2
+    spans = 15
+    layers = 10
 
     # define the beams
     beams = []
@@ -34,7 +34,7 @@ def ImportUserModel1(filePath):
 
     # loads
     load = uLoad(kx= 1e6,ky= 1e6,kc = 0.5)
-    frame = uFrame('JianChuanRoad', (mE,), (pBeam, pCol), spans, layers, columns, beams, load)
+    frame = Frame('JianChuanRoad', (mE,), (pBeam, pCol), spans, layers, columns, beams, load)
 
     return frame
 

@@ -41,11 +41,13 @@
             this.button_Boundary = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.comboBoxProfiles = new System.Windows.Forms.ComboBox();
-            this.comboBoxMaterials = new System.Windows.Forms.ComboBox();
+            this.comboBoxCompMaterials = new System.Windows.Forms.ComboBox();
             this.eZDataGridViewFrame = new eZstd.UserControls.eZDataGridView();
             this.label7 = new System.Windows.Forms.Label();
-            this.button_assignMat = new System.Windows.Forms.Button();
+            this.button_assignCompMat = new System.Windows.Forms.Button();
             this.button_assignProfile = new System.Windows.Forms.Button();
+            this.comboBoxSoilMaterials = new System.Windows.Forms.ComboBox();
+            this.button_assignSoilMat = new System.Windows.Forms.Button();
             this.eZDataGridViewSoilLayers = new eZstd.UserControls.eZDataGridView();
             this.label8 = new System.Windows.Forms.Label();
             this.buttonSavePic = new System.Windows.Forms.Button();
@@ -58,6 +60,8 @@
             this.TSM_Export = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.TSM_Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.modelDrawer1 = new SDSS.UIControls.ModelDrawer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -189,18 +193,20 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.comboBoxProfiles);
-            this.splitContainer1.Panel1.Controls.Add(this.comboBoxMaterials);
+            this.splitContainer1.Panel1.Controls.Add(this.comboBoxCompMaterials);
             this.splitContainer1.Panel1.Controls.Add(this.eZDataGridViewFrame);
             this.splitContainer1.Panel1.Controls.Add(this.label7);
-            this.splitContainer1.Panel1.Controls.Add(this.button_assignMat);
+            this.splitContainer1.Panel1.Controls.Add(this.button_assignCompMat);
             this.splitContainer1.Panel1.Controls.Add(this.button_assignProfile);
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxSoilMaterials);
+            this.splitContainer1.Panel2.Controls.Add(this.button_assignSoilMat);
             this.splitContainer1.Panel2.Controls.Add(this.eZDataGridViewSoilLayers);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
             this.splitContainer1.Size = new System.Drawing.Size(543, 450);
-            this.splitContainer1.SplitterDistance = 305;
+            this.splitContainer1.SplitterDistance = 263;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 7;
             // 
@@ -214,15 +220,15 @@
             this.comboBoxProfiles.Size = new System.Drawing.Size(60, 20);
             this.comboBoxProfiles.TabIndex = 3;
             // 
-            // comboBoxMaterials
+            // comboBoxCompMaterials
             // 
-            this.comboBoxMaterials.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxMaterials.FormattingEnabled = true;
-            this.comboBoxMaterials.Location = new System.Drawing.Point(55, 5);
-            this.comboBoxMaterials.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBoxMaterials.Name = "comboBoxMaterials";
-            this.comboBoxMaterials.Size = new System.Drawing.Size(60, 20);
-            this.comboBoxMaterials.TabIndex = 3;
+            this.comboBoxCompMaterials.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCompMaterials.FormattingEnabled = true;
+            this.comboBoxCompMaterials.Location = new System.Drawing.Point(55, 5);
+            this.comboBoxCompMaterials.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxCompMaterials.Name = "comboBoxCompMaterials";
+            this.comboBoxCompMaterials.Size = new System.Drawing.Size(60, 20);
+            this.comboBoxCompMaterials.TabIndex = 3;
             // 
             // eZDataGridViewFrame
             // 
@@ -238,7 +244,7 @@
             this.eZDataGridViewFrame.RowTemplate.Height = 23;
             this.eZDataGridViewFrame.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewFrame.ShowRowNumber = false;
-            this.eZDataGridViewFrame.Size = new System.Drawing.Size(539, 276);
+            this.eZDataGridViewFrame.Size = new System.Drawing.Size(539, 234);
             this.eZDataGridViewFrame.SupportPaste = false;
             this.eZDataGridViewFrame.TabIndex = 1;
             this.eZDataGridViewFrame.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.eZDataGridViewFrame_DataError);
@@ -254,17 +260,17 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "构件参数";
             // 
-            // button_assignMat
+            // button_assignCompMat
             // 
-            this.button_assignMat.Location = new System.Drawing.Point(116, 4);
-            this.button_assignMat.Margin = new System.Windows.Forms.Padding(2);
-            this.button_assignMat.Name = "button_assignMat";
-            this.button_assignMat.Size = new System.Drawing.Size(43, 23);
-            this.button_assignMat.TabIndex = 2;
-            this.button_assignMat.Text = "材料";
-            this.toolTip1.SetToolTip(this.button_assignMat, "为表格中选择的构件行指定材料");
-            this.button_assignMat.UseVisualStyleBackColor = true;
-            this.button_assignMat.Click += new System.EventHandler(this.button_assignMat_Click);
+            this.button_assignCompMat.Location = new System.Drawing.Point(116, 4);
+            this.button_assignCompMat.Margin = new System.Windows.Forms.Padding(2);
+            this.button_assignCompMat.Name = "button_assignCompMat";
+            this.button_assignCompMat.Size = new System.Drawing.Size(43, 23);
+            this.button_assignCompMat.TabIndex = 2;
+            this.button_assignCompMat.Text = "材料";
+            this.toolTip1.SetToolTip(this.button_assignCompMat, "为表格中选择的构件行指定材料");
+            this.button_assignCompMat.UseVisualStyleBackColor = true;
+            this.button_assignCompMat.Click += new System.EventHandler(this.button_assignCompMat_Click);
             // 
             // button_assignProfile
             // 
@@ -278,6 +284,28 @@
             this.button_assignProfile.UseVisualStyleBackColor = true;
             this.button_assignProfile.Click += new System.EventHandler(this.button_assignProfile_Click);
             // 
+            // comboBoxSoilMaterials
+            // 
+            this.comboBoxSoilMaterials.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSoilMaterials.FormattingEnabled = true;
+            this.comboBoxSoilMaterials.Location = new System.Drawing.Point(59, 3);
+            this.comboBoxSoilMaterials.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxSoilMaterials.Name = "comboBoxSoilMaterials";
+            this.comboBoxSoilMaterials.Size = new System.Drawing.Size(60, 20);
+            this.comboBoxSoilMaterials.TabIndex = 5;
+            // 
+            // button_assignSoilMat
+            // 
+            this.button_assignSoilMat.Location = new System.Drawing.Point(120, 1);
+            this.button_assignSoilMat.Margin = new System.Windows.Forms.Padding(2);
+            this.button_assignSoilMat.Name = "button_assignSoilMat";
+            this.button_assignSoilMat.Size = new System.Drawing.Size(43, 23);
+            this.button_assignSoilMat.TabIndex = 4;
+            this.button_assignSoilMat.Text = "材料";
+            this.toolTip1.SetToolTip(this.button_assignSoilMat, "为表格中选择的土层行指定材料");
+            this.button_assignSoilMat.UseVisualStyleBackColor = true;
+            this.button_assignSoilMat.Click += new System.EventHandler(this.button_assignSoilMat_Click);
+            // 
             // eZDataGridViewSoilLayers
             // 
             this.eZDataGridViewSoilLayers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -285,14 +313,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.eZDataGridViewSoilLayers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.eZDataGridViewSoilLayers.KeyDelete = false;
-            this.eZDataGridViewSoilLayers.Location = new System.Drawing.Point(2, 21);
+            this.eZDataGridViewSoilLayers.Location = new System.Drawing.Point(2, 27);
             this.eZDataGridViewSoilLayers.ManipulateRows = false;
             this.eZDataGridViewSoilLayers.Margin = new System.Windows.Forms.Padding(2);
             this.eZDataGridViewSoilLayers.Name = "eZDataGridViewSoilLayers";
             this.eZDataGridViewSoilLayers.RowTemplate.Height = 23;
             this.eZDataGridViewSoilLayers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewSoilLayers.ShowRowNumber = false;
-            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 120);
+            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 159);
             this.eZDataGridViewSoilLayers.SupportPaste = false;
             this.eZDataGridViewSoilLayers.TabIndex = 1;
             // 
@@ -300,7 +328,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label8.Location = new System.Drawing.Point(2, 6);
+            this.label8.Location = new System.Drawing.Point(2, 8);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(53, 12);
@@ -389,6 +417,22 @@
             this.TSM_Exit.Size = new System.Drawing.Size(100, 22);
             this.TSM_Exit.Text = "退出";
             // 
+            // _backgroundWorker
+            // 
+            this._backgroundWorker.WorkerSupportsCancellation = true;
+            this._backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this._backgroundWorker_DoWork);
+            this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this._backgroundWorker_RunWorkerCompleted);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar1.Location = new System.Drawing.Point(0, 582);
+            this.progressBar1.MarqueeAnimationSpeed = 10;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(868, 5);
+            this.progressBar1.TabIndex = 9;
+            this.progressBar1.Visible = false;
+            // 
             // modelDrawer1
             // 
             this.modelDrawer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -407,6 +451,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(868, 587);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.textBoxNum_spans);
             this.Controls.Add(this.label4);
@@ -461,13 +506,12 @@
         private System.Windows.Forms.Label label7;
         private eZstd.UserControls.eZDataGridView eZDataGridViewFrame;
         private eZstd.UserControls.eZDataGridView eZDataGridViewSoilLayers;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonSavePic;
         private System.Windows.Forms.Button buttonSysInfo;
-        private System.Windows.Forms.Button button_assignMat;
+        private System.Windows.Forms.Button button_assignCompMat;
         private System.Windows.Forms.Button button_assignProfile;
         private System.Windows.Forms.ComboBox comboBoxProfiles;
-        private System.Windows.Forms.ComboBox comboBoxMaterials;
+        private System.Windows.Forms.ComboBox comboBoxCompMaterials;
         private System.Windows.Forms.Button button_GenerateFrame;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -476,6 +520,11 @@
         private System.Windows.Forms.ToolStripMenuItem TSM_Export;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem TSM_Exit;
+        private System.Windows.Forms.ComboBox comboBoxSoilMaterials;
+        private System.Windows.Forms.Button button_assignSoilMat;
+        private System.Windows.Forms.Label label8;
+        private System.ComponentModel.BackgroundWorker _backgroundWorker;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
