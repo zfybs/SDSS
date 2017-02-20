@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-from Entities.Frame import uMaterialType,uMaterial,uProfile,uProfileType,uBeam,uColumn
-from Entities import Frame,Vertice
+
+from szmEntities.Frame import uFrame, uMaterialType,uMaterial,uProfile,uProfileType,uLoad
+from szmEntities.Component import uBeam,uColumn
+from szmEntities import Frame,Vertice
 
 
 # ===============================================================================
@@ -34,7 +36,7 @@ def ImportUserModel1(filePath):
 
     # loads
     load = uLoad(kx= 1e6,ky= 1e6,kc = 0.5)
-    frame = Frame('JianChuanRoad', (mE,), (pBeam, pCol), spans, layers, columns, beams, load)
+    frame = uFrame('JianChuanRoad', (mE,), (pBeam, pCol), spans, layers, columns, beams, load)
 
     return frame
 

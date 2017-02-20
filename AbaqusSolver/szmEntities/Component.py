@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'zengfy'
 
-from Definitions.Definition import uAbqEntity
+from szmDefinitions.Definition import uAbqEntity
+from szmDefinitions.Constants import uConstants
 
 class uComponent(uAbqEntity):
     '''梁或柱等框架构件'''

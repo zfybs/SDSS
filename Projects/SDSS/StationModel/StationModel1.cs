@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Serialization;
 using eZstd.Enumerable;
+using SDSS.Definitions;
 using SDSS.Entities;
 
 namespace SDSS.StationModel
@@ -48,7 +49,7 @@ namespace SDSS.StationModel
         /// </summary>
         /// <param name="layerHeights">从下往上每一层的高度</param>
         /// <param name="spanWidths">从左往右每一跨的宽度</param>
-        public void GenerateFrame(double[] layerHeights, double[] spanWidths)
+        public void GenerateFrame(double[] layerHeights, double[] spanWidths,Material defaultMat,Profile defaultProfile)
         {
             _layerHeight = layerHeights;
             _spanWidth = spanWidths;
@@ -87,7 +88,7 @@ namespace SDSS.StationModel
                 for (int r = 0; r < spanCount; r++)
                 {
                     int leftVerticeIndex = c * (spanCount + 1) + r;
-                    Beam b = new Beam(material: null, profile: null, v1: verticesColle[leftVerticeIndex],
+                    Beam b = new Beam(material: defaultMat, profile: defaultProfile, v1: verticesColle[leftVerticeIndex],
                         v2: verticesColle[leftVerticeIndex + 1]);
                     b.LocationTag = $"({verticesColle[leftVerticeIndex].Index_X + 1},{verticesColle[leftVerticeIndex].Index_Y})";
                     Beams.Add(b);
@@ -99,7 +100,7 @@ namespace SDSS.StationModel
                 for (int r = 0; r < spanCount + 1; r++)
                 {
                     int bottomVerticeIndex = c * (spanCount + 1) + r;
-                    Column col = new Column(material: null, profile: null,
+                    Column col = new Column(material: defaultMat, profile: defaultProfile,
                         v1: verticesColle[bottomVerticeIndex], v2: verticesColle[bottomVerticeIndex + spanCount + 1]);
                     col.LocationTag =
                         $"({verticesColle[bottomVerticeIndex].Index_X},{verticesColle[bottomVerticeIndex].Index_Y + 1})";

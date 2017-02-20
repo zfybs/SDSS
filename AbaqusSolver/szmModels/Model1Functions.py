@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from Entities.Frame import *
+from szmEntities.Frame import *
 
-from abaqus import *
-from abaqusConstants import *
-import regionToolset
+# from abaqus import *
+# from abaqusConstants import *
+# import part, regionToolset
 
 def CreateSketch(frame,model):
     ''' 创建草图
@@ -94,7 +94,8 @@ def defineOutputFields(model,fieldoutputName, outputFilds):
     :type outputFilds: tuple[str]
     '''
 
-    model.fieldOutputRequests[fieldoutputName].setValues(variables=outputFilds)
+    fields = model.fieldOutputRequests[fieldoutputName].setValues(variables=outputFilds)
+    return fields
 
 def meshInstance(assembly, instance,frame):
     '''对整个框架进行网格划分

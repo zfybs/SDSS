@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -32,8 +33,10 @@ namespace SDSS.UIControls
         private void DefinitionsOnMaterialsChanged(object sender, EventArgs eventArgs)
         {
             // 刷新 ComboBox 界面
-            RefreshComboBox(comboBoxCompMaterials, _stationModel.Definitions.Materials);
-            RefreshComboBox(comboBoxSoilMaterials, _stationModel.Definitions.Materials.Clone());
+            var mats = _stationModel.Definitions.Materials;
+
+            RefreshComboBox(comboBoxCompMaterials, mats);
+            RefreshComboBox(comboBoxSoilMaterials, mats.Clone());
         }
 
         #region ---   PictureBox 绘图操作
@@ -113,7 +116,10 @@ namespace SDSS.UIControls
                 var res = fc.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    _stationModel.GenerateFrame(fc.LayerHeights, fc.SpanWidths);
+                    Material mat = _stationModel.Definitions.Materials.FirstOrDefault();
+                    Profile prof = _stationModel.Definitions.Profiles.FirstOrDefault();
+
+                    _stationModel.GenerateFrame(fc.LayerHeights, fc.SpanWidths, defaultMat: mat, defaultProfile: prof);
 
                     // 
                     if (!_eZDataGridViewFrameConstructed)
@@ -178,6 +184,26 @@ namespace SDSS.UIControls
             eZDataGridViewFrame.Refresh();
         }
 
+        #endregion
+
+        #region --- 边界参数的设置
+        private void button_Boundary_Click(object sender, EventArgs e)
+        {
+            var sp = _stationModel.SystemProperty;
+            BoundaryParam f = new BoundaryParam(sp.kx, sp.ky, sp.overLayingSoil, sp.soilWidth);
+
+            f.StartPosition = FormStartPosition.CenterParent;
+            // f.textBox_Kx.Text = _stationModel.SystemProperty.kx.ToString();
+            // f.kx = _stationModel.SystemProperty.kx;
+            f.ShowDialog();
+
+            //
+            sp.kx = f.Kx;
+            sp.ky = f.Ky;
+            sp.overLayingSoil = f.OverLayingSoil;
+            sp.soilWidth = f.SoilWidth;
+
+        }
         #endregion
 
         #region ---  将整个模型导出到 xml 文档
@@ -297,9 +323,8 @@ namespace SDSS.UIControls
             // 对模型进行检查，看是否可以进行计算
             if (_stationModel.Validate(out errorMessage))
             {
-
                 AbaqusSolver solver = new AbaqusSolver(
-                    workingDir: @"D:\Workspace\abaqus\ModelStationTest",
+                    workingDir: ProjectPaths.D_AbaqusWorkingDir ?? ProjectPaths.D_AbaqusDefaultWorkingDir,
                     modelType: ModelType.Model1,
                     solverGui: SolverGUI.CAE
                    );
@@ -335,7 +360,10 @@ namespace SDSS.UIControls
             try
             {
                 BackgroundCalculationParameters para = e.Argument as BackgroundCalculationParameters;
-                SolverState state = para.Solver.Execute(waitingSeconds: 5, errorMessage: out para.ErrorMessage);
+
+                SolverState state = para.Solver.Execute(waitingSeconds: 60 * 10,
+                    errorMessage: out para.ErrorMessage);
+
                 e.Result = state;
             }
             catch (Exception)

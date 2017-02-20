@@ -8,8 +8,9 @@ Appendix of the Getting Started with
 Abaqus: Interactive Edition Manual.
 """
 
-from abaqus import *
-from abaqusConstants import *
+# from abaqus import *
+# from abaqusConstants import *
+# import part,material,load,assembly,step,regionToolset,visualization,job,mesh,section
 
 backwardCompatibility.setValues(includeDeprecated=True,
                                 reportDeprecated=False)
@@ -26,7 +27,7 @@ myModel = mdb.Model(name='Beam')
 
 #-----------------------------------------------------
 
-import part
+
 
 # Create a sketch for the base feature.
 
@@ -53,7 +54,6 @@ del sketch1
 
 #-----------------------------------------------------
 
-import material
 
 # Create a material.
 
@@ -66,8 +66,6 @@ elasticProperties = (200e9, 0.3)
 mySteel.Elastic(table=(elasticProperties, ) )
 
 #-------------------------------------------------------
-
-import section
 
 # Create the solid section.
 
@@ -106,8 +104,6 @@ p.assignBeamSectionOrientation(region=region, method=N1_COSINES, n1=(0.0, 0.0, -
 
 #-------------------------------------------------------
 
-import assembly
-
 # Create a part instance.
 
 myAssembly = myModel.rootAssembly
@@ -116,7 +112,7 @@ myInstance = myAssembly.Instance(name='beamInstance',
 
 #-------------------------------------------------------
 
-import step
+
 
 # Create a step. The time period of the static step is 1.0, 
 # and the initial incrementation is 0.1; the step is created
@@ -128,7 +124,7 @@ myModel.StaticStep(name='beamLoad', previous='Initial',
 
 #-------------------------------------------------------
 
-import load
+
 
 # Find the end face using coordinates.
 
@@ -153,7 +149,7 @@ mdb.models['Beam'].ConcentratedForce(name='Load-1', createStepName='beamLoad',
     # region=region, u1=0.0, u2=0.0, ur3=0.0, amplitude=UNSET, fixed=OFF, 
     # distributionType=UNIFORM, fieldName='', localCsys=None)
     
-import regionToolset
+
 
 mdb.models['Beam'].ExpressionField(name='soilPressure', localCsys=None, 
     description='', expression='0.5*18000* (30- Y )')
@@ -169,7 +165,6 @@ mdb.models['Beam'].LineLoad(name='Load-2', createStepName='beamLoad',
     
 #-------------------------------------------------------
 
-import mesh
 
 a = mdb.models['Beam'].rootAssembly
 e1 = a.instances['beamInstance'].edges
@@ -226,7 +221,6 @@ mdb.models['Beam'].fieldOutputRequests['F-Output-1'].setValues(variables=('S',
     'PE', 'PEEQ', 'PEMAG', 'LE', 'U', 'RF', 'RM', 'CF', 'SF', 'TF', 'CSTRESS', 
     'CDISP'))
     
-import job
 
 myJob= mdb.Job(name='Job-1', model='Beam', description='', type=ANALYSIS, atTime=None, 
     waitMinutes=0, waitHours=0, queue=None, memory=90, memoryUnits=PERCENTAGE, 
@@ -242,7 +236,6 @@ myJob.waitForCompletion()
 
 #-------------------------------------------------------
 
-import visualization
 
 # Open the output database and display a
 # default contour plot.

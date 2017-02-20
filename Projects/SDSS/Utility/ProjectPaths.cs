@@ -37,6 +37,15 @@ namespace SDSS.Utility
         /// <summary> 利用 Abaqus 进行计算的 Python 源代码所在文件夹 </summary>
         public static readonly string D_PythonSource = _d_Solution.GetDirectories("AbaqusSolver").First().FullName;
 
+
+        /// <summary> Abaqus 的默认工作文件夹 </summary>
+        /// <remarks>
+        /// Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        ///  @"D:\Workspace\abaqus\ModelStationTest";
+        /// </remarks>
+        public static readonly string D_AbaqusDefaultWorkingDir =
+           Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Abauqs");
+
         /// <summary> Abaqus 的工作文件夹 </summary>
         public static string D_AbaqusWorkingDir;
 
@@ -49,20 +58,16 @@ namespace SDSS.Utility
         public static string F_CalcutionFilePaths;
 
         /// <summary> .txt 文件，此文本文件中记录有所有存储有模型参数、计算参数的文件所在的路径 </summary>
-        private const string CalcutionFileName = "CalculationFiles.paths";
+        private const string FN_CalcutionFile = "CalculationFiles" + Constants.FileExtensions.Paths;
+
 
         /// <summary> 默认的车站模型的计算文件的名称 </summary>
-        public const string DefaultModelName = "StationDesginModel" + Constants.FileExtensions.Model1;
+        public const string FN_DefaultModel = "StationDesginModel" + Constants.FileExtensions.StationModel;
 
-
+        /// <summary> Abaqus 计算过程的信息输出文件，对应 python 中的 sys.stdout </summary>
+        public const string FN_PyMessage = "CalculationMessage" + Constants.FileExtensions.PyMessageExt;
+        
         /// <summary> 用于启动 Abaqus 的.bat文件 </summary>
-        /// <remarks> 此 .bat 文件中的内容格式如下;
-        /// @echo off
-        /// rem : The directory for the files created during the calcution as well as the results.
-        /// cd /d C:\Users\zengfy\Desktop\AbaqusScriptTest
-        /// 
-        /// rem : Execute Abaqus without showing the users interface.
-        /// abaqus cae noGUI=beamExample.py</remarks>
         public static readonly string F_InitialBat = Path.Combine(D_MiddleFiles, "InitialSolver.bat");
 
         private static string _f_PySolver;
@@ -113,7 +118,7 @@ namespace SDSS.Utility
                 }
             }
             D_AbaqusWorkingDir = workingDir;
-            F_CalcutionFilePaths = Path.Combine(workingDir, CalcutionFileName);
+            F_CalcutionFilePaths = Path.Combine(workingDir, FN_CalcutionFile);
         }
 
         #endregion
@@ -171,7 +176,7 @@ namespace SDSS.Utility
 
             // 在此文件中写入各种计算文件的路径，路径含义与路径字符之间通过“ * ”进行分隔
             string sep = @" * ";
-
+            string fullName = "";
             // 1. 记录模型信息的 xml 文件
             sw.WriteLine("ModelFile" + sep + F_ModelFile);
 
@@ -181,6 +186,13 @@ namespace SDSS.Utility
             // 3. Abaqus 的工作文件夹
             sw.WriteLine("AbaqusWorkingDir" + sep + D_AbaqusWorkingDir);
 
+            // 4. SDSS 解决方案的中间文件夹
+            sw.WriteLine("MiddleFileDir" + sep + D_MiddleFiles);
+
+            // 5. Abaqus 计算过程的信息输出文件，对应 python 中的 sys.stdout
+            fullName = Path.Combine(D_AbaqusWorkingDir, FN_PyMessage);
+            sw.WriteLine("PyMessageFile" + sep + fullName);
+            
             //
             sw.Close();
         }

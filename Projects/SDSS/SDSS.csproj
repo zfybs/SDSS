@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SerializeCollection.Program1</StartupObject>
+    <StartupObject>SDSS.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="eZstd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -65,6 +65,12 @@
     <Compile Include="Definitions\SoilLayer.cs" />
     <Compile Include="StationModel\DefinitionCollection.cs" />
     <Compile Include="StationModel\StationGeometry.cs" />
+    <Compile Include="UIControls\BoundaryParam.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIControls\BoundaryParam.Designer.cs">
+      <DependentUpon>BoundaryParam.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIControls\FrameConstructor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     <Compile Include="Program1.cs" />
     <Compile Include="Utility\ProjectPaths.cs" />
     <Compile Include="Utility\Utils.cs" />
+    <EmbeddedResource Include="UIControls\BoundaryParam.resx">
+      <DependentUpon>BoundaryParam.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UIControls\EditDefinition.resx">
       <DependentUpon>EditDefinition.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from array import array
 
-from Definitions.Definition import *
-from abaqus import *
-from abaqusConstants import *
+# from abaqus import *
+# from abaqusConstants import *
 
-from Entities.Load import uLoad
-
+from szmDefinitions.Definition import *
+from szmEntities.Load import uLoad
+from szmEntities.Vertice import uVertice,uVerticeFrame
 
 class uFrame(object):
     '''整个梁柱框架'''

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # from enum import Enum
 
-from abaqus import *
-from abaqusConstants import *
-import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
+# from abaqus import *
+# from abaqusConstants import *
+# import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
 
 class uProfileType(object):
     '''构件横截面类型'''
@@ -61,6 +61,7 @@ class uProfile(uAbqEntity):
     def __init__(self, name, profileType, *args):
         '''
         :type profileType: uProfileType
+        :type args:tuple[float]
         '''
         super(uProfile, self).__init__(name)
         self.sectionType = profileType
@@ -69,10 +70,13 @@ class uProfile(uAbqEntity):
 
     def createProfile(self, model):
         '''在Abaqus模型中创建一种新的材料'''
+        print(self.name)
         if self.sectionType == uProfileType.rectangular:
             p = model.RectangularProfile(name=self.name, a=self.parameters[0], b=self.parameters[1])
         elif self.sectionType == uProfileType.T:
-            raise NotImplementedError()
+            p = model.RectangularProfile(name=self.name, a=self.parameters[0], b=self.parameters[1])
+            pass
+            # raise NotImplementedError()
 
     def __getArea(self):
         '''计算截面的面积
@@ -80,7 +84,8 @@ class uProfile(uAbqEntity):
         if self.sectionType == uProfileType.rectangular:
             return self.parameters[0] * self.parameters[1]
         elif self.sectionType == uProfileType.T:
-            raise NotImplementedError()
+            p = self.parameters
+            return p[0]*p[2] + (p[1]-p[2])*p[3]
 
 class uMaterial(uAbqEntity):
     '''材料信息'''
@@ -110,7 +115,8 @@ class uMaterial(uAbqEntity):
         if self.materialType == uMaterialType.elastic:
             pass
         elif self.materialType == uMaterialType.plastic:
-            raise NotImplementedError()
+            pass
+            # raise NotImplementedError()
 
 class uSection(uAbqEntity):
     '''材料信息'''
@@ -130,7 +136,7 @@ class uSection(uAbqEntity):
         else:
             #  创建一个新的 section
             section = model.BeamSection(name=sName, integration = DURING_ANALYSIS,
-                        poissonRatio=material.poisson, profile=profile.name, material=material.name,
+                        poissonRatio=material.poisson, profile=profile.name, material = material.name,
                         temperatureVar= LINEAR, consistentMassMatrix=False)
             return section
 

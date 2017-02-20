@@ -40,6 +40,7 @@ namespace SDSS.StationModel
             Definitions = DefinitionCollection.GetUniqueInstance();
             SoilLayers = new XmlList<SoilLayer>();
 
+            SystemProperty = new SystemProperty();
         }
 
         #endregion

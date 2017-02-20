@@ -112,7 +112,7 @@ abaqus cae noGUI=beamExample.py
                 // 1. 指定用来计算的车站模型文件
                 if (!File.Exists(ProjectPaths.F_ModelFile))
                 {
-                    string defaultModelFile = Path.Combine(_workingDir, ProjectPaths.DefaultModelName);
+                    string defaultModelFile = Path.Combine(_workingDir, ProjectPaths.FN_DefaultModel);
 
                     ProjectPaths.SerializeNewModelFile(xmlFilePath: defaultModelFile, stationModel: sm,
                         errorMessage: out errorMessage);

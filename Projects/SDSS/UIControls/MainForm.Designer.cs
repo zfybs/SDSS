@@ -178,6 +178,7 @@
             this.button_Boundary.TabIndex = 2;
             this.button_Boundary.Text = "边界参数";
             this.button_Boundary.UseVisualStyleBackColor = true;
+            this.button_Boundary.Click += new System.EventHandler(this.button_Boundary_Click);
             // 
             // splitContainer1
             // 
@@ -320,7 +321,7 @@
             this.eZDataGridViewSoilLayers.RowTemplate.Height = 23;
             this.eZDataGridViewSoilLayers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewSoilLayers.ShowRowNumber = false;
-            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 159);
+            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 160);
             this.eZDataGridViewSoilLayers.SupportPaste = false;
             this.eZDataGridViewSoilLayers.TabIndex = 1;
             // 

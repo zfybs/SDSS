@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
-
 # sys.path.append( r'E:\GitHubProjects\SDSS\AbaqusSolver')
 
 import sys,os
-from abaqus import *
-from abaqusConstants import *
-import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
+# from abaqus import *
+# from abaqusConstants import *
+# import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
 
 from Model1Functions import *
 from  SSModels import ImportUserModel1
-from Entities.Frame import uFrame
+from szmEntities.Frame import uFrame
 
-def main(myFrame):
+def Calculate1(myFrame):
     '''
 
     :param myFrame:
@@ -53,7 +52,7 @@ def main(myFrame):
     myStep = defineStep(myModel,'Loading',1.0)
     # outputFilds = ('S', 'PE', 'PEEQ', 'PEMAG', 'LE', 'U', 'RF', 'RM', 'CF', 'SF', 'TF', 'CSTRESS',    'CDISP')
     outputFilds = ('U', 'RF', 'SF',)
-    defineOutputFields(myModel,fieldoutputName= 'F-Output-1',outputFilds= outputFilds)
+    fields = defineOutputFields(myModel,fieldoutputName= 'F-Output-1',outputFilds= outputFilds)
 
     # =============== Mesh ======================================================
     # mesh the instance
@@ -92,6 +91,15 @@ def main(myFrame):
     #
     # session.printToFile(fileName='1', format=PNG, canvasObjects=(session.viewports[vpName], ))
 
+    return myModel, myJob
+
+def Calculate2(myFrame):
+    '''
+
+    :param myFrame:
+    :type myFrame: uFrame
+    :return:
+    '''
 
 if __name__ == '__main__':
     s = os.getcwd()

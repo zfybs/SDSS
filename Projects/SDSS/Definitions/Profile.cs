@@ -83,8 +83,13 @@ namespace SDSS.Definitions
         public double Height { get; set; }
 
         [XmlAttribute()]
-        [Category(Categories.Property), Description("腹板与翼缘的平均厚度，单位为 mm")]
-        public double GeneralThickness { get; set; }
+        [Category(Categories.Property), Description("腹板厚度，单位为 m")]
+        public double WebThickness { get; set; }
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("翼缘厚度，单位为 m")]
+        public double FlangeThickness { get; set; }
+
         #endregion
 
         #region ---   构造函数
@@ -97,12 +102,14 @@ namespace SDSS.Definitions
         /// <param name="name"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        /// <param name="generalThickness">腹板与翼缘的平均厚度</param>
-        public T(string name, double width, double height, double generalThickness) : base(name, ProfileType.T)
+        /// <param name="webThickness">腹板厚度</param>
+        /// <param name="flangeThickness">翼缘厚度</param>
+        public T(string name, double width, double height, double webThickness, double flangeThickness) : base(name, ProfileType.T)
         {
             Width = width;
             Height = height;
-            GeneralThickness = generalThickness;
+            WebThickness = webThickness;
+            FlangeThickness = flangeThickness;
         }
 
         #endregion

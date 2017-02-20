@@ -56,7 +56,7 @@ namespace SDSS
         /// <returns> 要进行数据提取的 xml 文件的绝对路径 </returns>
         public static string ChooseOpenStationModel(string title)
         {
-            string sss = FileExtensions.Model1;
+            string sss = FileExtensions.StationModel;
             OpenFileDialog ofd = new OpenFileDialog
             {
                 Title = title,
@@ -79,7 +79,7 @@ namespace SDSS
         /// <returns> 要进行数据写入的 xml 文件的绝对路径 </returns>
         public static string ChooseSaveStationModel(string title)
         {
-            string sss = FileExtensions.Model1;
+            string sss = FileExtensions.StationModel;
             SaveFileDialog ofd = new SaveFileDialog
             {
                 Title = title,
