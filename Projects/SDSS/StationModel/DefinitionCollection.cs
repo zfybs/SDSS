@@ -16,11 +16,11 @@ namespace SDSS.StationModel
     {
         /// <summary> 整个系统中所有的材料定义 </summary>
         [XmlElement]
-        public XmlListEv<Material> Materials { get; set; }
+        public XmlList<Material> Materials { get; set; }
 
         /// <summary> 整个系统中所有的横截面定义 </summary>
         [XmlElement]
-        public XmlListEv<Profile> Profiles { get; set; }
+        public XmlList<Profile> Profiles { get; set; }
 
         /// <summary> 整个框架中所有的矩形框架节点定义 </summary>
         [XmlElement]
@@ -37,34 +37,15 @@ namespace SDSS.StationModel
 
         public DefinitionCollection()
         {
-            Materials = new XmlListEv<Material>();
-            Materials.ItemChanged += MaterialsOnItemChanged;
+            Materials = new XmlList<Material>();
             //
-            Profiles = new XmlListEv<Profile>();
-            Profiles.ItemChanged += ProfilesOnItemChanged;
+            Profiles = new XmlList<Profile>();
             FrameVertices = new XmlList<FrameVertice>();
         }
 
         #endregion
 
-        #region ---   事件触发
-
-        /// <summary> 系统的材料集合中的元素个数发生变化，比如增加、减少或元素值的内存地址发生变化 </summary>
-        public event EventHandler MaterialsCollectionChanged;
-        private void MaterialsOnItemChanged(object sender, EventArgs eventArgs)
-        {
-            MaterialsCollectionChanged?.Invoke(this, null);
-        }
-
-        /// <summary> 系统的截面集合中的元素个数发生变化，比如增加、减少或元素值的内存地址发生变化 </summary>
-        public event EventHandler ProfilesCollectionChanged;
-        private void ProfilesOnItemChanged(object sender, EventArgs eventArgs)
-        {
-            ProfilesCollectionChanged?.Invoke(this, null);
-        }
-
-        #endregion
-
+ 
         #region ---   元素索引
 
         public Material GetMaterial(string matName)

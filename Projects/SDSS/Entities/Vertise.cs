@@ -17,7 +17,6 @@ namespace SDSS.Entities
     {
         #region ---   XmlAttribute
 
-        private static uint _id = 0;
         [XmlAttribute()]
         [Category(Categories.Property), Description("节点的ID编号")]
         public uint ID { get; set; }

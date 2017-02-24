@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from szmEntities.Frame import *
 
-# from abaqus import *
-# from abaqusConstants import *
-# import part, regionToolset
+from abaqus import *
+from abaqusConstants import *
+import part, regionToolset
 
 def CreateSketch(frame,model):
     ''' 创建草图
@@ -94,8 +94,7 @@ def defineOutputFields(model,fieldoutputName, outputFilds):
     :type outputFilds: tuple[str]
     '''
 
-    fields = model.fieldOutputRequests[fieldoutputName].setValues(variables=outputFilds)
-    return fields
+    model.fieldOutputRequests[fieldoutputName].setValues(variables=outputFilds)
 
 def meshInstance(assembly, instance,frame):
     '''对整个框架进行网格划分
@@ -124,7 +123,6 @@ def meshInstance(assembly, instance,frame):
 
     # 生成整个框架的网格
     assembly.generateMesh(regions=(instance,))
-
 
 def setBoundary(assembly,instance,frame,load,):
     ''' 设置框架边界
@@ -174,7 +172,6 @@ def setConcentratedForce(model,instance,stepName,frame,load,):
             model.ConcentratedForce(name = fName, createStepName=stepName,
                 region=rg, cf1=force, distributionType=UNIFORM, field='',  localCsys=None)
 
-
 def setLineLoad(model, instance, stepName, frame, load):
     ''' 在框架的左侧柱上添加三角形分布的线荷载
 
@@ -219,3 +216,23 @@ def createJob(model,jobName,numCpus,description):
         multiprocessingMode=DEFAULT, numCpus=numCpus, numDomains=numCpus, numGPUs=0)
 
     return myJob
+
+def createNodesSet (assembly,instance,frame):
+    for list in frame.getFloorSlabRegion()[0]:
+        nRg = instance.nodes.getByBoundingBox(list[0], list[1], list[2], list[3], list[4], list[5] )
+        sRg = assembly.Set(nodes = nRg, name = list[6])
+
+def createElementsSet (assembly, instance, frame):
+    listsFG = frame.getFloorSlabRegion()[1]
+    listsLR = frame.getLayerRegion ()
+    elements = instance.elements
+    for list in listsFG:
+        eRg = elements.getByBoundingBox(list[0], list[1], list[2], list[3], list[4], list[5])
+        eSRg = assembly.Set(elements = eRg, name = list[6])
+    for list in listsLR:
+        eLRG0 = elements.getByBoundingBox(list[0][0][0], list[0][0][1], list[0][0][2], list[0][0][3], list[0][0][4], list[0][0][5])
+        eLRG = eLRG0
+        for i in range(1, frame.spans+1):
+            eLRGI = elements.getByBoundingBox(list[0][i][0], list[0][i][1], list[0][i][2], list[0][i][3], list[0][i][4], list[0][i][5])
+            eLRG = eLRG + eLRGI
+        eSLRG = assembly.Set(elements = eLRG, name = list[1])

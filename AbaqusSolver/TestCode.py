@@ -1,24 +1,13 @@
 # -*- coding: utf-8 -*-
-__author__ = 'zengfy'
-import sys
-from os import path
-import codecs
-from codecs import StreamWriter
-sout = sys.stdout
-sin = sys.stdin
-a = sin.readline()
-#
-t = codecs.lookup("utf-8")
-msgTxt = r'D:\UserFiles\Documents\Abauqs\message.txt'
+import re
+import traceback
 
-f_h = open(msgTxt,'w')
-sys.stdout = f_h
+def writeLine(string):
+    string = string + '\n'
+    print(string)
 
-# fin = codecs.open(msgTxt, "w", "utf-8")
-# print fin.write(sout.name)
+def writeLines( *strs):
+    for s in strs:
+        writeLine(s)
 
-lst = range(0,100)
-for i in lst:
-    print(str(i))
-
-pass
+writeLines("1","3")

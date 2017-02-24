@@ -60,13 +60,23 @@ namespace SDSS.Utility
         /// <summary> .txt 文件，此文本文件中记录有所有存储有模型参数、计算参数的文件所在的路径 </summary>
         private const string FN_CalcutionFile = "CalculationFiles" + Constants.FileExtensions.Paths;
 
-
+        /// <summary> 在Python脚本中，启动整个程序的入口模块 </summary>
+        private const string FN_EnvironmentBuild = "EnvironmentBuild.py";
+        
         /// <summary> 默认的车站模型的计算文件的名称 </summary>
         public const string FN_DefaultModel = "StationDesginModel" + Constants.FileExtensions.StationModel;
 
-        /// <summary> Abaqus 计算过程的信息输出文件，对应 python 中的 sys.stdout </summary>
+        /// <summary> Abaqus 计算过程的信息输出文件，对应 python 中的 sys.stdout ，这些输出信息主要是程序运行中的提示，与具体的模型信息无关 </summary>
         public const string FN_PyMessage = "CalculationMessage" + Constants.FileExtensions.PyMessageExt;
-        
+
+        /// <summary> Abaqus 计算结果的信息输出文件，Python 脚本运行过程中，用户指定输出的与模型相关的数据 </summary>
+        public const string FN_PyOutput = "Output" + Constants.FileExtensions.Output;
+
+        /// <summary> Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中 </summary>
+        public const string FN_AbqResult = "Result" + Constants.FileExtensions.AbqResult;
+
+
+
         /// <summary> 用于启动 Abaqus 的.bat文件 </summary>
         public static readonly string F_InitialBat = Path.Combine(D_MiddleFiles, "InitialSolver.bat");
 
@@ -94,7 +104,7 @@ namespace SDSS.Utility
             {
                 //case ModelType.Model1: _f_PySolver = Path.Combine(D_PythonSource, @"Models\Model1.py"); break;
                 //case ModelType.Model2: _f_PySolver = Path.Combine(D_PythonSource, @"Models\Model2.py"); break;
-                default: _f_PySolver = Path.Combine(D_PythonSource, @"EnvironmentBuild.py"); break;
+                default: _f_PySolver = Path.Combine(D_PythonSource, FN_EnvironmentBuild); break;
             }
         }
 
@@ -125,46 +135,43 @@ namespace SDSS.Utility
 
         #region ---   文件数据写入
 
-        /// <summary>
-        /// 根据前处理界面中用户输入的计算模型信息，将其写入 xml 文件中
-        /// </summary>
-        /// <param name="xmlFilePath"></param>
-        /// <param name="stationModel"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns>如果成功写入，则返回 true，如果失败则返回 false。</returns>
-        public static bool SerializeNewModelFile(string xmlFilePath, StationModel.StationModel stationModel, out string errorMessage)
-        {
-            //if (File.Exists(xmlFilePath))
-            //{
-            //    File.Delete(xmlFilePath);
-            //}
-            StreamWriter fs = null;
-            try
-            {
-                Type tp = stationModel.GetType();
+        ///// <summary>
+        ///// 根据前处理界面中用户输入的计算模型信息，将其写入 xml 文件中
+        ///// </summary>
+        ///// <param name="xmlFilePath"></param>
+        ///// <param name="stationModel"></param>
+        ///// <param name="errorMessage"></param>
+        ///// <returns>如果成功写入，则返回 true，如果失败则返回 false。</returns>
+        //public static bool SerializeNewModelFile(string xmlFilePath, StationModel.StationModel stationModel, out string errorMessage)
+        //{
+          
+        //    StreamWriter fs = null;
+        //    try
+        //    {
+        //        Type tp = stationModel.GetType();
 
-                fs = new StreamWriter(xmlFilePath, append: false);
-                XmlSerializer s = new XmlSerializer(tp);
-                s.Serialize(fs, stationModel);
-                //
-                F_ModelFile = xmlFilePath;
-                errorMessage = "可以成功导出模型";
-                return true;
-            }
-            catch (Exception ex)
-            {
-                errorMessage = "模型信息写入失败";
-                F_ModelFile = string.Empty;
-                return false;
-            }
-            finally
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                }
-            }
-        }
+        //        fs = new StreamWriter(xmlFilePath, append: false);
+        //        XmlSerializer s = new XmlSerializer(tp);
+        //        s.Serialize(fs, stationModel);
+        //        //
+        //        F_ModelFile = xmlFilePath;
+        //        errorMessage = "可以成功导出模型";
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errorMessage = "模型信息写入失败";
+        //        F_ModelFile = string.Empty;
+        //        return false;
+        //    }
+        //    finally
+        //    {
+        //        if (fs != null)
+        //        {
+        //            fs.Close();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 将存储有模型参数、计算参数的文件所在的路径写入到一个单独的文本中，以供 Python 程序读取。
@@ -177,22 +184,31 @@ namespace SDSS.Utility
             // 在此文件中写入各种计算文件的路径，路径含义与路径字符之间通过“ * ”进行分隔
             string sep = @" * ";
             string fullName = "";
-            // 1. 记录模型信息的 xml 文件
-            sw.WriteLine("ModelFile" + sep + F_ModelFile);
 
-            // 2. Python 脚本源代码所在文件夹
+            // 1. Python 脚本源代码所在文件夹
             sw.WriteLine("PythonSourceDir" + sep + D_PythonSource);
 
-            // 3. Abaqus 的工作文件夹
+            // 2. Abaqus 的工作文件夹
             sw.WriteLine("AbaqusWorkingDir" + sep + D_AbaqusWorkingDir);
+
+            // 3. 记录模型信息的 xml 文件
+            sw.WriteLine("ModelFile" + sep + F_ModelFile);
 
             // 4. SDSS 解决方案的中间文件夹
             sw.WriteLine("MiddleFileDir" + sep + D_MiddleFiles);
 
-            // 5. Abaqus 计算过程的信息输出文件，对应 python 中的 sys.stdout
+            // 5. Abaqus 计算过程的信息输出文件，对应 python 中的 sys.stdout，这些输出信息主要是程序运行中的提示，与具体的模型信息无关
             fullName = Path.Combine(D_AbaqusWorkingDir, FN_PyMessage);
             sw.WriteLine("PyMessageFile" + sep + fullName);
-            
+
+            // 6. Python脚本运行过程中，用户指定输出的与模型相关的数据
+            fullName = Path.Combine(D_AbaqusWorkingDir, FN_PyOutput);
+            sw.WriteLine("PyOutputFile" + sep + fullName);
+
+            // 7. Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中
+            fullName = Path.Combine(D_AbaqusWorkingDir, FN_AbqResult);
+            sw.WriteLine("CalculationResultFile" + sep + fullName);
+
             //
             sw.Close();
         }

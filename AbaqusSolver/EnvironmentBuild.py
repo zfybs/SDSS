@@ -1,46 +1,12 @@
 # -*- coding: utf-8 -*-
 ''' 环境搭建 并 启动计算程序 '''
+__file__ = r'EnvironmentBuild.py'
 
+import traceback
 import io, sys,os
 from os import path
 import shutil
-
-class envirmtHandler(object):
-    '''    为了Abaqus计算过程与后处理过程进行对接的一些环境变量的设置    '''
-    # 文本中字段与值之间的分隔
-    fieldSeperator = r' * '
-
-    def __init__(self,origStdout):
-        self.originalStdout = origStdout
-        self.newStdout = None
-
-    def setStdoutMessage(self):
-        '''
-        将 print() 函数的输出路径修改为指定的文本文件
-        :return:
-        '''
-        f_h = open(projectPath.get_PyMessageFile(),'w')
-        self.newStdout = f_h
-        sys.stdout = f_h
-
-    def restoreStdout(self):
-        if self.newStdout != None and (not self.newStdout.closed):
-            self.newStdout.close()
-
-        sys.stdout = self.originalStdout
-
-
-def __findAbqWorkingDir():
-    ''' 找到 Abaqus 的工作文件夹
-    :return:记录有各种文件位置的那个文件的绝对路径
-    '''
-    pathsDir = os.getcwd()  # Abaqus 的工作空间文件夹
-    pathsDir = r"D:\UserFiles\Documents\Abauqs"
-
-    # change the abaqus working directory
-    os.chdir(pathsDir)
-
-    return pathsDir
+fieldSeperator = r' * '
 
 def __getPathDict(filepath):
     ''' 从文件中读取各种路径信息
@@ -56,7 +22,7 @@ def __getPathDict(filepath):
     line = txtFile.readline()
     while line:
         line =line.strip('\r\n') # 删除字符串结尾的换行符
-        kv = line.split(envirmtHandler.fieldSeperator)
+        kv = line.split(fieldSeperator)
         paths[kv[0]] = kv[1]
         line = txtFile.readline()
 
@@ -112,9 +78,9 @@ def __deleteModules(sourceDir):
         __deleteOneModule(moduleName)
     # print('* ------------------------------------------------------------------- \n')
 
-def build(abqWorkingDir,pathsTextFile,pythonSourceDirField,):
+def build(pathsDir,pathsTextFile,pythonSourceDirField,):
     ''' 从文件中读取各种路径信息
-    :param abqWorkingDir: 记录有 SDSS 程序的各种路径的 txt 文件所在的文件夹
+    :param pathsDir: 记录有 SDSS 程序的各种路径的 txt 文件所在的文件夹
     :param pathsTextFile: 记录有 SDSS 程序的各种路径的 txt 文件的文件名
     :param pythonSourceDirField: pathsTextFile 文件中记录“Python 源代码所在的文件夹”的字段的名称
     :return: 一个字典，其中保存了各种文件对象所在的路径
@@ -122,7 +88,7 @@ def build(abqWorkingDir,pathsTextFile,pythonSourceDirField,):
     '''
 
     # 记录有各种路径信息的那个文本文件
-    pathsFile = path.join(abqWorkingDir,pathsTextFile)
+    pathsFile = path.join(pathsDir,pathsTextFile)
 
     # 从文件中提取路径数据
     pathsdict = __getPathDict(pathsFile)
@@ -133,7 +99,6 @@ def build(abqWorkingDir,pathsTextFile,pythonSourceDirField,):
 
     # 将源代码所在文件夹添加到系统路径中，这样才能搜索到源代码中的指定模块
     sys.path.append(pathsdict[pythonSourceDirField])
-    print(pathsdict[pythonSourceDirField])
 
     return pathsdict
 
@@ -212,37 +177,64 @@ def buildInDeveloperMode(abqWorkingDir,pathsTextFile,pythonSourceDirField,):
     return pathsdict
 """
 
-def setupForPostProcess():
-    eh = envirmtHandler(origStdout=sys.stdout)
-    eh.setStdoutMessage()
+def getPathsDirectory():
+    # 记录有各种文件位置的那个文件（CalculationFiles.sdp）所在的文件夹
+    pathsDir = os.getcwd()  # Abaqus 的工作空间文件夹
+    pathsDir = r"D:\UserFiles\Documents\Abauqs"
 
-    return eh
+    try:
+        pass
+        # raise IOError()
+    except Exception:
+        stackTrace = traceback.format_exc()
+        import re
+        ptn = r'file "(.*)"'
+        flag = re.IGNORECASE or re.MULTILINE
+        matches = re.findall(ptn,stackTrace, flag)
+        if matches != None:
+            tagFile = 'EnvironmentBuild.py'
+            for m in matches:
+                if m.endswith(tagFile):
+                    pathsDir = m[:len(m)-len(tagFile)-1]
+                    print("find source code dir in the stackTrack code block.:", pathsDir)
+                    break
+
+    return pathsDir
 
 if __name__ == '__main__':
-
     envirmttHdl = None
     try:
-        abqWorkingDir = __findAbqWorkingDir()
 
-        pathsdict = build(abqWorkingDir = abqWorkingDir,
+        # 记录有各种文件位置的那个文件（CalculationFiles.sdp）所在的文件夹
+        pathsDir = getPathsDirectory()
+
+        pathsdict = build(pathsDir = pathsDir,
             pathsTextFile = r"CalculationFiles.sdp",
             pythonSourceDirField= 'PythonSourceDir')   # buildInDeveloperMode  build
 
         # 构造 路径字典 数据，以供后面调用
-        from szmDefinitions.Constants import projectPath
+        from szmDefinitions.Constants import  uConstants
+        from szmDefinitions.ProjectPath import  projectPath
+        from szmPostProcess.EnvirmtHandler import  envirmtHandler
         projectPath.PathDict = pathsdict
 
+        # change the abaqus working directory
+        os.chdir(projectPath.get_AbaqusWorkingDir())
+
         #
-        envirmttHdl = setupForPostProcess()
+        envirmttHdl = envirmtHandler(projectPath.get_AbaqusWorkingDir())
+        envirmttHdl.setupForPostprocess()
         #
         import ProgramEntrance
         ProgramEntrance.Main()
 
     except Exception as ex:
         print('\n*** Calculation terminated with error! ***\n')
+        stackTrace = traceback.format_exc()
         print(ex.args)
+        print(stackTrace)
 
     finally:
         if envirmttHdl != None:
-            envirmttHdl.restoreStdout()
+            envirmttHdl.dispose()
         pass

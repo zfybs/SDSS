@@ -2,17 +2,16 @@
 # sys.path.append( r'E:\GitHubProjects\SDSS\AbaqusSolver')
 
 import sys,os
-# from abaqus import *
-# from abaqusConstants import *
-# import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
+from abaqus import *
+from abaqusConstants import *
+import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
 
 from Model1Functions import *
-from  SSModels import ImportUserModel1
+from SSModels import ImportUserModel1
 from szmEntities.Frame import uFrame
 
 def Calculate1(myFrame):
     '''
-
     :param myFrame:
     :type myFrame: uFrame
     :return:
@@ -52,7 +51,7 @@ def Calculate1(myFrame):
     myStep = defineStep(myModel,'Loading',1.0)
     # outputFilds = ('S', 'PE', 'PEEQ', 'PEMAG', 'LE', 'U', 'RF', 'RM', 'CF', 'SF', 'TF', 'CSTRESS',    'CDISP')
     outputFilds = ('U', 'RF', 'SF',)
-    fields = defineOutputFields(myModel,fieldoutputName= 'F-Output-1',outputFilds= outputFilds)
+    defineOutputFields(myModel,fieldoutputName= 'F-Output-1',outputFilds= outputFilds)
 
     # =============== Mesh ======================================================
     # mesh the instance
@@ -61,6 +60,10 @@ def Calculate1(myFrame):
     # =============== Load ======================================================
     # set boundaries
     setBoundary(myAssembly,myInstance,myFrame,myFrame.load)
+
+    # create sets
+    createNodesSet (myAssembly,myInstance,myFrame)
+    createElementsSet(myAssembly,myInstance,myFrame)
 
     # concentrated force on each intersect point between columns and beams
     setConcentratedForce(myModel,myInstance,myStep.name, myFrame,myFrame.load)

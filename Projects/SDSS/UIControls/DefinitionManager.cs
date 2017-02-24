@@ -2,8 +2,10 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using SDSS.Definitions;
 
 namespace SDSS.UIControls
@@ -27,6 +29,21 @@ namespace SDSS.UIControls
             listBox1.DataSource = _definitions;
         }
 
+        #region ---   窗口的打开与关闭
+
+        private void DefinitionManager_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
+        private void buttonOk_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+        #endregion
+
         #region ---   添加、移除 与 编辑
 
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -40,17 +57,15 @@ namespace SDSS.UIControls
             if (res == DialogResult.OK)
             {
                 string errorMessage;
-                if (CheckAddDefinition(_definitions, def, out errorMessage))
-                {
-                    _definitions.Add((T)def);
-                }
-                else
+                bool succ = AddDefinition(def, out errorMessage);
+                if (!succ)
                 {
                     MessageBox.Show(errorMessage, "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
+        /// <summary> 构造一个默认的定义对象 </summary>
         private Definition GetInitialDefinitionObject()
         {
             Definition d;
@@ -69,12 +84,32 @@ namespace SDSS.UIControls
             return d;
         }
 
+
+        /// <summary> 添加一个定义到总的定义集合中去 </summary>
+        /// <param name="def"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        private bool AddDefinition(Definition def, out string errorMessage)
+        {
+            if (CheckAddDefinition(_definitions, def, out errorMessage))
+            {
+                _definitions.Add((T)def);
+                return true;
+            }
+            return false;
+        }
+
         /// <summary> 检查添加后的定义集合是否符合命名的唯一性规范 </summary>
         private bool CheckAddDefinition(BindingList<T> originaldefinitions, Definition defToAdd, out string errorMessage)
         {
             if (string.IsNullOrEmpty(defToAdd.Name))
             {
                 errorMessage = "必须为添加的参数定义指定一个名称。";
+                return false;
+            }
+            if (Utils.StringHasNonEnglish(defToAdd.Name))
+            {
+                errorMessage = "定义的命名不能包含非英文的字符。";
                 return false;
             }
             // 检查有没有重复的名称
@@ -185,71 +220,130 @@ namespace SDSS.UIControls
 
         private void buttonImport_Click(object sender, EventArgs e)
         {
-            //    string filePath = Utils.ChooseOpenSSS("导入水平受荷嵌岩桩文件");
-            //    if (filePath.Length > 0)
-            //    {
-            //        try
-            //        {
-            //            //
-            //            XmlReader xr = XmlReader.Create(filePath);
-            //            //
-            //            XmlSerializer ss = new XmlSerializer(typeof(SocketedShaftSystem));
-            //            var sss = (SocketedShaftSystem)ss.Deserialize(xr);
-            //            xr.Close();
-
-            //            // 对于是桩截面还是土层参数定义的不同来分别进行导入
-            //            StringBuilder sb = new StringBuilder();
-            //            string errorMessage;
-            //            if (typeof(T) == typeof(ShaftSection))
-            //            {
-            //                foreach (ShaftSection s in sss.SectionDefinitions)
-            //                {
-            //                    if (CheckAddDefinition(_definitions, s, out errorMessage))
-            //                    {
-            //                        _definitions.Add(s as T);
-            //                        sb.AppendLine((s as T).Name + " : 成功");
-            //                    }
-            //                    else
-            //                    {
-            //                        sb.AppendLine((s as T).Name + " : "+ errorMessage );
-            //                    }
-            //                }
-            //            }
-            //            else if (typeof(T) == typeof(SoilLayer))
-            //            {
-            //                foreach (SoilLayer s in sss.SoilDefinitions)
-            //                {
-            //                    if (CheckAddDefinition(_definitions, s, out errorMessage))
-            //                    {
-            //                        _definitions.Add(s as T);
-            //                        sb.AppendLine((s as T).Name + " : 成功");
-            //                    }
-            //                    else
-            //                    {
-            //                        sb.AppendLine((s as T).Name + " : "+ errorMessage );
-            //                    }
-            //                }
-            //            }
-
-            //            MessageBox.Show("参数导入结束，导入结果： \n\r" + sb.ToString(), "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            //            // _definitions
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            DebugUtils.ShowDebugCatch(ex, "指定的文件不能正常提取其中的定义信息。");
-            //        }
-            //    }
+            if (typeof(T) == typeof(Profile))
+            {
+                string filePath = Utils.ChooseOpenProfiles("导入截面");
+                if (filePath.Length > 0)
+                {
+                    string errorMessage;
+                    bool succeeded;
+                    var profiles = Utils.ImportFromXml(filePath, typeof(List<Profile>),
+                        out succeeded, out errorMessage) as List<Profile>;
+                    if (succeeded)
+                    {
+                        foreach (Profile p in profiles)
+                        {
+                            try
+                            {
+                                bool succ = AddDefinition(p, out errorMessage);
+                                if (!succ)
+                                {
+                                    MessageBox.Show(errorMessage, "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (typeof(T) == typeof(Material))
+            {
+                string filePath = Utils.ChooseOpenMaterials("导入材料");
+                if (filePath.Length > 0)
+                {
+                    string errorMessage;
+                    bool succeeded;
+                    var materials = Utils.ImportFromXml(filePath, typeof(List<Material>),
+                        out succeeded, out errorMessage) as List<Material>;
+                    if (succeeded)
+                    {
+                        foreach (Material m in materials)
+                        {
+                            try
+                            {
+                                bool succ = AddDefinition(m, out errorMessage);
+                                if (!succ)
+                                {
+                                    MessageBox.Show(errorMessage, "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
 
         #endregion
 
-        private void DefinitionManager_KeyDown(object sender, KeyEventArgs e)
+        #region ---   导出定义
+
+        private void buttonExport_Click(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            if (typeof(T) == typeof(Profile))
             {
-                Close();
+                string filePath = Utils.ChooseSaveProfiles("导出截面");
+                if (filePath.Length > 0)
+                {
+                    bool succ = ExportToXml(filePath, _definitions.ToList() as List<Profile>);
+                    if (succ)
+                    {
+                    }
+                }
+            }
+            else if (typeof(T) == typeof(Material))
+            {
+                string filePath = Utils.ChooseSaveMaterials("导出材料");
+                if (filePath.Length > 0)
+                {
+                    bool succ = ExportToXml(filePath, _definitions.ToList() as List<Material>);
+                    if (succ)
+                    {
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentException();
             }
         }
+
+        private bool ExportToXml(string xmlFilePath, IEnumerable<Definition> definitions)
+        {
+            StreamWriter fs = null;
+            try
+            {
+                Type tp = definitions.GetType();
+
+                fs = new StreamWriter(xmlFilePath, append: false);
+                XmlSerializer s = new XmlSerializer(tp);
+                s.Serialize(fs, definitions);
+                //
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                }
+            }
+        }
+
+        #endregion
     }
 }

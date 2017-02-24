@@ -38,13 +38,16 @@
   <PropertyGroup>
     <StartupObject>SDSS.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="eZstd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\eZstd.dll</HintPath>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,13 +59,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Definitions\ModelType.cs" />
-    <Compile Include="Solver\SolverGUI.cs" />
-    <Compile Include="Solver\SolverState.cs" />
-    <Compile Include="TestCode.cs">
+    <Compile Include="EnterSplash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Definitions\SoilLayer.cs" />
+    <Compile Include="EnterSplash.Designer.cs">
+      <DependentUpon>EnterSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Definitions\ModelType.cs" />
+    <Compile Include="PostProcess\PostProcessor.cs" />
+    <Compile Include="PostProcess\Reporter.cs" />
+    <Compile Include="PostProcess\Result.cs" />
+    <Compile Include="Solver\SolverGUI.cs" />
+    <Compile Include="Solver\SolverState.cs" />
+    <Compile Include="Entities\SoilLayer.cs" />
     <Compile Include="StationModel\DefinitionCollection.cs" />
     <Compile Include="StationModel\StationGeometry.cs" />
     <Compile Include="UIControls\BoundaryParam.cs">
@@ -119,6 +128,10 @@
     <Compile Include="Program1.cs" />
     <Compile Include="Utility\ProjectPaths.cs" />
     <Compile Include="Utility\Utils.cs" />
+    <Compile Include="Utility\WordWriter.cs" />
+    <EmbeddedResource Include="EnterSplash.resx">
+      <DependentUpon>EnterSplash.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UIControls\BoundaryParam.resx">
       <DependentUpon>BoundaryParam.cs</DependentUpon>
     </EmbeddedResource>
@@ -147,6 +160,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -158,7 +174,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\eZstd\Projects\eZstd\eZstd.csproj">
+      <Project>{fb9b6528-5424-4b7a-aeba-6733450dc44b}</Project>
+      <Name>eZstd</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -24,7 +24,7 @@ namespace SDSS.Definitions
         private Guid _id;
 
         [XmlElement]
-        [ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
+        [Browsable(false), ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
         public Guid ID
         {
             get { return _id; }

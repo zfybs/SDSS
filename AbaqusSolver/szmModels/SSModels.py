@@ -14,8 +14,8 @@ def ImportUserModel1(filePath):
     pCol = uProfile('column', uProfileType.rectangular, 1, 1)
     beamLength = 10
     columnHeight = 5
-    spans = 15
-    layers = 10
+    spans = 5 # 15
+    layers = 3 # 10
 
     # define the beams
     beams = []

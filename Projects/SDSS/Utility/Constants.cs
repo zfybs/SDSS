@@ -36,5 +36,17 @@ namespace SDSS.Constants
 
         /// <summary> 此文本文件中记录有所有存储有模型参数、计算参数等文件所在的路径 </summary>
         public const string Paths = ".sdp";
+        
+        /// <summary> Python脚本运行过程中，用户指定输出的与模型相关的数据 </summary>
+        public const string Output = ".sdo";
+
+        /// <summary> Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中 </summary>
+        public const string AbqResult = ".sdr";
+
+        /// <summary> 用来保存材料信息的 xml 文件 </summary>
+        public const string Materials = ".sdm";
+
+        /// <summary> 用来保存截面信息的 xml 文件 </summary>
+        public const string Profiles = ".sdpf";
     }
 }

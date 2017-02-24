@@ -60,9 +60,14 @@
             this.TSM_Export = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.TSM_Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.文档ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.modelDrawer1 = new SDSS.UIControls.ModelDrawer();
+            this.项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.工作文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -283,7 +288,7 @@
             this.button_assignProfile.Text = "截面";
             this.toolTip1.SetToolTip(this.button_assignProfile, "为表格中选择的构件行指定截面");
             this.button_assignProfile.UseVisualStyleBackColor = true;
-            this.button_assignProfile.Click += new System.EventHandler(this.button_assignProfile_Click);
+            this.button_assignProfile.Click += new System.EventHandler(this.button_assignCompProfile_Click);
             // 
             // comboBoxSoilMaterials
             // 
@@ -321,7 +326,7 @@
             this.eZDataGridViewSoilLayers.RowTemplate.Height = 23;
             this.eZDataGridViewSoilLayers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewSoilLayers.ShowRowNumber = false;
-            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 160);
+            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 162);
             this.eZDataGridViewSoilLayers.SupportPaste = false;
             this.eZDataGridViewSoilLayers.TabIndex = 1;
             // 
@@ -374,7 +379,9 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSM_File});
+            this.TSM_File,
+            this.项目ToolStripMenuItem,
+            this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
@@ -396,27 +403,49 @@
             // TSM_Import
             // 
             this.TSM_Import.Name = "TSM_Import";
-            this.TSM_Import.Size = new System.Drawing.Size(100, 22);
-            this.TSM_Import.Text = "导入";
+            this.TSM_Import.Size = new System.Drawing.Size(152, 22);
+            this.TSM_Import.Text = "打开";
             this.TSM_Import.Click += new System.EventHandler(this.TSM_Import_Click);
             // 
             // TSM_Export
             // 
             this.TSM_Export.Name = "TSM_Export";
-            this.TSM_Export.Size = new System.Drawing.Size(100, 22);
+            this.TSM_Export.Size = new System.Drawing.Size(152, 22);
             this.TSM_Export.Text = "导出";
             this.TSM_Export.Click += new System.EventHandler(this.TSM_Export_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(97, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // TSM_Exit
             // 
             this.TSM_Exit.Name = "TSM_Exit";
-            this.TSM_Exit.Size = new System.Drawing.Size(100, 22);
+            this.TSM_Exit.Size = new System.Drawing.Size(152, 22);
             this.TSM_Exit.Text = "退出";
+            this.TSM_Exit.Click += new System.EventHandler(this.TSM_Exit_Click);
+            // 
+            // 帮助ToolStripMenuItem
+            // 
+            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.文档ToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.帮助ToolStripMenuItem.Text = "帮助";
+            // 
+            // 文档ToolStripMenuItem
+            // 
+            this.文档ToolStripMenuItem.Name = "文档ToolStripMenuItem";
+            this.文档ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.文档ToolStripMenuItem.Text = "文档";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Text = "About";
             // 
             // _backgroundWorker
             // 
@@ -446,6 +475,20 @@
             this.modelDrawer1.TabStop = false;
             this.modelDrawer1.Paint += new System.Windows.Forms.PaintEventHandler(this.modelDrawer1_Paint);
             this.modelDrawer1.Resize += new System.EventHandler(this.modelDrawer1_Resize);
+            // 
+            // 项目ToolStripMenuItem
+            // 
+            this.项目ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.工作文件夹ToolStripMenuItem});
+            this.项目ToolStripMenuItem.Name = "项目ToolStripMenuItem";
+            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.项目ToolStripMenuItem.Text = "项目";
+            // 
+            // 工作文件夹ToolStripMenuItem
+            // 
+            this.工作文件夹ToolStripMenuItem.Name = "工作文件夹ToolStripMenuItem";
+            this.工作文件夹ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.工作文件夹ToolStripMenuItem.Text = "工作文件夹";
             // 
             // MainForm
             // 
@@ -526,6 +569,11 @@
         private System.Windows.Forms.Label label8;
         private System.ComponentModel.BackgroundWorker _backgroundWorker;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 文档ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 项目ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 工作文件夹ToolStripMenuItem;
     }
 }
 

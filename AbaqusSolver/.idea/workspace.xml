@@ -17,7 +17,7 @@
     <SUITE FILE_PATH="coverage/AbaqusSolver$TD.coverage" NAME="TD Coverage Results" MODIFIED="1487308727616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$test.coverage" NAME="test Coverage Results" MODIFIED="1486951599682" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$Model1Functions.coverage" NAME="Model1Functions Coverage Results" MODIFIED="1486905350954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AbaqusSolver$TestCode.coverage" NAME="TestCode Coverage Results" MODIFIED="1487596544647" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AbaqusSolver$TestCode.coverage" NAME="TestCode Coverage Results" MODIFIED="1487680126648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$Model2.coverage" NAME="Model2 Coverage Results" MODIFIED="1484312418008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AbaqusSolver$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1487298565781" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AbaqusSolver$deleteModules.coverage" NAME="deleteModules Coverage Results" MODIFIED="1487318125015" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -27,7 +27,7 @@
     <SUITE FILE_PATH="coverage/SDSS$deleteModules.coverage" NAME="deleteModules Coverage Results" MODIFIED="1484456660470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1484456665402" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AbaqusSolver$PostProcess.coverage" NAME="PostProcess Coverage Results" MODIFIED="1487583648996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/szmModels" />
-    <SUITE FILE_PATH="coverage/AbaqusSolver$EnvironmentBuild.coverage" NAME="EnvironmentBuild Coverage Results" MODIFIED="1487586857782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AbaqusSolver$EnvironmentBuild.coverage" NAME="EnvironmentBuild Coverage Results" MODIFIED="1487682395553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$subFunction1.coverage" NAME="subFunction1 Coverage Results" MODIFIED="1484304722628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$SSModels.coverage" NAME="SSModels Coverage Results" MODIFIED="1486905449217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SDSS$Model1.coverage" NAME="Model1 Coverage Results" MODIFIED="1484307036773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -38,57 +38,87 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="SDSS">
-      <favorite_root url="file://$PROJECT_DIR$/TestCode.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/testcode.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
     </favorites_list>
     <favorites_list name="SDSSS">
-      <favorite_root url="file://$PROJECT_DIR$/TestCode.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/testcode.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
     </favorites_list>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PostProcess.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/szmPostProcess/PostProcess.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44556114">
-              <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-              <folding>
-                <element signature="e#47#95#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProgramEntrance.py" pinned="true" current-in-tab="false">
+      <file leaf-file-name="ProgramEntrance.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ProgramEntrance.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding>
-                <element signature="e#42#79#0" expanded="true" />
+                <element signature="e#41#51#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EnvironmentBuild.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EnvironmentBuild.py">
+      <file leaf-file-name="Model1Functions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/szmModels/Model1Functions.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
+              <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="4" />
               <folding>
-                <element signature="e#4000#6184#1" expanded="false" />
+                <element signature="e#24#55#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestCode.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TestCode.py">
+      <file leaf-file-name="ResultWriter.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/szmPostProcess/ResultWriter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.63245493">
+              <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+              <folding>
+                <element signature="e#46#65#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/szmDefinitions/Constants.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Result.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/szmPostProcess/Result.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="80" column="33" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/szmDefinitions/Utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testcode.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcode.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
               <folding>
-                <element signature="e#46#56#0" expanded="true" />
+                <element signature="e#24#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,19 +136,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Model2.py" />
-        <option value="$PROJECT_DIR$/Model1Functions.py" />
-        <option value="$PROJECT_DIR$/uFrame.py" />
-        <option value="C:/Softwares/Abaqus/6.12-1/tools/SMApy/Lib/xml/etree/ElementTree.py" />
-        <option value="$PROJECT_DIR$/SSModels.py" />
-        <option value="$PROJECT_DIR$/uEntity.py" />
-        <option value="$PROJECT_DIR$/Model1.py" />
-        <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/Definitions/__init__.py" />
-        <option value="$PROJECT_DIR$/Entities/uComponent.py" />
-        <option value="$PROJECT_DIR$/Definitions/uEntity.py" />
-        <option value="$PROJECT_DIR$/Entities/uVertice.py" />
-        <option value="$PROJECT_DIR$/Entities/uLoad.py" />
         <option value="$PROJECT_DIR$/Entities/uFrame.py" />
         <option value="$PROJECT_DIR$/Definitions/uDefinition.py" />
         <option value="$PROJECT_DIR$/Definitions/constants.py" />
@@ -153,10 +170,23 @@
         <option value="$PROJECT_DIR$/szmModels/Result.py" />
         <option value="$PROJECT_DIR$/szmModels/PostProcess.py" />
         <option value="$PROJECT_DIR$/TestCode.py" />
-        <option value="$PROJECT_DIR$/szmDefinitions/Constants.py" />
-        <option value="$PROJECT_DIR$/szmPostProcess/PostProcess.py" />
-        <option value="$PROJECT_DIR$/ProgramEntrance.py" />
+        <option value="$PROJECT_DIR$/M2.py" />
+        <option value="$PROJECT_DIR$/subModule.py" />
+        <option value="$PROJECT_DIR$/mainModule.py" />
+        <option value="$PROJECT_DIR$/szmDefinitions/ProjectPath.py" />
+        <option value="$PROJECT_DIR$/szmPostProcess/en.py" />
         <option value="$PROJECT_DIR$/EnvironmentBuild.py" />
+        <option value="$PROJECT_DIR$/szmModels/Model1.py" />
+        <option value="$PROJECT_DIR$/szmModels/Model1Functions.py" />
+        <option value="$PROJECT_DIR$/szmEntities/Frame.py" />
+        <option value="$PROJECT_DIR$/szmPostProcess/PostProcess.py" />
+        <option value="$PROJECT_DIR$/szmModels/SSModels.py" />
+        <option value="$PROJECT_DIR$/testcode.py" />
+        <option value="$PROJECT_DIR$/szmDefinitions/Utils.py" />
+        <option value="$PROJECT_DIR$/szmPostProcess/Result.py" />
+        <option value="$PROJECT_DIR$/ProgramEntrance.py" />
+        <option value="$PROJECT_DIR$/szmDefinitions/Constants.py" />
+        <option value="$PROJECT_DIR$/szmPostProcess/ResultWriter.py" />
       </list>
     </option>
   </component>
@@ -318,7 +348,7 @@
       <recent name="E:\GitHubProjects\SDSS\AbaqusSolver\Entities" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.TestCode">
+  <component name="RunManager" selected="Python.EnvironmentBuild">
     <configuration default="false" name="EnvironmentBuild" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -350,7 +380,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="SDSS" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TestCode.py" />
+      <option name="SCRIPT_NAME" value="E:\GitHubProjects\SDSS\AbaqusSolver\testcode.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -549,8 +579,8 @@
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.TestCode" />
-        <item index="1" class="java.lang.String" itemvalue="Python.EnvironmentBuild" />
+        <item index="0" class="java.lang.String" itemvalue="Python.EnvironmentBuild" />
+        <item index="1" class="java.lang.String" itemvalue="Python.TestCode" />
       </list>
     </recent_temporary>
   </component>
@@ -577,22 +607,22 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1688" y="28" width="1696" height="1066" extended-state="6" />
+    <frame x="-1688" y="28" width="1696" height="1066" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32819384" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15384616" sideWeight="0.502445" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17511013" sideWeight="0.49755502" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17511013" sideWeight="0.49755502" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.311674" sideWeight="0.49633253" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21696036" sideWeight="0.49633253" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32819384" sideWeight="0.497558" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13202934" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747254" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270925" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28300732" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2383863" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -656,6 +686,10 @@
           <line>130</line>
           <option name="timeStamp" value="301" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/testcode.py</url>
+          <option name="timeStamp" value="333" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -664,93 +698,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="308" />
+      <option name="time" value="341" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/EnvironmentBuild.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
-          <folding>
-            <element signature="e#762#1003#0" expanded="false" />
-            <element signature="e#762#822#1" expanded="false" />
-            <element signature="e#1038#1452#0" expanded="false" />
-            <element signature="e#1038#1135#1" expanded="false" />
-            <element signature="e#1493#2039#0" expanded="false" />
-            <element signature="e#1493#1592#1" expanded="false" />
-            <element signature="e#2077#3226#0" expanded="false" />
-            <element signature="e#2077#2171#1" expanded="false" />
-            <element signature="e#3294#3998#0" expanded="false" />
-            <element signature="e#3294#3559#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmDefinitions/Constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmDefinitions/Definition.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
-          <folding>
-            <element signature="e#1217#1499#0" expanded="false" />
-            <element signature="e#1332#1349#0" expanded="false" />
-            <element signature="e#1393#1497#0" expanded="false" />
-            <element signature="e#2862#3200#0" expanded="false" />
-            <element signature="e#2862#2964#1" expanded="false" />
-            <marker date="1487491799341" expanded="false" signature="-1:-1" placeholder="import ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmEntities/Frame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3529#3957#0" expanded="false" />
-            <element signature="e#3529#3703#1" expanded="false" />
-            <element signature="e#4007#4184#1" expanded="false" />
-            <element signature="e#4521#5235#0" expanded="false" />
-            <element signature="e#4521#4803#1" expanded="false" />
-            <element signature="e#6034#6399#0" expanded="false" />
-            <element signature="e#6462#6664#1" expanded="false" />
-            <element signature="e#6847#7011#0" expanded="false" />
-            <element signature="e#7056#7217#0" expanded="false" />
-            <element signature="e#7257#7319#1" expanded="false" />
-            <element signature="e#7574#7861#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/Model1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#3755#3826#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/Model1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding>
-            <element signature="e#3755#3826#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/szmModels/SSModels.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -770,12 +722,12 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
           <folding>
-            <element signature="e#1217#1499#0" expanded="false" />
-            <element signature="e#1332#1349#0" expanded="false" />
-            <element signature="e#1393#1497#0" expanded="false" />
-            <element signature="e#2862#3200#0" expanded="false" />
-            <element signature="e#2862#2964#1" expanded="false" />
-            <marker date="1487491799341" expanded="false" signature="-1:-1" placeholder="import ..." />
+            <element signature="e#1211#1493#0" expanded="false" />
+            <element signature="e#1326#1343#0" expanded="false" />
+            <element signature="e#1387#1491#0" expanded="false" />
+            <element signature="e#2856#3194#0" expanded="false" />
+            <element signature="e#2856#2958#1" expanded="false" />
+            <marker date="1487682424915" expanded="false" signature="-1:-1" placeholder="import ..." />
           </folding>
         </state>
       </provider>
@@ -799,7 +751,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding>
-            <element signature="e#3755#3826#0" expanded="false" />
+            <element signature="e#3861#3932#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -823,17 +775,17 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding>
-            <element signature="e#3529#3957#0" expanded="false" />
-            <element signature="e#3529#3703#1" expanded="false" />
-            <element signature="e#4007#4184#1" expanded="false" />
-            <element signature="e#4521#5235#0" expanded="false" />
-            <element signature="e#4521#4803#1" expanded="false" />
-            <element signature="e#6034#6399#0" expanded="false" />
-            <element signature="e#6462#6664#1" expanded="false" />
-            <element signature="e#6847#7011#0" expanded="false" />
-            <element signature="e#7056#7217#0" expanded="false" />
-            <element signature="e#7257#7319#1" expanded="false" />
-            <element signature="e#7574#7861#0" expanded="false" />
+            <element signature="e#3539#3967#0" expanded="false" />
+            <element signature="e#3539#3713#1" expanded="false" />
+            <element signature="e#4017#4194#1" expanded="false" />
+            <element signature="e#4531#5245#0" expanded="false" />
+            <element signature="e#4531#4813#1" expanded="false" />
+            <element signature="e#6044#6409#0" expanded="false" />
+            <element signature="e#6472#6674#1" expanded="false" />
+            <element signature="e#6857#7021#0" expanded="false" />
+            <element signature="e#7066#7227#0" expanded="false" />
+            <element signature="e#9210#9272#1" expanded="false" />
+            <element signature="e#9527#9814#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -843,12 +795,12 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding>
-            <element signature="e#1217#1499#0" expanded="false" />
-            <element signature="e#1332#1349#0" expanded="false" />
-            <element signature="e#1393#1497#0" expanded="false" />
-            <element signature="e#2862#3200#0" expanded="false" />
-            <element signature="e#2862#2964#1" expanded="false" />
-            <marker date="1487491799341" expanded="false" signature="-1:-1" placeholder="import ..." />
+            <element signature="e#1211#1493#0" expanded="false" />
+            <element signature="e#1326#1343#0" expanded="false" />
+            <element signature="e#1387#1491#0" expanded="false" />
+            <element signature="e#2856#3194#0" expanded="false" />
+            <element signature="e#2856#2958#1" expanded="false" />
+            <marker date="1487682424915" expanded="false" signature="-1:-1" placeholder="import ..." />
           </folding>
         </state>
       </provider>
@@ -973,52 +925,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/ModelTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13970588">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/Model1Functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/SSModels.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmEntities/Vertice.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="32" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="32" />
-          <folding>
-            <element signature="e#146#306#0" expanded="false" />
-            <element signature="e#146#268#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deleteModules.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.064772725">
           <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/Model1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding>
-            <element signature="e#3755#3826#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1027,32 +937,12 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="78" column="16" selection-start-line="78" selection-start-column="16" selection-end-line="78" selection-end-column="16" />
           <folding>
-            <element signature="e#1217#1499#0" expanded="false" />
-            <element signature="e#1332#1349#0" expanded="false" />
-            <element signature="e#1393#1497#0" expanded="false" />
-            <element signature="e#2862#3200#0" expanded="false" />
-            <element signature="e#2862#2964#1" expanded="false" />
-            <marker date="1487491799341" expanded="false" signature="-1:-1" placeholder="import ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmEntities/Frame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4402852">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#3529#3957#0" expanded="false" />
-            <element signature="e#3529#3703#1" expanded="false" />
-            <element signature="e#4007#4184#1" expanded="false" />
-            <element signature="e#4521#5235#0" expanded="false" />
-            <element signature="e#4521#4803#1" expanded="false" />
-            <element signature="e#6034#6399#0" expanded="false" />
-            <element signature="e#6462#6664#1" expanded="false" />
-            <element signature="e#6847#7011#0" expanded="false" />
-            <element signature="e#7056#7217#0" expanded="false" />
-            <element signature="e#7257#7319#1" expanded="false" />
-            <element signature="e#7574#7861#0" expanded="false" />
+            <element signature="e#1211#1493#0" expanded="false" />
+            <element signature="e#1326#1343#0" expanded="false" />
+            <element signature="e#1387#1491#0" expanded="false" />
+            <element signature="e#2856#3194#0" expanded="false" />
+            <element signature="e#2856#2958#1" expanded="false" />
+            <marker date="1487682424915" expanded="false" signature="-1:-1" placeholder="import ..." />
           </folding>
         </state>
       </provider>
@@ -1062,16 +952,6 @@
         <state vertical-scroll-proportion="0.37254903">
           <caret line="16" column="19" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmEntities/Load.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05263158">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="e#154#381#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1087,14 +967,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/szmModels/Result.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25460637">
-          <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -1249,20 +1121,156 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TestCode.py">
+    <entry file="file://$PROJECT_DIR$/test.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Softwares/Abaqus/6.12-1/tools/SMApy/Lib/re.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.046901174">
+          <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmDefinitions/ProjectPath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmPostProcess/EnvirmtHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25460637">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
           <folding>
-            <element signature="e#46#56#0" expanded="true" />
+            <element signature="e#24#35#0" expanded="true" />
+            <element signature="e#372#512#0" expanded="false" />
+            <element signature="e#775#953#0" expanded="false" />
+            <element signature="e#775#843#1" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/szmDefinitions/Constants.py">
+    <entry file="file://$PROJECT_DIR$/szmEntities/Vertice.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58626467">
-          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="32" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="32" />
+          <folding>
+            <element signature="e#146#306#0" expanded="false" />
+            <element signature="e#146#268#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EnvironmentBuild.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2060301">
+          <caret line="229" column="0" selection-start-line="229" selection-start-column="0" selection-end-line="229" selection-end-column="0" />
+          <folding>
+            <element signature="e#81#97#0" expanded="true" />
+            <element signature="e#3097#5281#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmEntities/Load.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06365159">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="e#154#381#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmModels/ModelTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23255815">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="e#170#190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmEntities/Frame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="243" column="0" selection-start-line="243" selection-start-column="0" selection-end-line="243" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#47#0" expanded="true" />
+            <element signature="e#3539#3967#0" expanded="false" />
+            <element signature="e#3539#3713#1" expanded="false" />
+            <element signature="e#4017#4194#1" expanded="false" />
+            <element signature="e#4531#5245#0" expanded="false" />
+            <element signature="e#4531#4813#1" expanded="false" />
+            <element signature="e#6044#6409#0" expanded="false" />
+            <element signature="e#6472#6674#1" expanded="false" />
+            <element signature="e#6857#7021#0" expanded="false" />
+            <element signature="e#7066#7227#0" expanded="false" />
+            <element signature="e#9210#9272#1" expanded="false" />
+            <element signature="e#9527#9814#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmModels/Model1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#3861#3932#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmModels/SSModels.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmPostProcess/PostProcess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31622747">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#46#96#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <folding>
+            <element signature="e#24#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmDefinitions/Utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmPostProcess/Result.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="80" column="33" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -1270,29 +1278,37 @@
     <entry file="file://$PROJECT_DIR$/ProgramEntrance.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
-            <element signature="e#42#79#0" expanded="true" />
+            <element signature="e#41#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EnvironmentBuild.py">
+    <entry file="file://$PROJECT_DIR$/szmModels/Model1Functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
+          <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="4" />
           <folding>
-            <element signature="e#4000#6184#1" expanded="false" />
+            <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/szmPostProcess/PostProcess.py">
+    <entry file="file://$PROJECT_DIR$/szmDefinitions/Constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44556114">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/szmPostProcess/ResultWriter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63245493">
+          <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
           <folding>
-            <element signature="e#47#95#0" expanded="true" />
+            <element signature="e#46#65#0" expanded="true" />
           </folding>
         </state>
       </provider>

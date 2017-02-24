@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from array import array
 
-# from abaqus import *
-# from abaqusConstants import *
+from abaqus import *
+from abaqusConstants import *
 
 from szmDefinitions.Definition import *
 from szmEntities.Load import uLoad
-from szmEntities.Vertice import uVertice,uVerticeFrame
+from szmEntities.Vertice import uVertice,uVerticeFrame,uBeam,uColumn
 
 class uFrame(object):
     '''整个梁柱框架'''
@@ -193,6 +193,54 @@ class uFrame(object):
         '''得到整个方形框架的底板的范围'''
         minX, minY, maxX, maxY = self.iNodes[0], self.jNodes[0], self.iNodes[-1], self.jNodes[0]
         return minX, minY, 0, maxX, maxY, 0
+
+    def getFloorSlabRegion(self):
+        '''
+        得到每一层楼板的范围及名称，组成一个list
+        :return:
+        '''
+
+        listNodesRegion = []
+        listElementsRegion = []
+        minX = self.iNodes[0]
+        maxX = self.iNodes[-1]
+        for layerNum in range(0, self.layers+1):
+            layerElev = self.jNodes[layerNum]
+            nameNodes = 'Floor' + str(layerNum +1) + 'Nodes'
+            nameElements = 'Floor' + str(layerNum +1) + 'Elements'
+            minY = layerElev
+            maxY = layerElev
+            listNodesRegion.append((minX, minY, 0, maxX, maxY, 0, nameNodes))
+            listElementsRegion.append((minX, minY, 0, maxX, maxY, 0, nameElements))
+        return listNodesRegion, listElementsRegion
+
+    def getLayerRegion(self):
+        '''
+        得到每一层柱子的范围及名称，组成一个list
+        listLayerElementRegion = [[[columnRegion1],[columnRegion2],...], name]
+        :return:
+        '''
+        # listLayerElementRegion = list()
+        # minX = self.iNodes[0]
+        # maxX = self.iNodes[-1]
+        # for layerNum in range(0, self.layers):
+        #     nameLayerElements = 'Layer' + str(layerNum + 1) + 'Elements'
+        #     minY = self.jNodes[layerNum]
+        #     maxY = self.jNodes[layerNum+1]
+        #     listLayerElementRegion.append((minX, minY, 0, maxX, maxY, 0, nameLayerElements))
+        # return listLayerElementRegion
+        listLayerElementRegion = []
+        for layerNum in range(0, self.layers):
+            nameLayerElements = 'Layer' + str(layerNum + 1) + 'Elements'
+            minY = self.jNodes[layerNum]
+            maxY = self.jNodes[layerNum+1]
+            listLayer = []
+            for spanNum in range(0, self.spans+1):
+                minX = self.iNodes[spanNum]
+                maxX = self.iNodes[spanNum]
+                listLayer.append((minX, minY, 0, maxX, maxY, 0))
+            listLayerElementRegion.append((listLayer, nameLayerElements))
+        return listLayerElementRegion
 
     def getLeftColumns(self):
         '''得到整个方形框架的最左边的一列柱子

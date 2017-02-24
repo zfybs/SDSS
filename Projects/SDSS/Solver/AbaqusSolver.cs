@@ -114,8 +114,9 @@ abaqus cae noGUI=beamExample.py
                 {
                     string defaultModelFile = Path.Combine(_workingDir, ProjectPaths.FN_DefaultModel);
 
-                    ProjectPaths.SerializeNewModelFile(xmlFilePath: defaultModelFile, stationModel: sm,
-                        errorMessage: out errorMessage);
+                    //ProjectPaths.SerializeNewModelFile(xmlFilePath: defaultModelFile, stationModel: sm,
+                    //    errorMessage: out errorMessage);
+                    Utils.ExportToXmlFile(xmlFilePath: defaultModelFile, src: sm, errorMessage: out errorMessage);
                 }
 
                 // 2. 创建启动 Abaqus 的 .bat 文件

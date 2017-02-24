@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using eZstd.Enumerable;
+using SDSS.Constants;
 using SDSS.Definitions;
 using SDSS.Entities;
 
@@ -14,6 +15,20 @@ namespace SDSS.StationModel
     [XmlInclude(typeof(StationModel1))]
     public abstract class StationModel
     {
+
+        #region ---   XmlAttribute
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("模型的类型，比如矩形框架，圆形隧道等")]
+        public  ModelType ModelType { get; set; }
+
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("计算的方法，比如惯性力法，反应位移法等")]
+        public CalculationMethod CalculationMethod { get; set; }
+
+        #endregion
+
         #region ---   XmlElement
 
         /// <summary>
@@ -26,7 +41,7 @@ namespace SDSS.StationModel
         public SystemProperty SystemProperty { get; set; }
 
         /// <summary> 土层集合 </summary>
-        public XmlList<SoilLayer> SoilLayers { get; set; }
+        public XmlList<SoilLayer_Inertial> SoilLayers { get; set; }
 
         #endregion
 
@@ -38,9 +53,11 @@ namespace SDSS.StationModel
         protected StationModel()
         {
             Definitions = DefinitionCollection.GetUniqueInstance();
-            SoilLayers = new XmlList<SoilLayer>();
-
+            SoilLayers = new XmlList<SoilLayer_Inertial>();
+            //
             SystemProperty = new SystemProperty();
+            ModelType = ModelType.Frame;
+            CalculationMethod = CalculationMethod.InertialForce;
         }
 
         #endregion

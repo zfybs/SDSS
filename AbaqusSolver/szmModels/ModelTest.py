@@ -8,9 +8,9 @@ Appendix of the Getting Started with
 Abaqus: Interactive Edition Manual.
 """
 
-# from abaqus import *
-# from abaqusConstants import *
-# import part,material,load,assembly,step,regionToolset,visualization,job,mesh,section
+from abaqus import *
+from abaqusConstants import *
+import part,material,load,assembly,step,regionToolset,visualization,job,mesh,section
 
 backwardCompatibility.setValues(includeDeprecated=True,
                                 reportDeprecated=False)

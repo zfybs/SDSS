@@ -31,11 +31,11 @@ namespace SDSS
             Application.SetCompatibleTextRenderingDefault(false);
             //
             var sm = StationModel1.GetUniqueInstance() as StationModel1;
-            ConstructStationModel(sm);
-            //ImExportModel(sm);
+            //ConstructStationModel(sm);
+          
             //
             var mf = new MainForm(sm);
-            Application.Run(mf);
+            Application.Run(new EnterSplash());
         }
 
         #region ---   测试
@@ -47,7 +47,7 @@ namespace SDSS
 
         /// <summary> 构造一个车站模型实例 </summary>
         /// <param name="sm"></param>
-        private static void ConstructStationModel(StationModel1 sm)
+        public static void ConstructStationModel(StationModel1 sm)
         {
             //
             Material mat1 = new Material("elas1", 1900, 200e9, 0.3, MaterialType.Elastic);

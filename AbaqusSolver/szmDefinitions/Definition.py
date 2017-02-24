@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # from enum import Enum
 
-# from abaqus import *
-# from abaqusConstants import *
-# import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
+from abaqus import *
+from abaqusConstants import *
+import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
 
 class uProfileType(object):
     '''构件横截面类型'''

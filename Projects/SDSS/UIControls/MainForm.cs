@@ -6,8 +6,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using eZstd.Enumerable;
 using eZstd.Miscellaneous;
 using SDSS.Definitions;
+using SDSS.Entities;
+using SDSS.PostProcess;
 using SDSS.Solver;
 using SDSS.StationModel;
 using SDSS.Utility;
@@ -19,25 +22,59 @@ namespace SDSS.UIControls
     {
         private StationModel1 _stationModel;
 
+        #region ---   窗口的打开与关闭
+
         public MainForm(StationModel1 sm)
         {
             InitializeComponent();
             //
             _stationModel = sm;
+            //
+            RefreshUI(sm);
+        }
+        private void TSM_Exit_Click(object sender, EventArgs e)
+        {
+            Dispose();
+        }
+        #endregion
 
+        #region ---   界面的刷新
+
+        private void RefreshUI(StationModel1 stationModel)
+        {
+            // 层高与跨度
+            textBoxNum_layers.Text = stationModel.LayerHeights.Length.ToString();
+            textBoxNum_spans.Text = stationModel.SpanWidths.Length.ToString();
 
             //
-            sm.Definitions.MaterialsCollectionChanged += DefinitionsOnMaterialsChanged;
+            RefreshUI_FrameTable(stationModel);
+
+            // 土层信息表格
+            ConstructeZDataGridViewSoil(eZDataGridViewSoilLayers);
+            RefreshSoilData(stationModel);
+
+            // 
+            DefinitionsOnMaterialsChanged(stationModel.Definitions.Materials);
+            DefinitionsOnProfilessChanged(stationModel.Definitions.Profiles);
+
+            // 将新模型进行重新绘制
+            SoilStructureGeometry ssg = _stationModel.GetStationGeometry() as SoilStructureGeometry;
+            modelDrawer1.DrawSoilStructureModel(ssg);
         }
 
-        private void DefinitionsOnMaterialsChanged(object sender, EventArgs eventArgs)
+        private void RefreshUI_FrameTable(StationModel1 stationModel)
         {
-            // 刷新 ComboBox 界面
-            var mats = _stationModel.Definitions.Materials;
+            // 框架构件信息表格
+            ConstructeZDataGridViewFrame(eZDataGridViewFrame);
+            RefreshFrameData(stationModel);
 
-            RefreshComboBox(comboBoxCompMaterials, mats);
-            RefreshComboBox(comboBoxSoilMaterials, mats.Clone());
+            // 框架表格中的 ComboBoxColumn
+            RefreshComboBoxColumn(_comboColMat, _stationModel.Definitions.Materials);
+            RefreshComboBoxColumn(_comboColProf, _stationModel.Definitions.Profiles);
+
         }
+
+        #endregion
 
         #region ---   PictureBox 绘图操作
 
@@ -67,8 +104,9 @@ namespace SDSS.UIControls
         {
             DefinitionManager<Profile> dm = new DefinitionManager<Profile>(_stationModel.Definitions.Profiles);
             dm.ShowDialog();
+
             // 刷新 ComboBox 界面
-            //RefreshComboBox(comboBoxProfiles, _stationModel.Definitions.Profiles);
+            DefinitionsOnProfilessChanged(_stationModel.Definitions.Profiles);
 
             // 刷新 datagridview 中的对应 DataGridViewComboBoxColumn 列的数据
             RefreshComboBoxColumn(_comboColProf, _stationModel.Definitions.Profiles);
@@ -81,14 +119,27 @@ namespace SDSS.UIControls
             dm.ShowDialog();
 
             //// 刷新 ComboBox 界面
-            //RefreshComboBox(comboBoxCompMaterials, _stationModel.Definitions.Materials);
-            //RefreshComboBox(comboBoxSoilMaterials, _stationModel.Definitions.Materials);
+            DefinitionsOnMaterialsChanged(_stationModel.Definitions.Materials);
 
 
             // 刷新 datagridview 中的对应 DataGridViewComboBoxColumn 列的数据
             RefreshComboBoxColumn(_comboColMat, _stationModel.Definitions.Materials);
             eZDataGridViewFrame.Refresh();
         }
+
+        /// <summary> 刷新 ComboBox 界面 </summary>
+        private void DefinitionsOnMaterialsChanged(XmlList<Material> mats)
+        {
+            RefreshComboBox(comboBoxCompMaterials, mats);
+            RefreshComboBox(comboBoxSoilMaterials, mats.Clone() as XmlList<Material>);
+        }
+
+        /// <summary> 刷新 ComboBox 界面 </summary>
+        private void DefinitionsOnProfilessChanged(XmlList<Profile> profs)
+        {
+            RefreshComboBox(comboBoxProfiles, profs);
+        }
+
 
         /// <summary> 将材料或者截面定义刷新到组合列表框中 </summary>
         private void RefreshComboBox(ComboBox comboBox, IEnumerable<Definition> definitions)
@@ -109,37 +160,37 @@ namespace SDSS.UIControls
             // create a new form
             var layerCount = (ushort)textBoxNum_layers.ValueNumber;
             var spanCount = (ushort)textBoxNum_spans.ValueNumber;
-            if (layerCount > 0 && spanCount > 0)
+            // 构造窗口
+            FrameConstructor fc;
+            if (layerCount == _stationModel.LayerHeights.Length
+                && spanCount == _stationModel.SpanWidths.Length)
             {
-                FrameConstructor fc = FrameConstructor.GetUniqueInstance(layerCount, spanCount);
-                //
-                var res = fc.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    Material mat = _stationModel.Definitions.Materials.FirstOrDefault();
-                    Profile prof = _stationModel.Definitions.Profiles.FirstOrDefault();
+                fc = FrameConstructor.GetUniqueInstance(_stationModel.LayerHeights, _stationModel.SpanWidths);
+            }
+            else if (layerCount > 0 && spanCount > 0)
+            {
+                fc = FrameConstructor.GetUniqueInstance(layerCount, spanCount);
+            }
+            else
+            {
+                return;
+            }
 
-                    _stationModel.GenerateFrame(fc.LayerHeights, fc.SpanWidths, defaultMat: mat, defaultProfile: prof);
+            var res = fc.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                Material mat = _stationModel.Definitions.Materials.FirstOrDefault();
+                Profile prof = _stationModel.Definitions.Profiles.FirstOrDefault();
 
-                    // 
-                    if (!_eZDataGridViewFrameConstructed)
-                    {
-                        ConstructeZDataGridViewFrame(eZDataGridViewFrame);
-                    }
-                    RefresheZDataGridViewFrame(_stationModel);
-                    RefreshComboBoxColumn(_comboColMat, _stationModel.Definitions.Materials);
-                    RefreshComboBoxColumn(_comboColProf, _stationModel.Definitions.Profiles);
+                _stationModel.GenerateFrame(fc.LayerHeights, fc.SpanWidths, defaultMat: mat, defaultProfile: prof);
 
-                    // 将新模型进行重新绘制
-                    SoilStructureGeometry ssg = _stationModel.GetStationGeometry() as SoilStructureGeometry;
-                    modelDrawer1.DrawSoilStructureModel(ssg);
-                }
+                // 
+                RefreshUI_FrameTable(_stationModel);
             }
         }
 
+
         /// <summary> 为选择的构件指定材料 </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button_assignCompMat_Click(object sender, EventArgs e)
         {
             Material mat = comboBoxCompMaterials.SelectedItem as Material;
@@ -154,23 +205,8 @@ namespace SDSS.UIControls
             eZDataGridViewFrame.Refresh();
         }
 
-
-        private void button_assignSoilMat_Click(object sender, EventArgs e)
-        {
-            Material mat = comboBoxSoilMaterials.SelectedItem as Material;
-            if (mat != null)
-            {
-                foreach (DataGridViewRow r in eZDataGridViewSoilLayers.SelectedRows)
-                {
-                    SoilLayer soil = r.DataBoundItem as SoilLayer;
-                    soil.Material = mat;
-                }
-            }
-            eZDataGridViewSoilLayers.Refresh();
-        }
-
         /// <summary> 为选择的构件指定截面 </summary>
-        private void button_assignProfile_Click(object sender, EventArgs e)
+        private void button_assignCompProfile_Click(object sender, EventArgs e)
         {
             Profile prof = comboBoxProfiles.SelectedItem as Profile;
             if (prof != null)
@@ -184,9 +220,23 @@ namespace SDSS.UIControls
             eZDataGridViewFrame.Refresh();
         }
 
+        private void button_assignSoilMat_Click(object sender, EventArgs e)
+        {
+            //Material mat = comboBoxSoilMaterials.SelectedItem as Material;
+            //if (mat != null)
+            //{
+            //    foreach (DataGridViewRow r in eZDataGridViewSoilLayers.SelectedRows)
+            //    {
+            //        SoilLayer soil = r.DataBoundItem as SoilLayer;
+            //        soil.Material = mat;
+            //    }
+            //}
+            //eZDataGridViewSoilLayers.Refresh();
+        }
+
         #endregion
 
-        #region --- 边界参数的设置
+        #region ---   边界参数的设置
         private void button_Boundary_Click(object sender, EventArgs e)
         {
             var sp = _stationModel.SystemProperty;
@@ -204,6 +254,7 @@ namespace SDSS.UIControls
             sp.soilWidth = f.SoilWidth;
 
         }
+
         #endregion
 
         #region ---  将整个模型导出到 xml 文档
@@ -259,7 +310,8 @@ namespace SDSS.UIControls
         /// <param name="filePath">此路径必须为一个有效的路径</param>
         private bool ExportToXml(StationModel.StationModel stationModel, string filePath, out string errorMessage)
         {
-            return ProjectPaths.SerializeNewModelFile(filePath, stationModel, out errorMessage);
+            return Utils.ExportToXmlFile(xmlFilePath: filePath, src: stationModel, errorMessage: out errorMessage);
+            //return ProjectPaths.SerializeNewModelFile(filePath, stationModel, out errorMessage);
         }
 
         #endregion
@@ -271,10 +323,15 @@ namespace SDSS.UIControls
             string filePath = Utils.ChooseOpenStationModel("导入车站模型");
             if (filePath.Length > 0)
             {
-                StationModel1 sm = ImportFromXml(filePath);
-                if (sm != null)
+                string errorMessage;
+                bool succeeded;
+                var sm = Utils.ImportFromXml(filePath, typeof(StationModel1),
+                    out succeeded, out errorMessage) as StationModel1;
+
+                if (succeeded && sm != null)
                 {
                     _stationModel = sm;
+                    RefreshUI(sm);
                 }
                 else
                 {
@@ -282,34 +339,6 @@ namespace SDSS.UIControls
                         MessageBoxIcon.Error);
                 }
             }
-        }
-
-        /// <param name="filePath">此路径必须为一个有效的路径</param>
-        private static StationModel1 ImportFromXml(string filePath)
-        {
-            FileStream reader = null;
-            object obj = null;
-            try
-            {
-                Type tp = typeof(StationModel1);
-
-                //
-                reader = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                XmlSerializer sReader = new XmlSerializer(tp);
-                obj = sReader.Deserialize(reader);
-            }
-            catch (Exception ex)
-            {
-                DebugUtils.ShowDebugCatch(ex, "");
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
-            return obj as StationModel1;
         }
 
         #endregion
@@ -325,8 +354,8 @@ namespace SDSS.UIControls
             {
                 AbaqusSolver solver = new AbaqusSolver(
                     workingDir: ProjectPaths.D_AbaqusWorkingDir ?? ProjectPaths.D_AbaqusDefaultWorkingDir,
-                    modelType: ModelType.Model1,
-                    solverGui: SolverGUI.CAE
+                    modelType: ModelType.Frame,
+                    solverGui: SolverGUI.NoGUI
                    );
 
                 // 检查计算环境，文件配置
@@ -348,20 +377,20 @@ namespace SDSS.UIControls
                         // Start the asynchronous operation.
                         _backgroundWorker.RunWorkerAsync(argument: _bcParameters);
                     }
-
                 }
             }
         }
 
         private BackgroundCalculationParameters _bcParameters;
 
+        /// <summary> 开始计算 </summary>
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 BackgroundCalculationParameters para = e.Argument as BackgroundCalculationParameters;
 
-                SolverState state = para.Solver.Execute(waitingSeconds: 60 * 10,
+                SolverState state = para.Solver.Execute(waitingSeconds: (int)(60 * 0.1),
                     errorMessage: out para.ErrorMessage);
 
                 e.Result = state;
@@ -374,6 +403,7 @@ namespace SDSS.UIControls
 
         }
 
+        /// <summary> 计算完成，开始后处理 </summary>
         private void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             progressBar1.Visible = false;
@@ -385,15 +415,10 @@ namespace SDSS.UIControls
             AbaqusSolver solver = _bcParameters.Solver;
 
             // 后处理
-            switch (state)
-            {
-                case SolverState.Succeeded:
-                    MessageBox.Show(@"计算完成", @"Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    break;
-                case SolverState.UserTerminated:
-                    MessageBox.Show(@"用户强行终止计算", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    break;
-            }
+            PostProcessor pp = new PostProcessor(solver);
+            pp.CheckSolveState();
+            pp.ReadFile();
+            pp.WriteReport();
         }
 
         private class BackgroundCalculationParameters
@@ -407,6 +432,5 @@ namespace SDSS.UIControls
 
 
         #endregion
-
     }
 }
