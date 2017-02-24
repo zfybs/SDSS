@@ -32,7 +32,7 @@ namespace SDSS.Entities
         /// <summary>
         /// 用来确定此构件的定位标识的信息，比如对于框架梁，可以通过二维向量“(1,2)”表示最左跨，倒数第二层顶部梁。
         /// </summary>
-        [XmlIgnore()]
+        [XmlAttribute()]
         [Category(Categories.Property), ReadOnly(true), Description("用来确定此构件的定位标识的信息，比如对于框架梁，可以通过二维向量“(1,2)”表示最左跨，倒数第二层顶部梁。")]
         public string LocationTag { get; set; }
 

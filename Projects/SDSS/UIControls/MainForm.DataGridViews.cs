@@ -14,54 +14,8 @@ namespace SDSS.UIControls
 {
     internal partial class MainForm
     {
-
-        /// <summary> 整个模型中每一个具体梁柱等构件的信息 </summary>
-        private BindingList<Entities.Component> _components;
         /// <summary> 整个模型中每一个具体土层的信息 </summary>
-        private BindingList<SoilLayer> _soilLayers;
-
-
-        //        #region ---   eZeZDataGridViewSoilLayers  土层参数
-
-        //        private void ConstructeZDataGridViewSoilLayers()
-        //        {
-        //            eZDataGridViewSoilLayers.AutoGenerateColumns = false;
-        //            eZDataGridViewSoilLayers.ShowRowNumber = true;
-        //            eZDataGridViewSoilLayers.SupportPaste = true;
-        //            //
-
-        //        }
-
-        //        private void RefresheZDataGridViewSoilLayers(StationModel.StationModel sm)
-        //        {
-        //            _soilLayers = new BindingList<SoilLayer>(sm.SoilLayers);
-        //            //
-        //            eZDataGridViewSoilLayers.DataSource = _soilLayers;
-        //            // 数据列的绑定
-        //            ColumnSoilTop.DataPropertyName = "Top";
-        //            ColumnSoilBottom.DataPropertyName = "Bottom";
-
-        //            // eZDataGridViewComboBoxColumn
-        //            ColumnSoil.DataPropertyName = "Layer";
-        //            ColumnSoil.DisplayMember = "Name";  // 土层定义的标识名称
-        //            ColumnSoil.ValueMember = "Self";    // 土层定义的标识名称
-        //            ColumnSoil.DataSource = sm.SoilDefinitions;
-        //        }
-
-        //        private void eZDataGridViewSoilLayersOnDataError(object sender, DataGridViewDataErrorEventArgs e)
-        //        {
-        //            var a = eZDataGridViewSoilLayers.Rows[0].Cells[2];
-        //            var b = a.Value;
-        //            var c = a.ValueType;
-        //            Debug.Print(e.Exception.Message + "土层");
-        //        }
-        //        private void SoilLayersOnAddingNew(object sender, AddingNewEventArgs e)
-        //        {
-        //            var se = new SoilLayer();
-        //            se.Layer = _sss.SoilDefinitions.Count > 0 ? _sss.SoilDefinitions.First() : null;
-        //            e.NewObject = se;
-        //        }
-        //        #endregion
+        private BindingList<SoilLayer_Inertial> _soilLayers;
 
         #region ---   eZDataGridViewFrame  框架构件
 
@@ -78,8 +32,11 @@ namespace SDSS.UIControls
 
             //eZdgv.DataSource = _persons;
 
+            eZdgv.AllowUserToAddRows = false;
             eZdgv.AutoGenerateColumns = false;
+            //
             eZdgv.ShowRowNumber = true;
+            eZdgv.ManipulateRows = false;
             eZdgv.SupportPaste = false;
 
             // 创建数据列并绑定到数据源 ----------------------------------------------
@@ -88,6 +45,7 @@ namespace SDSS.UIControls
             var column = new DataGridViewTextBoxColumn();
             column.DataPropertyName = "ID";
             column.Name = "ID";
+            column.AutoSizeMode= DataGridViewAutoSizeColumnMode.DisplayedCells;
             eZdgv.Columns.Add(column);
 
             // -------------------------
@@ -95,6 +53,7 @@ namespace SDSS.UIControls
             column.Name = "ComponentType";
             column.DataPropertyName = "ComponentType";
             column.HeaderText = @"类型";
+            column.AutoSizeMode= DataGridViewAutoSizeColumnMode.DisplayedCells;
             eZdgv.Columns.Add(column);
 
             // -------------------------
@@ -133,9 +92,8 @@ namespace SDSS.UIControls
             _eZDataGridViewFrameConstructed = true;
         }
 
-
-
-        private void RefresheZDataGridViewFrame(StationModel.StationModel1 sm)
+        /// <summary> 根据最新的框架构件信息刷新表格 </summary>
+        private void RefreshFrameData(StationModel.StationModel1 sm)
         {
             //
             _comboColMat.DataSource = sm.Definitions.Materials;
@@ -147,6 +105,7 @@ namespace SDSS.UIControls
             components.AddRange(sm.Beams);
             components.AddRange(sm.Columns);
             //
+            eZDataGridViewFrame.DataSource = null;
             eZDataGridViewFrame.DataSource = components;
         }
 
@@ -154,6 +113,111 @@ namespace SDSS.UIControls
         {
 
         }
+
+        #endregion
+
+        #region ---   eZeZDataGridViewSoilLayers  土层参数
+        /// <summary>  </summary>
+        private bool _eZDataGridViewSoilConstructed = false;
+
+        private void ConstructeZDataGridViewSoil(eZDataGridView eZdgv)
+        {
+            if (_eZDataGridViewSoilConstructed) { return; }
+
+            //
+            eZdgv.AutoGenerateColumns = false;
+            eZdgv.ManipulateRows = true;
+            eZdgv.ShowRowNumber = true;
+            eZdgv.SupportPaste = false;
+            //
+            eZdgv.DataError += EZdgvOnDataError;
+            //
+
+
+            // 创建数据列并绑定到数据源 ----------------------------------------------
+
+            // -------------------------
+            var column = new DataGridViewTextBoxColumn();
+            column.Name = "Top";
+            column.DataPropertyName = "Top";
+            column.HeaderText = @"顶部";
+            column.ToolTipText = @"土层顶部标高，单位为（mm）";
+            eZdgv.Columns.Add(column);
+
+            // -------------------------
+            column = new DataGridViewTextBoxColumn();
+            column.Name = "Bottom";
+            column.DataPropertyName = "Bottom";
+            column.HeaderText = @"底部";
+            column.ToolTipText = @"土层底部标高，单位为（mm）";
+            eZdgv.Columns.Add(column);
+
+            // -------------------------
+            column = new DataGridViewTextBoxColumn();
+            column.Name = "Kci0";
+            column.DataPropertyName = "Kci0";
+            column.HeaderText = @"K_ci0";
+            column.ToolTipText = @"矩形地铁车站结构顶板上表面与地表齐平时的Kci值";
+            eZdgv.Columns.Add(column);
+            //
+            _eZDataGridViewSoilConstructed = true;
+        }
+
+        /// <summary> 根据最新的土层信息刷新表格 </summary>
+        private void RefreshSoilData(StationModel.StationModel1 sm)
+        {
+            _soilLayers = new BindingList<SoilLayer_Inertial>(sm.SoilLayers)
+            {
+                AllowNew = true,
+                AllowEdit = true,
+            };
+            _soilLayers.ListChanged += SoilLayersOnListChanged;
+            _soilLayers.AddingNew += SoilLayersOnAddingNew;
+            eZDataGridViewSoilLayers.DataSource = null;
+            eZDataGridViewSoilLayers.DataSource = _soilLayers;
+
+        }
+
+        private void EZdgvOnDataError(object sender, DataGridViewDataErrorEventArgs dataGridViewDataErrorEventArgs)
+        {
+
+        }
+
+        #region ---   表格数据行新增
+
+        private void SoilLayersOnListChanged(object sender, ListChangedEventArgs e)
+        {
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                var oldSoil = GetLastRowBoundingSoil(e.NewIndex);
+                var newSoil = _soilLayers[e.NewIndex];
+                if (oldSoil != null && newSoil != null)
+                {
+                    newSoil.Top = oldSoil.Bottom;
+                    newSoil.Bottom = newSoil.Top;
+                    newSoil.Kci0 = oldSoil.Kci0;
+                }
+            }
+        }
+
+        private void SoilLayersOnAddingNew(object sender, AddingNewEventArgs e)
+        {
+            var newL = new SoilLayer_Inertial();
+            e.NewObject = newL;
+        }
+
+        private SoilLayer_Inertial GetLastRowBoundingSoil(int newRowid)
+        {
+            if (newRowid > 0)
+            {
+                var r = eZDataGridViewSoilLayers.Rows[newRowid - 1];
+
+                var s = r.DataBoundItem as SoilLayer_Inertial;
+                return s;
+            }
+            return null;
+        }
+        #endregion
 
         #endregion
 
@@ -202,6 +266,7 @@ namespace SDSS.UIControls
                 }
             }
         }
+
         #endregion
     }
 }

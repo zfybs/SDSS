@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using eZstd.Data;
+using eZstd.Enumerable;
 using SDSS.Definitions;
 using SDSS.Entities;
 
@@ -37,25 +38,27 @@ namespace SDSS.StationModel
         public DefinitionCollection()
         {
             Materials = new XmlList<Material>();
+            //
             Profiles = new XmlList<Profile>();
             FrameVertices = new XmlList<FrameVertice>();
         }
+
         #endregion
 
+ 
         #region ---   元素索引
 
         public Material GetMaterial(string matName)
         {
-            // return MaterialDefinitions.First(r => r.Name == matName);
-            return Materials.Find(r => r.Name == matName);
+            return Materials.FirstOrDefault(r => r.Name == matName);
         }
         public Profile GetProfile(string profileName)
         {
-            return Profiles.Find(r => r.Name == profileName);
+            return Profiles.FirstOrDefault(r => r.Name == profileName);
         }
         public Vertice GetFrameVertice(uint verticeId)
         {
-            return FrameVertices.Find(r => r.ID == verticeId);
+            return FrameVertices.FirstOrDefault(r => r.ID == verticeId);
         }
         #endregion
 

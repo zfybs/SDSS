@@ -19,24 +19,25 @@ namespace SDSS.UIControls
         /// <summary> 从左往右每一跨的宽度，单位为m。 </summary>
         public double[] SpanWidths { get; private set; }
 
-        #region ---   窗口的打开与关闭
         #region ---   构造函数
 
         private static FrameConstructor _uiniqueInstance;
+
         public static FrameConstructor GetUniqueInstance(ushort layerCount, ushort spanCount)
         {
             var ins = _uiniqueInstance ?? new FrameConstructor();
             //
-            if (layerCount != ins._layerCount)
-            {
-                ins.ResetRows(ins.dgv_Layers, layerCount);
-                ins._layerCount = layerCount;
-            }
-            if (spanCount != ins._spanCount)
-            {
-                ins.ResetRows(ins.dgv_Spans, spanCount);
-                ins._spanCount = spanCount;
-            }
+            ins.SetDataGridView(layerCount, spanCount);
+            //
+            _uiniqueInstance = ins;
+            return ins;
+        }
+
+        public static FrameConstructor GetUniqueInstance(double[] layerHeights, double[] spanWidths)
+        {
+            var ins = _uiniqueInstance ?? new FrameConstructor();
+            //
+            ins.SetDataGridView(layerHeights, spanWidths);
             //
             _uiniqueInstance = ins;
             return ins;
@@ -51,8 +52,11 @@ namespace SDSS.UIControls
             //
             dgv_Layers.KeyDelete = true;
             dgv_Layers.ShowRowNumber = true;
+            dgv_Layers.SupportPaste = true;
+            //
             dgv_Spans.KeyDelete = true;
             dgv_Spans.ShowRowNumber = true;
+            dgv_Spans.SupportPaste = true;
             //
             ColumnLayerHeight.ValueType = typeof(double);
             ColumnSpanWidth.ValueType = typeof(double);
@@ -60,10 +64,12 @@ namespace SDSS.UIControls
 
         #endregion
 
+        #region ---   窗口的打开与关闭
+
         private void FrameConstructor_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
-           // e.Cancel = true;
+            // e.Cancel = true;
         }
         private void FrameConstructor_KeyDown(object sender, KeyEventArgs e)
         {
@@ -80,6 +86,39 @@ namespace SDSS.UIControls
         #endregion
 
         #region ---   DataGridView
+
+        private void SetDataGridView(double[] layerHeights, double[] spanWidths)
+        {
+            //
+            var layerCount = (ushort)layerHeights.Length;
+            var spanCount = (ushort)spanWidths.Length;
+            SetDataGridView(layerCount, spanCount);
+            //
+            LayerHeights = layerHeights;
+            SpanWidths = spanWidths;
+            //
+            SetTableValues();
+        }
+
+        private void SetDataGridView(ushort layerCount, ushort spanCount)
+        {
+            //
+            if (layerCount != _layerCount)
+            {
+                ResetRows(dgv_Layers, layerCount);
+                _layerCount = layerCount;
+            }
+            if (spanCount != _spanCount)
+            {
+                ResetRows(dgv_Spans, spanCount);
+                _spanCount = spanCount;
+            }
+            //
+            LayerHeights = new double[layerCount];
+            SpanWidths = new double[spanCount];
+            //
+            SetTableValues();
+        }
 
         private void ResetRows(DataGridView dgv, int newRowsCount)
         {
@@ -99,6 +138,22 @@ namespace SDSS.UIControls
                 }
             }
         }
+
+        private void SetTableValues()
+        {
+            for (int i = 0; i < _layerCount; i++)
+            {
+                var r = dgv_Layers.Rows[i];
+                r.Cells[0].Value = LayerHeights[i];
+            }
+
+            for (int i = 0; i < _spanCount; i++)
+            {
+                var r = dgv_Spans.Rows[i];
+                r.Cells[0].Value = SpanWidths[i];
+            }
+        }
+
         private void dgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
 

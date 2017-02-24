@@ -22,5 +22,17 @@ namespace SDSS.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AbaWorkingDir {
+            get {
+                return ((string)(this["AbaWorkingDir"]));
+            }
+            set {
+                this["AbaWorkingDir"] = value;
+            }
+        }
     }
 }
