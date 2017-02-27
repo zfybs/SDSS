@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 import re
 import traceback
+from os import path
 
-def writeLine(string):
-    string = string + '\n'
-    print(string)
+p = r'E:\GitHubProjects\SDSS\AbaqusSolver'
 
-def writeLines( *strs):
-    for s in strs:
-        writeLine(s)
+m = path.join(p, path.pardir, r'MidFiles')  # E:\GitHubProjects\SDSS\AbaqusSolver\..\MidFiles
 
-writeLines("1","3")
+try:
+    try:
+        raise IOError()
+    except ZeroDivisionError as ex:
+        print('error captured in inner try...catch block')
+except IOError as ex:
+    print('error captured in outer try...catch block')

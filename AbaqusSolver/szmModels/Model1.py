@@ -74,7 +74,7 @@ def Calculate1(myFrame):
     # create a job
     description = 'seismic design of subway structures'
     numCpus = 8
-    myJob = createJob(myModel,"myJob",numCpus,description)
+    myJob = createJob(myModel, myModel.name, numCpus,description)
 
     # Wait for the job to complete.
     myJob.submit()

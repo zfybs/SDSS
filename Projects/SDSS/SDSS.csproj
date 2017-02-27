@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,16 +70,17 @@
     <Compile Include="PostProcess\PostProcessor.cs" />
     <Compile Include="PostProcess\Reporter.cs" />
     <Compile Include="PostProcess\Result.cs" />
+    <Compile Include="PostProcess\StateSaver.cs" />
     <Compile Include="Solver\SolverGUI.cs" />
     <Compile Include="Solver\SolverState.cs" />
     <Compile Include="Entities\SoilLayer.cs" />
     <Compile Include="StationModel\DefinitionCollection.cs" />
     <Compile Include="StationModel\StationGeometry.cs" />
-    <Compile Include="UIControls\BoundaryParam.cs">
+    <Compile Include="UIControls\BoundaryParamForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UIControls\BoundaryParam.Designer.cs">
-      <DependentUpon>BoundaryParam.cs</DependentUpon>
+    <Compile Include="UIControls\BoundaryParamForm.Designer.cs">
+      <DependentUpon>BoundaryParamForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UIControls\FrameConstructor.cs">
       <SubType>Form</SubType>
@@ -99,7 +101,7 @@
     <Compile Include="Entities\Vertise.cs" />
     <Compile Include="StationModel\StationModel.cs" />
     <Compile Include="StationModel\StationModel1.cs" />
-    <Compile Include="Entities\SystemProperty.cs" />
+    <Compile Include="Entities\SoilPropertys.cs" />
     <Compile Include="UIControls\EditDefinition.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,14 +128,18 @@
     <Compile Include="Solver\AbaqusSolver.cs" />
     <Compile Include="StationModel\SoilStructureGeometry.cs" />
     <Compile Include="Program1.cs" />
+    <Compile Include="Utility\Options.cs" />
     <Compile Include="Utility\ProjectPaths.cs" />
+    <Compile Include="Utility\StaticSerializer.cs" />
     <Compile Include="Utility\Utils.cs" />
+    <Compile Include="Utility\WordStyles.cs" />
+    <Compile Include="Utility\WordUtils.cs" />
     <Compile Include="Utility\WordWriter.cs" />
     <EmbeddedResource Include="EnterSplash.resx">
       <DependentUpon>EnterSplash.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UIControls\BoundaryParam.resx">
-      <DependentUpon>BoundaryParam.cs</DependentUpon>
+    <EmbeddedResource Include="UIControls\BoundaryParamForm.resx">
+      <DependentUpon>BoundaryParamForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\EditDefinition.resx">
       <DependentUpon>EditDefinition.cs</DependentUpon>

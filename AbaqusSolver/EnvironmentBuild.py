@@ -179,12 +179,12 @@ def buildInDeveloperMode(abqWorkingDir,pathsTextFile,pythonSourceDirField,):
 
 def getPathsDirectory():
     # 记录有各种文件位置的那个文件（CalculationFiles.sdp）所在的文件夹
-    pathsDir = os.getcwd()  # Abaqus 的工作空间文件夹
-    pathsDir = r"D:\UserFiles\Documents\Abauqs"
+    # pathsDir = os.getcwd()  # Abaqus 的工作空间文件夹
+    sourceCodePathsDir = r"E:\GitHubProjects\SDSS\AbaqusSolver"
 
     try:
-        pass
-        # raise IOError()
+        # pass
+        raise IOError()
     except Exception:
         stackTrace = traceback.format_exc()
         import re
@@ -195,14 +195,18 @@ def getPathsDirectory():
             tagFile = 'EnvironmentBuild.py'
             for m in matches:
                 if m.endswith(tagFile):
-                    pathsDir = m[:len(m)-len(tagFile)-1]
-                    print("find source code dir in the stackTrack code block.:", pathsDir)
+                    sourceCodePathsDir = m[:len(m)-len(tagFile)-1]
+                    # print("find source code dir in the stackTrack code block.:", pathsDir)
                     break
+    # 将 Python 源代码所在文件夹转换到  CalculationFiles.sdp 所在的文件夹
+    pathsDir = path.join(sourceCodePathsDir, path.pardir, r'MidFiles')
+    pathsDir = path.abspath(pathsDir)
 
     return pathsDir
 
 if __name__ == '__main__':
     envirmttHdl = None
+    finishTag = ""  # 用来表示整个Abaqus计算过程是否正常结果的标志字符串。
     try:
 
         # 记录有各种文件位置的那个文件（CalculationFiles.sdp）所在的文件夹
@@ -227,14 +231,18 @@ if __name__ == '__main__':
         #
         import ProgramEntrance
         ProgramEntrance.Main()
-
+        #
+        finishTag = r'*** Calculation finished successfully! ***'
     except Exception as ex:
-        print('\n*** Calculation terminated with error! ***\n')
+        #
+        finishTag = r'*** Calculation terminated with error! ***'
+        print(finishTag)
         stackTrace = traceback.format_exc()
         print(ex.args)
         print(stackTrace)
 
     finally:
         if envirmttHdl != None:
+            envirmttHdl.writeLine(finishTag)
             envirmttHdl.dispose()
         pass

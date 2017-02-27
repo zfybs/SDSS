@@ -12,6 +12,9 @@ from szmPostProcess import ResultWriter
 execfile(r'E:\GitHubProjects\SDSS\AbaqusSolver\EnvironmentBuild.py')
 '''
 
+def checkCalculationCondition():
+    pass
+
 def Main():
     ''' 整个计算程序的主入口 '''
     # 从 xml 文件中提取模型信息
@@ -23,14 +26,14 @@ def Main():
 
     if True:
         # 对模型进行计算
-        model,job = Model1.Calculate1(eZFrame)
+        model,job = Model1.Calculate1(xmlFrame)
     else:
         model,job = 100, 200
         pass
     # 将 result 中的信息写入外部文件，以供生成报告时提取
 
     # 通过计算结果文件提取报告所需要数据
-    result = PostProcess.GetResult1(model,job,eZFrame)
+    result = PostProcess.GetResult1(model,job,xmlFrame)
 
     ResultWriter.writeResult(result)
 

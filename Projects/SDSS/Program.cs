@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using eZstd.Enumerable;
-using eZstd.Miscellaneous;
 using SDSS.Definitions;
 using SDSS.StationModel;
 using SDSS.UIControls;
@@ -32,7 +26,7 @@ namespace SDSS
             //
             var sm = StationModel1.GetUniqueInstance() as StationModel1;
             //ConstructStationModel(sm);
-          
+
             //
             var mf = new MainForm(sm);
             Application.Run(new EnterSplash());
@@ -42,7 +36,6 @@ namespace SDSS
 
         private static void Test(string[] args)
         {
-
         }
 
         /// <summary> 构造一个车站模型实例 </summary>
@@ -61,12 +54,11 @@ namespace SDSS
             sm.Definitions.Profiles.Add(profT);
 
             //
-            sm.GenerateFrame(new double[] { 4, 5, 6, }, new double[] { 3, 6 }, defaultMat: mat1, defaultProfile: rec);
+            sm.GenerateFrame(new float[] { 4, 5, 6, }, new float[] { 3, 6 }, defaultMat: mat1, defaultProfile: rec);
 
             //
             sm.Beams[0].Profile = profT;
             sm.Columns[0].Material = mat2;
-
         }
 
         #endregion

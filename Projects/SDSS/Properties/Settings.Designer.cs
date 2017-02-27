@@ -25,13 +25,25 @@ namespace SDSS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\UserFiles\\Documents\\Abauqs")]
         public string AbaWorkingDir {
             get {
                 return ((string)(this["AbaWorkingDir"]));
             }
             set {
                 this["AbaWorkingDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("StationModel")]
+        public string ModelName {
+            get {
+                return ((string)(this["ModelName"]));
+            }
+            set {
+                this["ModelName"] = value;
             }
         }
     }
