@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using eZstd.Diagnostics;
 using SDSS.Definitions;
@@ -42,7 +43,6 @@ namespace SDSS.Solver
             _solverGui = solverGui;
             _modelType = modelType;
             //
-            ProjectPaths.DetermineSolverSource(modelType);
         }
 
         #region ---   创建 .bat 命令文件，以启动 Abaqus 的计算
@@ -99,25 +99,23 @@ abaqus cae noGUI=beamExample.py
         /// <summary> 检查计算环境，文件配置 </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public bool CheckEnvironment(StationModel.StationModel sm, out string errorMessage)
+        public bool CheckEnvironment(StationModel.StationModel sm, ref StringBuilder errorMessage)
         {
             try
             {
                 if (!Directory.Exists(_workingDir))
                 {
-                    errorMessage = "指定的Abaqus工作文件夹不存在";
+                    errorMessage.AppendLine("指定的Abaqus工作文件夹不存在");
                     return false;
                 }
 
                 // 1. 指定用来计算的车站模型文件
-                if (!File.Exists(ProjectPaths.F_ModelFile))
+                if (!File.Exists(ProjectPaths.F_CalculationModel))
                 {
-                    string defaultModelFile = Path.Combine(_workingDir, ProjectPaths.FN_DefaultModel);
-
-                    //ProjectPaths.SerializeNewModelFile(xmlFilePath: defaultModelFile, stationModel: sm,
-                    //    errorMessage: out errorMessage);
-                    Utils.ExportToXmlFile(xmlFilePath: defaultModelFile, src: sm, errorMessage: out errorMessage);
+                    ProjectPaths.F_CalculationModel = ProjectPaths.F_DefaultModel;
                 }
+                Utils.ExportToXmlFile(xmlFilePath: ProjectPaths.F_CalculationModel, src: sm, errorMessage: ref errorMessage);
+                //
 
                 // 2. 创建启动 Abaqus 的 .bat 文件
                 CreateBatCommand();
@@ -126,16 +124,16 @@ abaqus cae noGUI=beamExample.py
                 ProjectPaths.WriteCalcFilePaths();
 
                 //
-                errorMessage = "计算环境正常，可以开始计算";
+                errorMessage.AppendLine("计算环境正常，可以开始计算");
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                errorMessage = "计算环境异常";
+                errorMessage.AppendLine("计算环境异常" + "\r\n" + ex.Message);
                 return false;
             }
         }
-        
+
         #endregion
 
         #region ---   Execute 执行计算
@@ -145,7 +143,7 @@ abaqus cae noGUI=beamExample.py
         /// </summary>
         /// <param name="waitingSeconds"> 每隔一段时间提示用户是否还要继续等待计算完成。</param>
         /// <returns>如果计算完成且成功，则返回true，如果计算中断，或者计算失败，则返回 false</returns>
-        public SolverState Execute(int waitingSeconds, out string errorMessage)
+        public SolverState Execute(uint waitingSeconds, out string errorMessage)
         {
             // 1. delete the abaqus lock file,if this file exists, the cmd will be terminated.
             var lockFiles = Directory.EnumerateFiles(path: _workingDir, searchPattern: "*.lck",
@@ -171,8 +169,9 @@ abaqus cae noGUI=beamExample.py
         /// <param name="batFileName">.bat 命令的完整绝对路径</param>
         /// <param name="waitingSeconds">每隔一段时间提示用户是否还要继续等待计算完成。</param>
         /// <returns></returns>
-        private SolverState RunAndWaitforExit(string batFileName, int waitingSeconds)
+        private SolverState RunAndWaitforExit(string batFileName, uint waitingSeconds)
         {
+
             State = SolverState.Calculating;
             //batFileName = @"C:\Users\zengfy\Desktop\AbaqusScriptTest\run.cmd";
 
@@ -188,7 +187,7 @@ abaqus cae noGUI=beamExample.py
             //
             p.Start(); // 异步执行
             State = SolverState.Calculating;
-            p.WaitForExit(waitingSeconds * 1000); // 线程等待
+            p.WaitForExit((int)waitingSeconds * 1000); // 线程等待
             State = SolverState.Succeeded;
             while (!p.HasExited)
             {
@@ -196,7 +195,7 @@ abaqus cae noGUI=beamExample.py
                     @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (res == DialogResult.Yes)
                 {
-                    p.WaitForExit(waitingSeconds * 1000);
+                    p.WaitForExit((int)waitingSeconds * 1000);
                     State = SolverState.Succeeded;
                 }
                 else

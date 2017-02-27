@@ -43,6 +43,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button_chooseDir = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel_ModelType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -119,7 +121,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(489, 257);
+            this.buttonOk.Location = new System.Drawing.Point(483, 283);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 3;
@@ -205,7 +207,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.tableLayoutPanel_ModelType);
-            this.panel1.Location = new System.Drawing.Point(12, 11);
+            this.panel1.Location = new System.Drawing.Point(12, 46);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(549, 208);
             this.panel1.TabIndex = 5;
@@ -214,7 +216,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 240);
+            this.label3.Location = new System.Drawing.Point(17, 266);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(197, 12);
             this.label3.TabIndex = 7;
@@ -223,7 +225,7 @@
             // button_chooseDir
             // 
             this.button_chooseDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_chooseDir.Location = new System.Drawing.Point(408, 257);
+            this.button_chooseDir.Location = new System.Drawing.Point(402, 283);
             this.button_chooseDir.Name = "button_chooseDir";
             this.button_chooseDir.Size = new System.Drawing.Size(75, 23);
             this.button_chooseDir.TabIndex = 8;
@@ -234,10 +236,27 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(12, 258);
+            this.textBox1.Location = new System.Drawing.Point(12, 284);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(390, 21);
             this.textBox1.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(149, 12);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "项目名称（不要出现中文）";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(167, 10);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(248, 21);
+            this.textBox2.TabIndex = 9;
             // 
             // EnterSplash
             // 
@@ -245,8 +264,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(576, 291);
+            this.ClientSize = new System.Drawing.Size(570, 317);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button_chooseDir);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel1);
@@ -295,5 +316,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button_chooseDir;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }

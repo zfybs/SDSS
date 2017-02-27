@@ -15,9 +15,9 @@ namespace SDSS.UIControls
         private ushort _spanCount;
 
         /// <summary> 从下往上每一层的层高，单位为m。 </summary>
-        public double[] LayerHeights { get; private set; }
+        public float[] LayerHeights { get; private set; }
         /// <summary> 从左往右每一跨的宽度，单位为m。 </summary>
-        public double[] SpanWidths { get; private set; }
+        public float[] SpanWidths { get; private set; }
 
         #region ---   构造函数
 
@@ -33,7 +33,7 @@ namespace SDSS.UIControls
             return ins;
         }
 
-        public static FrameConstructor GetUniqueInstance(double[] layerHeights, double[] spanWidths)
+        public static FrameConstructor GetUniqueInstance(float[] layerHeights, float[] spanWidths)
         {
             var ins = _uiniqueInstance ?? new FrameConstructor();
             //
@@ -87,7 +87,7 @@ namespace SDSS.UIControls
 
         #region ---   DataGridView
 
-        private void SetDataGridView(double[] layerHeights, double[] spanWidths)
+        private void SetDataGridView(float[] layerHeights, float[] spanWidths)
         {
             //
             var layerCount = (ushort)layerHeights.Length;
@@ -114,8 +114,8 @@ namespace SDSS.UIControls
                 _spanCount = spanCount;
             }
             //
-            LayerHeights = new double[layerCount];
-            SpanWidths = new double[spanCount];
+            LayerHeights = new float[layerCount];
+            SpanWidths = new float[spanCount];
             //
             SetTableValues();
         }
@@ -165,19 +165,19 @@ namespace SDSS.UIControls
             // 构造层高与跨度数据
             try
             {
-                LayerHeights = new double[_layerCount];
+                LayerHeights = new float[_layerCount];
                 for (int i = 0; i < _layerCount; i++)
                 {
                     var obj = dgv_Layers.Rows[i].Cells[0].Value;
                     if (obj == null || string.IsNullOrEmpty(obj.ToString()) || (double)obj <= 0) throw new NullReferenceException($"倒数第{i + 1}层的层高值必须大于0");
-                    LayerHeights[i] = (double)obj;
+                    LayerHeights[i] = (float)obj;
                 }
-                SpanWidths = new double[_spanCount];
+                SpanWidths = new float[_spanCount];
                 for (int i = 0; i < _spanCount; i++)
                 {
                     var obj = dgv_Spans.Rows[i].Cells[0].Value;
                     if (obj == null || string.IsNullOrEmpty(obj.ToString()) || (double)obj <= 0) throw new NullReferenceException($"左数第{i + 1}跨的跨度值必须大于0");
-                    SpanWidths[i] = (double)obj;
+                    SpanWidths[i] = (float)obj;
                 }
                 // close the form
                 Close();

@@ -7,14 +7,15 @@ from szmEntities.Vertice import uVerticeFrame
 from Frame import uFrame,uLoad
 
 def ImportUserModel1(filePath):
-    # filePath = r'E:\SDSS\bin\m1.sdss'
+    # filePath = r'E:\SDSS\bin\StationDesginModel.sdss'
     tree = ET.ElementTree(file=filePath)
     root = tree.getroot()
 
+    modelName = root.attrib['ModelName']
     # find the element of definitions the elementTree
     eleDefinitions = 0
     for c in root:
-        if c.tag=='Definitions':
+        if c.tag == 'Definitions':
             eleDefinitions = c
 
     # ------------------------------------------------------------------------
@@ -112,7 +113,7 @@ def ImportUserModel1(filePath):
 
     load = uLoad(kx= 1e6,ky= 1e6,kc = 0.5)
 
-    frame = uFrame('JianChuanRoad', mE,pE, spans, layers, columns, beams, load)
+    frame = uFrame(modelName, mE,pE, spans, layers, columns, beams, load)
 
     return frame
 

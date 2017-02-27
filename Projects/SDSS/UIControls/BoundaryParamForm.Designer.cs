@@ -1,6 +1,6 @@
 ﻿namespace SDSS.UIControls
 {
-    partial class BoundaryParam
+    partial class BoundaryParamForm
     {
         /// <summary>
         /// Required designer variable.
@@ -34,12 +34,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label_Ky = new System.Windows.Forms.Label();
             this.textBox_Ky = new System.Windows.Forms.TextBox();
-            this.label_overSoil = new System.Windows.Forms.Label();
-            this.textBox_overSoil = new System.Windows.Forms.TextBox();
-            this.label_soilWidth = new System.Windows.Forms.Label();
-            this.textBox_soilWidth = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +56,8 @@
             // 
             // button_OK
             // 
-            this.button_OK.Location = new System.Drawing.Point(126, 212);
+            this.button_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_OK.Location = new System.Drawing.Point(115, 120);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(75, 23);
             this.button_OK.TabIndex = 2;
@@ -76,7 +71,7 @@
             this.groupBox1.Controls.Add(this.label_Kx);
             this.groupBox1.Controls.Add(this.textBox_Ky);
             this.groupBox1.Controls.Add(this.textBox_Kx);
-            this.groupBox1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(20, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(170, 93);
@@ -101,79 +96,19 @@
             this.textBox_Ky.TabIndex = 1;
             this.textBox_Ky.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Kx_KeyPress);
             // 
-            // label_overSoil
-            // 
-            this.label_overSoil.AutoSize = true;
-            this.label_overSoil.Location = new System.Drawing.Point(25, 128);
-            this.label_overSoil.Name = "label_overSoil";
-            this.label_overSoil.Size = new System.Drawing.Size(77, 12);
-            this.label_overSoil.TabIndex = 4;
-            this.label_overSoil.Text = "上覆土厚度：";
-            // 
-            // textBox_overSoil
-            // 
-            this.textBox_overSoil.Location = new System.Drawing.Point(102, 125);
-            this.textBox_overSoil.Name = "textBox_overSoil";
-            this.textBox_overSoil.Size = new System.Drawing.Size(53, 21);
-            this.textBox_overSoil.TabIndex = 5;
-            this.textBox_overSoil.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Kx_KeyPress);
-            // 
-            // label_soilWidth
-            // 
-            this.label_soilWidth.AutoSize = true;
-            this.label_soilWidth.Location = new System.Drawing.Point(25, 167);
-            this.label_soilWidth.Name = "label_soilWidth";
-            this.label_soilWidth.Size = new System.Drawing.Size(65, 12);
-            this.label_soilWidth.TabIndex = 4;
-            this.label_soilWidth.Text = "土层宽度：";
-            // 
-            // textBox_soilWidth
-            // 
-            this.textBox_soilWidth.Location = new System.Drawing.Point(102, 164);
-            this.textBox_soilWidth.Name = "textBox_soilWidth";
-            this.textBox_soilWidth.Size = new System.Drawing.Size(53, 21);
-            this.textBox_soilWidth.TabIndex = 5;
-            this.textBox_soilWidth.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Kx_KeyPress);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(161, 126);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(14, 14);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "m";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(161, 165);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(14, 14);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "m";
-            // 
-            // BoundaryParam
+            // BoundaryParamForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 250);
-            this.Controls.Add(this.textBox_soilWidth);
-            this.Controls.Add(this.label_soilWidth);
-            this.Controls.Add(this.textBox_overSoil);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label_overSoil);
+            this.ClientSize = new System.Drawing.Size(202, 155);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button_OK);
-            this.Name = "BoundaryParam";
+            this.Name = "BoundaryParamForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "参数设定";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -184,12 +119,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label_Ky;
         private System.Windows.Forms.TextBox textBox_Ky;
-        private System.Windows.Forms.Label label_overSoil;
-        private System.Windows.Forms.TextBox textBox_overSoil;
-        private System.Windows.Forms.Label label_soilWidth;
-        private System.Windows.Forms.TextBox textBox_soilWidth;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox_Kx;
     }
 }

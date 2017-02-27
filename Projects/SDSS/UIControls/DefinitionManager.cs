@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using SDSS.Definitions;
@@ -56,11 +57,11 @@ namespace SDSS.UIControls
             T def = (T)formAddDefinition.Instance;
             if (res == DialogResult.OK)
             {
-                string errorMessage;
-                bool succ = AddDefinition(def, out errorMessage);
+                StringBuilder errorMessage = new StringBuilder();
+                bool succ = AddDefinition(def, ref errorMessage);
                 if (!succ)
                 {
-                    MessageBox.Show(errorMessage, "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(errorMessage.ToString(), "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -89,9 +90,9 @@ namespace SDSS.UIControls
         /// <param name="def"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private bool AddDefinition(Definition def, out string errorMessage)
+        private bool AddDefinition(Definition def, ref StringBuilder errorMessage)
         {
-            if (CheckAddDefinition(_definitions, def, out errorMessage))
+            if (CheckAddDefinition(_definitions, def, ref errorMessage))
             {
                 _definitions.Add((T)def);
                 return true;
@@ -100,16 +101,16 @@ namespace SDSS.UIControls
         }
 
         /// <summary> 检查添加后的定义集合是否符合命名的唯一性规范 </summary>
-        private bool CheckAddDefinition(BindingList<T> originaldefinitions, Definition defToAdd, out string errorMessage)
+        private bool CheckAddDefinition(BindingList<T> originaldefinitions, Definition defToAdd, ref StringBuilder errorMessage)
         {
             if (string.IsNullOrEmpty(defToAdd.Name))
             {
-                errorMessage = "必须为添加的参数定义指定一个名称。";
+                errorMessage.AppendLine( "必须为添加的参数定义指定一个名称。");
                 return false;
             }
             if (Utils.StringHasNonEnglish(defToAdd.Name))
             {
-                errorMessage = "定义的命名不能包含非英文的字符。";
+                errorMessage .AppendLine( "定义的命名不能包含非英文的字符。");
                 return false;
             }
             // 检查有没有重复的名称
@@ -122,10 +123,10 @@ namespace SDSS.UIControls
             names.Add(defToAdd.Name);
             if (names.Count < namesCount)
             {
-                errorMessage = "新添加的参数定义与现有集合中的定义重名。";
+                errorMessage.AppendLine("新添加的参数定义与现有集合中的定义重名。");
                 return false;
             }
-            errorMessage = "成功";
+            errorMessage.AppendLine("成功");
             return true;
         }
 
@@ -225,20 +226,20 @@ namespace SDSS.UIControls
                 string filePath = Utils.ChooseOpenProfiles("导入截面");
                 if (filePath.Length > 0)
                 {
-                    string errorMessage;
+                    StringBuilder errorMessage = new StringBuilder();
                     bool succeeded;
                     var profiles = Utils.ImportFromXml(filePath, typeof(List<Profile>),
-                        out succeeded, out errorMessage) as List<Profile>;
+                        out succeeded, ref errorMessage) as List<Profile>;
                     if (succeeded)
                     {
                         foreach (Profile p in profiles)
                         {
                             try
                             {
-                                bool succ = AddDefinition(p, out errorMessage);
+                                bool succ = AddDefinition(p, ref errorMessage);
                                 if (!succ)
                                 {
-                                    MessageBox.Show(errorMessage, "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(errorMessage.ToString(), "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                             }
                             catch (Exception)
@@ -254,20 +255,20 @@ namespace SDSS.UIControls
                 string filePath = Utils.ChooseOpenMaterials("导入材料");
                 if (filePath.Length > 0)
                 {
-                    string errorMessage;
+                    StringBuilder errorMessage = new StringBuilder();
                     bool succeeded;
                     var materials = Utils.ImportFromXml(filePath, typeof(List<Material>),
-                        out succeeded, out errorMessage) as List<Material>;
+                        out succeeded, ref errorMessage) as List<Material>;
                     if (succeeded)
                     {
                         foreach (Material m in materials)
                         {
                             try
                             {
-                                bool succ = AddDefinition(m, out errorMessage);
+                                bool succ = AddDefinition(m, ref errorMessage);
                                 if (!succ)
                                 {
-                                    MessageBox.Show(errorMessage, "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(errorMessage.ToString(), "添加参数定义出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                             }
                             catch (Exception)

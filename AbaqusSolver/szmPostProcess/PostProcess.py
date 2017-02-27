@@ -7,10 +7,6 @@ from abaqus import *
 from odbAccess import *
 from abaqusConstants import *
 
-def getvvv():
-    pass
-
-
 def GetResult1(model, job, myFrame):
 
     name = job.name+'.odb'
@@ -301,7 +297,7 @@ def GetResult1(model, job, myFrame):
     # print(maxDeflectionY)
     # print(maxAxialF)
     # print(maxShearF)
-    print(maxMoment)
+    # print(maxMoment)
 
     myResult = uResult1(maxDeflectionX,coordinateMaxU1,
                         maxDeflectionY,coordinateMaxU2,

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using eZstd.Enumerable;
@@ -57,9 +58,12 @@ namespace SDSS.UIControls
             DefinitionsOnMaterialsChanged(stationModel.Definitions.Materials);
             DefinitionsOnProfilessChanged(stationModel.Definitions.Profiles);
 
-            // 将新模型进行重新绘制
-            SoilStructureGeometry ssg = _stationModel.GetStationGeometry() as SoilStructureGeometry;
-            modelDrawer1.DrawSoilStructureModel(ssg);
+            //
+            textBoxNum_OverLaying.Text = _stationModel.SoilProperty.OverLayingSoilHeight.ToString();
+            textBoxNum_topEle.Text = _stationModel.SoilProperty.TopElevation.ToString();
+
+            // 图片框
+            RefreshUI_PictureBox(stationModel);
         }
 
         private void RefreshUI_FrameTable(StationModel1 stationModel)
@@ -72,6 +76,13 @@ namespace SDSS.UIControls
             RefreshComboBoxColumn(_comboColMat, _stationModel.Definitions.Materials);
             RefreshComboBoxColumn(_comboColProf, _stationModel.Definitions.Profiles);
 
+        }
+
+        private void RefreshUI_PictureBox(StationModel1 stationModel)
+        {
+            // 将新模型进行重新绘制
+            SoilStructureGeometry ssg = stationModel.GetStationGeometry() as SoilStructureGeometry;
+            modelDrawer1.DrawSoilStructureModel(ssg);
         }
 
         #endregion
@@ -131,7 +142,6 @@ namespace SDSS.UIControls
         private void DefinitionsOnMaterialsChanged(XmlList<Material> mats)
         {
             RefreshComboBox(comboBoxCompMaterials, mats);
-            RefreshComboBox(comboBoxSoilMaterials, mats.Clone() as XmlList<Material>);
         }
 
         /// <summary> 刷新 ComboBox 界面 </summary>
@@ -186,6 +196,8 @@ namespace SDSS.UIControls
 
                 // 
                 RefreshUI_FrameTable(_stationModel);
+                //
+                RefreshUI_PictureBox(_stationModel);
             }
         }
 
@@ -220,38 +232,34 @@ namespace SDSS.UIControls
             eZDataGridViewFrame.Refresh();
         }
 
-        private void button_assignSoilMat_Click(object sender, EventArgs e)
-        {
-            //Material mat = comboBoxSoilMaterials.SelectedItem as Material;
-            //if (mat != null)
-            //{
-            //    foreach (DataGridViewRow r in eZDataGridViewSoilLayers.SelectedRows)
-            //    {
-            //        SoilLayer soil = r.DataBoundItem as SoilLayer;
-            //        soil.Material = mat;
-            //    }
-            //}
-            //eZDataGridViewSoilLayers.Refresh();
-        }
-
         #endregion
 
-        #region ---   边界参数的设置
+        #region ---   环境与边界参数的设置
+
+
+        private void textBoxNum_topEle_ValueNumberChanged(object arg1, double arg2)
+        {
+            _stationModel.SoilProperty.TopElevation = (float)arg2;
+            //
+            RefreshUI_PictureBox(_stationModel);
+        }
+
+        private void textBoxNum_OverLaying_ValueNumberChanged(object arg1, double arg2)
+        {
+            _stationModel.SoilProperty.OverLayingSoilHeight = (float)arg2;
+            //
+            RefreshUI_PictureBox(_stationModel);
+        }
+
         private void button_Boundary_Click(object sender, EventArgs e)
         {
-            var sp = _stationModel.SystemProperty;
-            BoundaryParam f = new BoundaryParam(sp.kx, sp.ky, sp.overLayingSoil, sp.soilWidth);
-
-            f.StartPosition = FormStartPosition.CenterParent;
-            // f.textBox_Kx.Text = _stationModel.SystemProperty.kx.ToString();
-            // f.kx = _stationModel.SystemProperty.kx;
+            var sp = _stationModel.SoilProperty;
+            BoundaryParamForm f = new BoundaryParamForm(sp.kx, sp.ky);
             f.ShowDialog();
 
             //
             sp.kx = f.Kx;
             sp.ky = f.Ky;
-            sp.overLayingSoil = f.OverLayingSoil;
-            sp.soilWidth = f.SoilWidth;
 
         }
 
@@ -262,16 +270,16 @@ namespace SDSS.UIControls
         /// <summary> 将整个模型导出到 xml 文档 </summary>
         private void TSM_Export_Click(object sender, EventArgs e)
         {
-            string errorMessage;
-            if (ValidateModel(_stationModel, out errorMessage))
+            StringBuilder errorMessage = new StringBuilder();
+            if (ValidateModel(_stationModel, ref errorMessage))
             {
                 string filePath = Utils.ChooseSaveStationModel("导出车站模型");
                 if (filePath.Length > 0)
                 {
-                    bool succ = ExportToXml(_stationModel, filePath, out errorMessage);
+                    bool succ = Utils.ExportToXmlFile(xmlFilePath: filePath, src: _stationModel, errorMessage: ref errorMessage);
                     if (succ)
                     {
-                        ProjectPaths.F_ModelFile = filePath;
+                        ProjectPaths.F_CalculationModel = filePath;
                     }
                 }
             }
@@ -282,9 +290,8 @@ namespace SDSS.UIControls
             }
         }
 
-        private bool ValidateModel(StationModel1 sm, out string errorMessage)
+        private bool ValidateModel(StationModel1 sm, ref StringBuilder errorMessage)
         {
-            errorMessage = "可以成功导出。";
             return true;
             //if (string.IsNullOrEmpty(sss.SocketedShaft.Name))
             //{
@@ -301,18 +308,8 @@ namespace SDSS.UIControls
             //    errorMessage = "桩段连续性不满足： " + errorMessage;
             //    return false;
             //}
-
-            errorMessage = "可以成功导出。";
-            return true;
         }
 
-        /// <param name="stationModel">车站模型</param>
-        /// <param name="filePath">此路径必须为一个有效的路径</param>
-        private bool ExportToXml(StationModel.StationModel stationModel, string filePath, out string errorMessage)
-        {
-            return Utils.ExportToXmlFile(xmlFilePath: filePath, src: stationModel, errorMessage: out errorMessage);
-            //return ProjectPaths.SerializeNewModelFile(filePath, stationModel, out errorMessage);
-        }
 
         #endregion
 
@@ -323,10 +320,10 @@ namespace SDSS.UIControls
             string filePath = Utils.ChooseOpenStationModel("导入车站模型");
             if (filePath.Length > 0)
             {
-                string errorMessage;
+                StringBuilder errorMessage = new StringBuilder();
                 bool succeeded;
                 var sm = Utils.ImportFromXml(filePath, typeof(StationModel1),
-                    out succeeded, out errorMessage) as StationModel1;
+                    out succeeded, ref errorMessage) as StationModel1;
 
                 if (succeeded && sm != null)
                 {
@@ -347,10 +344,10 @@ namespace SDSS.UIControls
 
         private void buttonSolve_Click(object sender, EventArgs e)
         {
-            string errorMessage = "";
+            StringBuilder errorMessage = new StringBuilder();
 
             // 对模型进行检查，看是否可以进行计算
-            if (_stationModel.Validate(out errorMessage))
+            if (_stationModel.Validate(ref errorMessage))
             {
                 AbaqusSolver solver = new AbaqusSolver(
                     workingDir: ProjectPaths.D_AbaqusWorkingDir ?? ProjectPaths.D_AbaqusDefaultWorkingDir,
@@ -359,13 +356,13 @@ namespace SDSS.UIControls
                    );
 
                 // 检查计算环境，文件配置
-                if (solver.CheckEnvironment(_stationModel, out errorMessage))
+                if (solver.CheckEnvironment(_stationModel, ref errorMessage))
                 {
                     // 求解计算
                     _bcParameters = new BackgroundCalculationParameters()
                     {
                         Solver = solver,
-                        ErrorMessage = errorMessage,
+                        ErrorMessage = errorMessage.ToString(),
 
                     };
                     //
@@ -382,6 +379,11 @@ namespace SDSS.UIControls
         }
 
         private BackgroundCalculationParameters _bcParameters;
+        private class BackgroundCalculationParameters
+        {
+            public AbaqusSolver Solver;
+            public string ErrorMessage;
+        }
 
         /// <summary> 开始计算 </summary>
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -390,7 +392,7 @@ namespace SDSS.UIControls
             {
                 BackgroundCalculationParameters para = e.Argument as BackgroundCalculationParameters;
 
-                SolverState state = para.Solver.Execute(waitingSeconds: (int)(60 * 0.1),
+                SolverState state = para.Solver.Execute(waitingSeconds: Options.WaitingSeconds,
                     errorMessage: out para.ErrorMessage);
 
                 e.Result = state;
@@ -403,11 +405,15 @@ namespace SDSS.UIControls
 
         }
 
+        #endregion
+
+        #region ---   后处理操作
+
         /// <summary> 计算完成，开始后处理 </summary>
         private void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             progressBar1.Visible = false;
-            if (e.Cancelled)  // 判断是否是手动退出线程
+            if (e.Cancelled) // 判断是否是手动退出线程
             {
 
             }
@@ -415,20 +421,25 @@ namespace SDSS.UIControls
             AbaqusSolver solver = _bcParameters.Solver;
 
             // 后处理
+            StringBuilder sb = new StringBuilder();
             PostProcessor pp = new PostProcessor(solver);
-            pp.CheckSolveState();
-            pp.ReadFile();
-            pp.WriteReport();
+            if (pp.CheckSolveState(ref sb) && pp.CheckResultFiles(errorMessage: ref sb))
+            {
+                var res = MessageBox.Show(@"计算完成，是否直接生成报告？", @"Congratulations", MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Asterisk);
+                if (res == DialogResult.OK)
+                {
+                    pp.ReadFile();
+                    pp.WriteReport();
+                }
+            }
+            else
+            {
+                var res = MessageBox.Show("计算过程出现异常！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
-        private class BackgroundCalculationParameters
-        {
-            public AbaqusSolver Solver;
-            public string ErrorMessage;
-        }
-        #endregion
-
-        #region ---   后处理操作
 
 
         #endregion

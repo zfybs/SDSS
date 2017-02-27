@@ -23,13 +23,12 @@ namespace SDSS.StationModel
         [XmlElement]
         public XmlList<Column> Columns { get; set; }
 
-
         #endregion
 
         #region ---   XmlAttribute
 
         ///<summery>从下往上每一层的高度， 对应的数值格式为： @"1.2, 3.2, 5.2," </summery>
-        [XmlAttribute()]
+        [XmlAttribute(attributeName: "LayerHeights")]
         public string LayerHeightsStr
         {
             get
@@ -45,10 +44,10 @@ namespace SDSS.StationModel
             {
                 //value = @"1.2, 3.2, 5.2,";
                 var ss = value.Split(',');
-                double[] arr = new double[ss.Length - 1];  // 最后一个元素为空，不能转换为数值
+                var arr = new float[ss.Length - 1];  // 最后一个元素为空，不能转换为数值
                 for (int i = 0; i < ss.Length - 1; i++)
                 {
-                    arr[i] = double.Parse(ss[i]);
+                    arr[i] = float.Parse(ss[i]);
                 }
                 LayerHeights = arr;
             }
@@ -56,10 +55,10 @@ namespace SDSS.StationModel
 
         ///<summery>从下往上每一层的高度</summery>
         [XmlIgnore()]
-        public double[] LayerHeights { get; private set; }
+        public float[] LayerHeights { get; private set; }
 
         ///<summery>从左往右每一跨的宽度， 对应的数值格式为： @"1.2, 3.2, 5.2," </summery>
-        [XmlAttribute()]
+        [XmlAttribute(attributeName: "SpanWidths")]
         public string SpanWidthsStr
         {
             get
@@ -75,10 +74,10 @@ namespace SDSS.StationModel
             {
                 //value = @"1.2, 3.2, 5.2,";
                 var ss = value.Split(',');
-                double[] arr = new double[ss.Length - 1];  // 最后一个元素为空，不能转换为数值
+                var arr = new float[ss.Length - 1];  // 最后一个元素为空，不能转换为数值
                 for (int i = 0; i < ss.Length - 1; i++)
                 {
-                    arr[i] = double.Parse(ss[i]);
+                    arr[i] = float.Parse(ss[i]);
                 }
                 SpanWidths = arr;
             }
@@ -86,7 +85,7 @@ namespace SDSS.StationModel
 
         ///<summery>从左往右每一跨的宽度</summery>
         [XmlIgnore()]
-        public double[] SpanWidths { get; private set; }
+        public float[] SpanWidths { get; private set; }
 
         #endregion
 
@@ -104,10 +103,14 @@ namespace SDSS.StationModel
             Beams = new XmlList<Beam>();
             Columns = new XmlList<Column>();
             //
-            LayerHeights = new double[0];
-            SpanWidths = new double[0];
+            LayerHeights = new float[0];
+            SpanWidths = new float[0];
         }
 
+        private StationModel1(string name)
+        {
+
+        }
         #endregion
 
         #region ---   构造矩形框架
@@ -117,7 +120,7 @@ namespace SDSS.StationModel
         /// </summary>
         /// <param name="layerHeights">从下往上每一层的高度</param>
         /// <param name="spanWidths">从左往右每一跨的宽度</param>
-        public void GenerateFrame(double[] layerHeights, double[] spanWidths, Material defaultMat, Profile defaultProfile)
+        public void GenerateFrame(float[] layerHeights, float[] spanWidths, Material defaultMat, Profile defaultProfile)
         {
             LayerHeights = layerHeights;
             SpanWidths = spanWidths;
@@ -182,9 +185,9 @@ namespace SDSS.StationModel
         #region ---   模型检验
 
         /// <summary> 对模型进行检查，如果此模型不满足进行计算的必备条件，则返回false </summary>
-        public override bool Validate(out string errorMessage)
+        public override bool Validate(ref StringBuilder errorMessage)
         {
-            errorMessage = "模型检验完成，可以进行计算";
+            errorMessage.AppendLine("模型检验完成，可以进行计算");
             return true;
         }
 
@@ -197,7 +200,10 @@ namespace SDSS.StationModel
             SoilStructureGeometry ssg = null;
             if (LayerHeights != null && SpanWidths != null)
             {
-                ssg = new SoilStructureGeometry(60, new float[] { 3, 6, 5, 4, 6, 6 }, 3,
+                ssg = new SoilStructureGeometry(
+                    soilWidth: 60,
+                    soilHeight: SoilLayers.Select(r => r.Top - r.Bottom).ToArray(),
+                    overlyingSoilHeight: SoilProperty.OverLayingSoilHeight,
                     stationFloors: LayerHeights.Select(r => (float)r).Reverse().ToArray(),
                     stationSegments: SpanWidths.Select(r => (float)r).ToArray());
             }

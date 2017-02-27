@@ -220,23 +220,23 @@ namespace SDSS
         /// <param name="importedType">要导入的类型</param>
         /// <param name="succeeded">  </param>
         /// <param name="errorMessage">要导入的类型</param>
-        public static object ImportFromXml(string filePath, Type importedType, out bool succeeded, out string errorMessage)
+        public static object ImportFromXml(string filePath, Type importedType, out bool succeeded, ref StringBuilder errorMessage)
         {
             FileStream reader = null;
             object obj = null;
             try
             {
-                //
+                // 
                 reader = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 XmlSerializer sReader = new XmlSerializer(importedType);
                 obj = sReader.Deserialize(reader);
                 //
-                errorMessage = "数据导出到 XML 文件成功";
+                errorMessage.AppendLine("成功将 xml 文件中的对象进行导入");
                 succeeded = true;
             }
             catch (Exception ex)
             {
-                errorMessage = "数据导出到 XML 文件失败" + "\r\n" + ex.Message;
+                errorMessage.AppendLine("将 xml 文件中的对象进行导入时出错" + "\r\n" + ex.Message);
                 succeeded = false;
             }
             finally
@@ -256,7 +256,7 @@ namespace SDSS
         /// <param name="src">要导出的数据源</param>
         /// <param name="errorMessage"></param>
         /// <returns>如果成功写入，则返回 true，如果失败则返回 false。</returns>
-        public static bool ExportToXmlFile(string xmlFilePath, object src, out string errorMessage)
+        public static bool ExportToXmlFile(string xmlFilePath, object src, ref StringBuilder errorMessage)
         {
             StreamWriter fs = null;
             try
@@ -267,12 +267,12 @@ namespace SDSS
                 XmlSerializer s = new XmlSerializer(tp);
                 s.Serialize(fs, src);
                 //
-                errorMessage = "可以成功导出模型";
+                errorMessage.AppendLine("成功将数据导出为 xml 文件");
                 return true;
             }
             catch (Exception ex)
             {
-                errorMessage = "模型信息写入失败" + "\r\n" + ex.Message;
+                errorMessage.AppendLine("数据写入 xml 文件失败" + "\r\n" + ex.Message);
                 return false;
             }
             finally

@@ -83,9 +83,15 @@ namespace SDSS.Entities
 
         public SoilLayer_Inertial()
         {
-
+            MaterialName = null;
+            Material = null;
         }
-
+        public SoilLayer_Inertial(float top, float bottom, float kci0)
+        {
+            Top = top;
+            Bottom = bottom;
+            Kci0 = kci0;
+        }
         #endregion
     }
 }

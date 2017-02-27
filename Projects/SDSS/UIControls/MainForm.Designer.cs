@@ -46,12 +46,14 @@
             this.label7 = new System.Windows.Forms.Label();
             this.button_assignCompMat = new System.Windows.Forms.Button();
             this.button_assignProfile = new System.Windows.Forms.Button();
-            this.comboBoxSoilMaterials = new System.Windows.Forms.ComboBox();
-            this.button_assignSoilMat = new System.Windows.Forms.Button();
-            this.eZDataGridViewSoilLayers = new eZstd.UserControls.eZDataGridView();
+            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxNum_OverLaying = new eZstd.UserControls.TextBoxNum();
+            this.textBoxNum_topEle = new eZstd.UserControls.TextBoxNum();
+            this.eZDataGridViewSoilLayers = new eZstd.UserControls.eZDataGridView();
             this.buttonSavePic = new System.Windows.Forms.Button();
-            this.buttonSysInfo = new System.Windows.Forms.Button();
             this.button_GenerateFrame = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -60,14 +62,16 @@
             this.TSM_Export = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.TSM_Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.选择ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.工作文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.生成报告ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.文档ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.modelDrawer1 = new SDSS.UIControls.ModelDrawer();
-            this.项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.工作文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -207,10 +211,13 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.comboBoxSoilMaterials);
-            this.splitContainer1.Panel2.Controls.Add(this.button_assignSoilMat);
-            this.splitContainer1.Panel2.Controls.Add(this.eZDataGridViewSoilLayers);
+            this.splitContainer1.Panel2.Controls.Add(this.label9);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
+            this.splitContainer1.Panel2.Controls.Add(this.label6);
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Panel2.Controls.Add(this.textBoxNum_OverLaying);
+            this.splitContainer1.Panel2.Controls.Add(this.textBoxNum_topEle);
+            this.splitContainer1.Panel2.Controls.Add(this.eZDataGridViewSoilLayers);
             this.splitContainer1.Size = new System.Drawing.Size(543, 450);
             this.splitContainer1.SplitterDistance = 263;
             this.splitContainer1.SplitterWidth = 3;
@@ -290,27 +297,61 @@
             this.button_assignProfile.UseVisualStyleBackColor = true;
             this.button_assignProfile.Click += new System.EventHandler(this.button_assignCompProfile_Click);
             // 
-            // comboBoxSoilMaterials
+            // label9
             // 
-            this.comboBoxSoilMaterials.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxSoilMaterials.FormattingEnabled = true;
-            this.comboBoxSoilMaterials.Location = new System.Drawing.Point(59, 3);
-            this.comboBoxSoilMaterials.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBoxSoilMaterials.Name = "comboBoxSoilMaterials";
-            this.comboBoxSoilMaterials.Size = new System.Drawing.Size(60, 20);
-            this.comboBoxSoilMaterials.TabIndex = 5;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(302, 8);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(23, 12);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "(m)";
             // 
-            // button_assignSoilMat
+            // label8
             // 
-            this.button_assignSoilMat.Location = new System.Drawing.Point(120, 1);
-            this.button_assignSoilMat.Margin = new System.Windows.Forms.Padding(2);
-            this.button_assignSoilMat.Name = "button_assignSoilMat";
-            this.button_assignSoilMat.Size = new System.Drawing.Size(43, 23);
-            this.button_assignSoilMat.TabIndex = 4;
-            this.button_assignSoilMat.Text = "材料";
-            this.toolTip1.SetToolTip(this.button_assignSoilMat, "为表格中选择的土层行指定材料");
-            this.button_assignSoilMat.UseVisualStyleBackColor = true;
-            this.button_assignSoilMat.Click += new System.EventHandler(this.button_assignSoilMat_Click);
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(125, 8);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(23, 12);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "(m)";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(175, 8);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "上覆土厚度";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 12);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "地表标高";
+            // 
+            // textBoxNum_OverLaying
+            // 
+            this.textBoxNum_OverLaying.Location = new System.Drawing.Point(246, 4);
+            this.textBoxNum_OverLaying.Name = "textBoxNum_OverLaying";
+            this.textBoxNum_OverLaying.PositiveOnly = true;
+            this.textBoxNum_OverLaying.Size = new System.Drawing.Size(50, 21);
+            this.textBoxNum_OverLaying.TabIndex = 6;
+            this.textBoxNum_OverLaying.Text = "2";
+            this.textBoxNum_OverLaying.ValueNumberChanged += new System.Action<object, double>(this.textBoxNum_OverLaying_ValueNumberChanged);
+            // 
+            // textBoxNum_topEle
+            // 
+            this.textBoxNum_topEle.Location = new System.Drawing.Point(69, 4);
+            this.textBoxNum_topEle.Name = "textBoxNum_topEle";
+            this.textBoxNum_topEle.PositiveOnly = true;
+            this.textBoxNum_topEle.Size = new System.Drawing.Size(50, 21);
+            this.textBoxNum_topEle.TabIndex = 6;
+            this.textBoxNum_topEle.Text = "2.00";
+            this.textBoxNum_topEle.ValueNumberChanged += new System.Action<object, double>(this.textBoxNum_topEle_ValueNumberChanged);
             // 
             // eZDataGridViewSoilLayers
             // 
@@ -326,20 +367,9 @@
             this.eZDataGridViewSoilLayers.RowTemplate.Height = 23;
             this.eZDataGridViewSoilLayers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewSoilLayers.ShowRowNumber = false;
-            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 162);
+            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 158);
             this.eZDataGridViewSoilLayers.SupportPaste = false;
             this.eZDataGridViewSoilLayers.TabIndex = 1;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label8.Location = new System.Drawing.Point(2, 8);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "土层参数";
             // 
             // buttonSavePic
             // 
@@ -351,17 +381,6 @@
             this.buttonSavePic.TabIndex = 2;
             this.buttonSavePic.Text = "保存图片";
             this.buttonSavePic.UseVisualStyleBackColor = true;
-            // 
-            // buttonSysInfo
-            // 
-            this.buttonSysInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSysInfo.Location = new System.Drawing.Point(219, 547);
-            this.buttonSysInfo.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonSysInfo.Name = "buttonSysInfo";
-            this.buttonSysInfo.Size = new System.Drawing.Size(75, 24);
-            this.buttonSysInfo.TabIndex = 2;
-            this.buttonSysInfo.Text = "系统信息";
-            this.buttonSysInfo.UseVisualStyleBackColor = true;
             // 
             // button_GenerateFrame
             // 
@@ -395,7 +414,8 @@
             this.TSM_Import,
             this.TSM_Export,
             this.toolStripSeparator1,
-            this.TSM_Exit});
+            this.TSM_Exit,
+            this.选择ToolStripMenuItem});
             this.TSM_File.Name = "TSM_File";
             this.TSM_File.Size = new System.Drawing.Size(45, 20);
             this.TSM_File.Text = "文件";
@@ -403,28 +423,55 @@
             // TSM_Import
             // 
             this.TSM_Import.Name = "TSM_Import";
-            this.TSM_Import.Size = new System.Drawing.Size(152, 22);
+            this.TSM_Import.Size = new System.Drawing.Size(122, 22);
             this.TSM_Import.Text = "打开";
             this.TSM_Import.Click += new System.EventHandler(this.TSM_Import_Click);
             // 
             // TSM_Export
             // 
             this.TSM_Export.Name = "TSM_Export";
-            this.TSM_Export.Size = new System.Drawing.Size(152, 22);
+            this.TSM_Export.Size = new System.Drawing.Size(122, 22);
             this.TSM_Export.Text = "导出";
             this.TSM_Export.Click += new System.EventHandler(this.TSM_Export_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(119, 6);
             // 
             // TSM_Exit
             // 
             this.TSM_Exit.Name = "TSM_Exit";
-            this.TSM_Exit.Size = new System.Drawing.Size(152, 22);
+            this.TSM_Exit.Size = new System.Drawing.Size(122, 22);
             this.TSM_Exit.Text = "退出";
             this.TSM_Exit.Click += new System.EventHandler(this.TSM_Exit_Click);
+            // 
+            // 选择ToolStripMenuItem
+            // 
+            this.选择ToolStripMenuItem.Name = "选择ToolStripMenuItem";
+            this.选择ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.选择ToolStripMenuItem.Text = "选项(_O)";
+            // 
+            // 项目ToolStripMenuItem
+            // 
+            this.项目ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.工作文件夹ToolStripMenuItem,
+            this.生成报告ToolStripMenuItem});
+            this.项目ToolStripMenuItem.Name = "项目ToolStripMenuItem";
+            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.项目ToolStripMenuItem.Text = "项目";
+            // 
+            // 工作文件夹ToolStripMenuItem
+            // 
+            this.工作文件夹ToolStripMenuItem.Name = "工作文件夹ToolStripMenuItem";
+            this.工作文件夹ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.工作文件夹ToolStripMenuItem.Text = "工作文件夹";
+            // 
+            // 生成报告ToolStripMenuItem
+            // 
+            this.生成报告ToolStripMenuItem.Name = "生成报告ToolStripMenuItem";
+            this.生成报告ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.生成报告ToolStripMenuItem.Text = "生成报告";
             // 
             // 帮助ToolStripMenuItem
             // 
@@ -438,13 +485,13 @@
             // 文档ToolStripMenuItem
             // 
             this.文档ToolStripMenuItem.Name = "文档ToolStripMenuItem";
-            this.文档ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.文档ToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.文档ToolStripMenuItem.Text = "文档";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // _backgroundWorker
@@ -476,20 +523,6 @@
             this.modelDrawer1.Paint += new System.Windows.Forms.PaintEventHandler(this.modelDrawer1_Paint);
             this.modelDrawer1.Resize += new System.EventHandler(this.modelDrawer1_Resize);
             // 
-            // 项目ToolStripMenuItem
-            // 
-            this.项目ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.工作文件夹ToolStripMenuItem});
-            this.项目ToolStripMenuItem.Name = "项目ToolStripMenuItem";
-            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.项目ToolStripMenuItem.Text = "项目";
-            // 
-            // 工作文件夹ToolStripMenuItem
-            // 
-            this.工作文件夹ToolStripMenuItem.Name = "工作文件夹ToolStripMenuItem";
-            this.工作文件夹ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.工作文件夹ToolStripMenuItem.Text = "工作文件夹";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -505,7 +538,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button_GenerateFrame);
             this.Controls.Add(this.button_Profiles);
-            this.Controls.Add(this.buttonSysInfo);
             this.Controls.Add(this.buttonSavePic);
             this.Controls.Add(this.button_Boundary);
             this.Controls.Add(this.button_Materials);
@@ -551,7 +583,6 @@
         private eZstd.UserControls.eZDataGridView eZDataGridViewFrame;
         private eZstd.UserControls.eZDataGridView eZDataGridViewSoilLayers;
         private System.Windows.Forms.Button buttonSavePic;
-        private System.Windows.Forms.Button buttonSysInfo;
         private System.Windows.Forms.Button button_assignCompMat;
         private System.Windows.Forms.Button button_assignProfile;
         private System.Windows.Forms.ComboBox comboBoxProfiles;
@@ -564,9 +595,6 @@
         private System.Windows.Forms.ToolStripMenuItem TSM_Export;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem TSM_Exit;
-        private System.Windows.Forms.ComboBox comboBoxSoilMaterials;
-        private System.Windows.Forms.Button button_assignSoilMat;
-        private System.Windows.Forms.Label label8;
         private System.ComponentModel.BackgroundWorker _backgroundWorker;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
@@ -574,6 +602,14 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 项目ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 工作文件夹ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 生成报告ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 选择ToolStripMenuItem;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private eZstd.UserControls.TextBoxNum textBoxNum_OverLaying;
+        private eZstd.UserControls.TextBoxNum textBoxNum_topEle;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
     }
 }
 

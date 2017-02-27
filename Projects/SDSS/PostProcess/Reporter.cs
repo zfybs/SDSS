@@ -9,8 +9,21 @@ namespace SDSS.PostProcess
 {
     internal class Reporter : WordWriter
     {
-        public Reporter() { }
+        private Range _range;
 
+        public Reporter() : base()
+        {
+        }
 
+        public override bool NewDocument(string templatePath = null)
+        {
+            bool succ = base.NewDocument(templatePath);
+            if (succ)
+            {
+                _range = Doc.Range(0, 0);
+            }
+            return succ;
+        }
+        
     }
 }
