@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StationModel1 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ModelName="Dongchuanlu" ModelType="Frame" CalculationMethod="InertialForce" LayerHeightsStr="4, 5, 6, " SpanWidthsStr="3, 6, ">
+  <Definitions>
+    <Materials>
+      <Material Name="elas1" Type="Elastic" Density="1900" Elasticity="200000000000" PoissonRatio="0.3">
+        <ID>71476d01-5769-4003-b075-d3763ebefca8</ID>
+      </Material>
+      <Material xsi:type="MohrCoulomb" Name="MC" Type="MohrCoulomb" Density="1900" Elasticity="200000000000" PoissonRatio="0.3" Cohesion="60000000" FrictionAngle="30">
+        <ID>1fe00aad-31f8-43f1-8bdb-cadf12c1fe99</ID>
+      </Material>
+    </Materials>
+    <Profiles>
+      <Profile xsi:type="Rectangular" Name="rec1" Type="Rectangular" Width="0.5" Height="1.5">
+        <ID>41dc0c1b-32f0-4973-8e39-2d8e07c80f12</ID>
+      </Profile>
+      <Profile xsi:type="T" Name="t1" Type="T" Width="2" Height="1" WebThickness="0.1" FlangeThickness="0.1">
+        <ID>ad6f0684-4a34-4713-904a-a112c1c5d74e</ID>
+      </Profile>
+    </Profiles>
+    <FrameVertices>
+      <FrameVertice ID="1" X="0" Y="0" Index_X="0" Index_Y="0" />
+      <FrameVertice ID="2" X="3" Y="0" Index_X="1" Index_Y="0" />
+      <FrameVertice ID="3" X="9" Y="0" Index_X="2" Index_Y="0" />
+      <FrameVertice ID="4" X="0" Y="4" Index_X="0" Index_Y="1" />
+      <FrameVertice ID="5" X="3" Y="4" Index_X="1" Index_Y="1" />
+      <FrameVertice ID="6" X="9" Y="4" Index_X="2" Index_Y="1" />
+      <FrameVertice ID="7" X="0" Y="9" Index_X="0" Index_Y="2" />
+      <FrameVertice ID="8" X="3" Y="9" Index_X="1" Index_Y="2" />
+      <FrameVertice ID="9" X="9" Y="9" Index_X="2" Index_Y="2" />
+      <FrameVertice ID="10" X="0" Y="15" Index_X="0" Index_Y="3" />
+      <FrameVertice ID="11" X="3" Y="15" Index_X="1" Index_Y="3" />
+      <FrameVertice ID="12" X="9" Y="15" Index_X="2" Index_Y="3" />
+    </FrameVertices>
+  </Definitions>
+  <SystemProperty ModelType="Frame" Es="2.1E+08" fy="300" fcy="21172">
+    <kx>0</kx>
+    <ky>0</ky>
+    <overLayingSoil>0</overLayingSoil>
+    <soilWidth>0</soilWidth>
+  </SystemProperty>
+  <SoilLayers />
+  <Beams>
+    <Beam GeomType="Line" ComponentType="Beam" ID="1" LocationTag="(1,0)" MaterialName="elas1" ProfileName="t1" LeftVerticeId="1" RightVerticeId="2" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="2" LocationTag="(2,0)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="2" RightVerticeId="3" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="3" LocationTag="(1,1)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="4" RightVerticeId="5" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="4" LocationTag="(2,1)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="5" RightVerticeId="6" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="5" LocationTag="(1,2)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="7" RightVerticeId="8" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="6" LocationTag="(2,2)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="8" RightVerticeId="9" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="7" LocationTag="(1,3)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="10" RightVerticeId="11" />
+    <Beam GeomType="Line" ComponentType="Beam" ID="8" LocationTag="(2,3)" MaterialName="elas1" ProfileName="rec1" LeftVerticeId="11" RightVerticeId="12" />
+  </Beams>
+  <Columns>
+    <Column GeomType="Line" ComponentType="Column" ID="9" LocationTag="(0,1)" MaterialName="MC" ProfileName="rec1" TopVerticeId="4" BottomVerticeId="1" />
+    <Column GeomType="Line" ComponentType="Column" ID="10" LocationTag="(1,1)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="5" BottomVerticeId="2" />
+    <Column GeomType="Line" ComponentType="Column" ID="11" LocationTag="(2,1)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="6" BottomVerticeId="3" />
+    <Column GeomType="Line" ComponentType="Column" ID="12" LocationTag="(0,2)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="7" BottomVerticeId="4" />
+    <Column GeomType="Line" ComponentType="Column" ID="13" LocationTag="(1,2)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="8" BottomVerticeId="5" />
+    <Column GeomType="Line" ComponentType="Column" ID="14" LocationTag="(2,2)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="9" BottomVerticeId="6" />
+    <Column GeomType="Line" ComponentType="Column" ID="15" LocationTag="(0,3)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="10" BottomVerticeId="7" />
+    <Column GeomType="Line" ComponentType="Column" ID="16" LocationTag="(1,3)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="11" BottomVerticeId="8" />
+    <Column GeomType="Line" ComponentType="Column" ID="17" LocationTag="(2,3)" MaterialName="elas1" ProfileName="rec1" TopVerticeId="12" BottomVerticeId="9" />
+  </Columns>
+</StationModel1>

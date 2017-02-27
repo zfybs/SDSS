@@ -94,7 +94,7 @@ namespace SDSS.UIControls
             switch (newProfileType)
             {
                 case ProfileType.T:
-                    newP = new T(oriProfile.Name, width: 1, height: 0.8, generalThickness: 0.2);
+                    newP = new T(oriProfile.Name, width: 1, height: 0.8, webThickness: 0.2, flangeThickness: 0.1);
                     break;
                 default:  // 
                     newP = new Rectangular(oriProfile.Name, width: 1, height: 0.8);

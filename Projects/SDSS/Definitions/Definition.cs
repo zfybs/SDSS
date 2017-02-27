@@ -24,7 +24,7 @@ namespace SDSS.Definitions
         private Guid _id;
 
         [XmlElement]
-        [ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
+        [Browsable(false), ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
         public Guid ID
         {
             get { return _id; }
@@ -48,7 +48,12 @@ namespace SDSS.Definitions
 
         public override bool Equals(object obj)
         {
-            return _id.Equals((obj as Definition).ID);
+            Definition def = obj as Definition;
+            if (def == null)
+            {
+                return false;
+            }
+            return _id.Equals(def.ID);
         }
         /// <summary> 返回一个<seealso cref="Definition"/>对象 </summary>
         public object Clone()
