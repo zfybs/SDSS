@@ -7,13 +7,25 @@ from szmEntities import FrameConstructor
 from szmDefinitions import Constants
 from szmDefinitions.ProjectPath import projectPath
 from szmPostProcess import ResultWriter
+import os
+from abaqus import *
 
 '''
 execfile(r'E:\GitHubProjects\SDSS\AbaqusSolver\EnvironmentBuild.py')
 '''
 
-def checkCalculationCondition():
-    pass
+def checkCalculationCondition(frame):
+    pathsDir = projectPath.get_AbaqusWorkingDir()
+    for i in os.listdir(pathsDir):
+        if i.endswith('.lck'):
+            __path = os.path.join(pathsDir, i)
+            os.remove(__path)
+        elif i == frame.name + '.odb':
+            __path = os.path.join(pathsDir, i)
+            # session.odbs[__path].close()
+            # os.remove(__path)
+        else:
+            pass
 
 def Main():
     ''' 整个计算程序的主入口 '''
@@ -26,6 +38,7 @@ def Main():
 
     if True:
         # 对模型进行计算
+        checkCalculationCondition(xmlFrame)
         model,job = Model1.Calculate1(xmlFrame)
     else:
         model,job = 100, 200

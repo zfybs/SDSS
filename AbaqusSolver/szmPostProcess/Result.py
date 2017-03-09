@@ -37,7 +37,7 @@ class uResult(object):
         self.coordinateMaxF1 = coordinateMaxF1
         self.maxShearF=maxShearF
         self.coordinateMaxF2 = coordinateMaxF2
-        self.maxMoment=maxMoment
+        self.maxMoment = maxMoment
         self.coordinateMaxM = coordinateMaxM
 
 

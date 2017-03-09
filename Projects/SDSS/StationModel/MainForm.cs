@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
+using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using eZstd.Enumerable;
-using eZstd.Miscellaneous;
 using SDSS.Definitions;
-using SDSS.Entities;
 using SDSS.PostProcess;
+using SDSS.Project;
 using SDSS.Solver;
-using SDSS.StationModel;
+using SDSS.UIControls;
 using SDSS.Utility;
 using Component = SDSS.Entities.Component;
+using Timer = System.Timers.Timer;
 
-namespace SDSS.UIControls
+namespace SDSS.StationModel
 {
     internal partial class MainForm : Form
     {
+        private const string FormTitle = "地铁车站抗震设计";
+
         private StationModel1 _stationModel;
 
         #region ---   窗口的打开与关闭
@@ -33,16 +33,21 @@ namespace SDSS.UIControls
             //
             RefreshUI(sm);
         }
+
         private void TSM_Exit_Click(object sender, EventArgs e)
         {
             Dispose();
         }
+
         #endregion
 
-        #region ---   界面的刷新
+        #region ---   界面的刷新 RefreshUI
 
         private void RefreshUI(StationModel1 stationModel)
         {
+            Text = FormTitle + @" - " + stationModel.ModelName;
+            label_elapsedTime.Text = "";
+
             // 层高与跨度
             textBoxNum_layers.Text = stationModel.LayerHeights.Length.ToString();
             textBoxNum_spans.Text = stationModel.SpanWidths.Length.ToString();
@@ -64,6 +69,16 @@ namespace SDSS.UIControls
 
             // 图片框
             RefreshUI_PictureBox(stationModel);
+            //
+            setToolStripTxtboxText(tst_abqWorkingDir, ProjectPaths.D_AbaqusWorkingDir);
+        }
+
+        private static void setToolStripTxtboxText(ToolStripTextBox tstb, string text)
+        {
+            tstb.Text = text;
+            var width = tstb.TextBox.CreateGraphics().MeasureString(text, tstb.Font).Width;
+            var size = new Size((int) width, tstb.Height);
+            tstb.Size = size;
         }
 
         private void RefreshUI_FrameTable(StationModel1 stationModel)
@@ -73,9 +88,9 @@ namespace SDSS.UIControls
             RefreshFrameData(stationModel);
 
             // 框架表格中的 ComboBoxColumn
-            RefreshComboBoxColumn(_comboColMat, _stationModel.Definitions.Materials);
-            RefreshComboBoxColumn(_comboColProf, _stationModel.Definitions.Profiles);
-
+            RefreshComboBoxColumn(_comboColMat, stationModel.Definitions.Materials);
+            RefreshComboBoxColumn(_comboColProf, stationModel.Definitions.Profiles);
+            eZDataGridViewFrame.Refresh();
         }
 
         private void RefreshUI_PictureBox(StationModel1 stationModel)
@@ -168,8 +183,8 @@ namespace SDSS.UIControls
         private void button_GenerateFrame_Click(object sender, EventArgs e)
         {
             // create a new form
-            var layerCount = (ushort)textBoxNum_layers.ValueNumber;
-            var spanCount = (ushort)textBoxNum_spans.ValueNumber;
+            var layerCount = (ushort) textBoxNum_layers.ValueNumber;
+            var spanCount = (ushort) textBoxNum_spans.ValueNumber;
             // 构造窗口
             FrameConstructor fc;
             if (layerCount == _stationModel.LayerHeights.Length
@@ -236,17 +251,16 @@ namespace SDSS.UIControls
 
         #region ---   环境与边界参数的设置
 
-
         private void textBoxNum_topEle_ValueNumberChanged(object arg1, double arg2)
         {
-            _stationModel.SoilProperty.TopElevation = (float)arg2;
+            _stationModel.SoilProperty.TopElevation = (float) arg2;
             //
             RefreshUI_PictureBox(_stationModel);
         }
 
         private void textBoxNum_OverLaying_ValueNumberChanged(object arg1, double arg2)
         {
-            _stationModel.SoilProperty.OverLayingSoilHeight = (float)arg2;
+            _stationModel.SoilProperty.OverLayingSoilHeight = (float) arg2;
             //
             RefreshUI_PictureBox(_stationModel);
         }
@@ -254,18 +268,17 @@ namespace SDSS.UIControls
         private void button_Boundary_Click(object sender, EventArgs e)
         {
             var sp = _stationModel.SoilProperty;
-            BoundaryParamForm f = new BoundaryParamForm(sp.kx, sp.ky);
+            BoundaryParamForm f = new BoundaryParamForm(sp.Kx, sp.Ky);
             f.ShowDialog();
 
             //
-            sp.kx = f.Kx;
-            sp.ky = f.Ky;
-
+            sp.Kx = f.Kx;
+            sp.Ky = f.Ky;
         }
 
         #endregion
 
-        #region ---  将整个模型导出到 xml 文档
+        #region ---  将整个模型导出到 xml 文档 与  从 xml 文档中导入整个模型
 
         /// <summary> 将整个模型导出到 xml 文档 </summary>
         private void TSM_Export_Click(object sender, EventArgs e)
@@ -273,13 +286,18 @@ namespace SDSS.UIControls
             StringBuilder errorMessage = new StringBuilder();
             if (ValidateModel(_stationModel, ref errorMessage))
             {
-                string filePath = Utils.ChooseSaveStationModel("导出车站模型");
+                string filePath = sdUtils.ChooseSaveStationModel("导出车站模型");
                 if (filePath.Length > 0)
                 {
-                    bool succ = Utils.ExportToXmlFile(xmlFilePath: filePath, src: _stationModel, errorMessage: ref errorMessage);
+                    bool succ = sdUtils.ExportToXmlFile(xmlFilePath: filePath, src: _stationModel,
+                        errorMessage: ref errorMessage);
                     if (succ)
                     {
-                        ProjectPaths.F_CalculationModel = filePath;
+                        MessageBox.Show(@"模型导出成功", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(@"模型导出失败", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -310,19 +328,14 @@ namespace SDSS.UIControls
             //}
         }
 
-
-        #endregion
-
-        #region ---  从 xml 文档中导入整个模型
-
         private void TSM_Import_Click(object sender, EventArgs e)
         {
-            string filePath = Utils.ChooseOpenStationModel("导入车站模型");
+            string filePath = sdUtils.ChooseOpenStationModel("导入车站模型");
             if (filePath.Length > 0)
             {
                 StringBuilder errorMessage = new StringBuilder();
                 bool succeeded;
-                var sm = Utils.ImportFromXml(filePath, typeof(StationModel1),
+                var sm = sdUtils.ImportFromXml(filePath, typeof (StationModel1),
                     out succeeded, ref errorMessage) as StationModel1;
 
                 if (succeeded && sm != null)
@@ -340,7 +353,18 @@ namespace SDSS.UIControls
 
         #endregion
 
+        #region ---   Abaqus 求解 以及 前后处理
+
         #region ---   求解计算
+
+        private AbaqusSolver _solver;
+        private BackgroundCalculationParameters _bcParameters;
+
+        private class BackgroundCalculationParameters
+        {
+            public AbaqusSolver Solver;
+            public string ErrorMessage;
+        }
 
         private void buttonSolve_Click(object sender, EventArgs e)
         {
@@ -349,98 +373,243 @@ namespace SDSS.UIControls
             // 对模型进行检查，看是否可以进行计算
             if (_stationModel.Validate(ref errorMessage))
             {
-                AbaqusSolver solver = new AbaqusSolver(
-                    workingDir: ProjectPaths.D_AbaqusWorkingDir ?? ProjectPaths.D_AbaqusDefaultWorkingDir,
+                _solver = new AbaqusSolver(
+                    workingDir: ProjectPaths.D_AbaqusWorkingDir,
                     modelType: ModelType.Frame,
                     solverGui: SolverGUI.NoGUI
-                   );
+                    );
 
                 // 检查计算环境，文件配置
-                if (solver.CheckEnvironment(_stationModel, ref errorMessage))
+                if (_solver.CheckEnvironment(_stationModel, ref errorMessage))
                 {
                     // 求解计算
                     _bcParameters = new BackgroundCalculationParameters()
                     {
-                        Solver = solver,
+                        Solver = _solver,
                         ErrorMessage = errorMessage.ToString(),
-
                     };
                     //
                     progressBar1.Visible = true;
                     progressBar1.Style = ProgressBarStyle.Marquee;
 
-                    if (_backgroundWorker.IsBusy != true)
+                    if (_bgw_Solve.IsBusy != true)
                     {
+                        // 
+                        SetUIForCalculationStart();
                         // Start the asynchronous operation.
-                        _backgroundWorker.RunWorkerAsync(argument: _bcParameters);
+                        _bgw_Solve.RunWorkerAsync(argument: _bcParameters);
                     }
                 }
             }
         }
 
-        private BackgroundCalculationParameters _bcParameters;
-        private class BackgroundCalculationParameters
-        {
-            public AbaqusSolver Solver;
-            public string ErrorMessage;
-        }
-
         /// <summary> 开始计算 </summary>
-        private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void _bgw_Solver_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 BackgroundCalculationParameters para = e.Argument as BackgroundCalculationParameters;
-
-                SolverState state = para.Solver.Execute(waitingSeconds: Options.WaitingSeconds,
-                    errorMessage: out para.ErrorMessage);
-
-                e.Result = state;
+                //
+                _solver.CalculationTimerElapsed += SolverOnCalculationTimerElapsed;
+                SolverState state = para.Solver.Execute(
+                    waitingSeconds: Options.WaitingSeconds,
+                    errorMessage: out para.ErrorMessage
+                    );
             }
             catch (Exception)
             {
                 e.Cancel = true;
                 // ignored
             }
+        }
 
+        /// <summary> 强行终止 Abaqus 的计算 </summary>
+        private void button_Terminate_Click(object sender, EventArgs e)
+        {
+            if (_solver != null && _solver.State == SolverState.Calculating)
+            {
+                _solver.TerminateAbqCalculation();
+            }
+        }
+
+        #endregion
+
+        #region ---   计算过程中的操作
+
+        private void SolverOnCalculationTimerElapsed(Timer timer, TimeSpan timeSpan)
+        {
+            if (_bgw_Solve != null)
+            {
+                _bgw_Solve.ReportProgress((int) timeSpan.TotalSeconds, timeSpan);
+            }
+        }
+
+        private void _bgw_Solve_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            var ts = (TimeSpan) e.UserState;
+            label_elapsedTime.Text = @"Elapsed time : " + ts.ToString(@"hh\:mm\:ss");
         }
 
         #endregion
 
         #region ---   后处理操作
 
+        private PostProcessor _postProcessor;
+
         /// <summary> 计算完成，开始后处理 </summary>
         private void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            progressBar1.Visible = false;
+            SetUIForCalculationFinished();
+            //
             if (e.Cancelled) // 判断是否是手动退出线程
             {
-
             }
-            SolverState state = (SolverState)e.Result;
+
             AbaqusSolver solver = _bcParameters.Solver;
 
             // 后处理
             StringBuilder sb = new StringBuilder();
-            PostProcessor pp = new PostProcessor(solver);
-            if (pp.CheckSolveState(ref sb) && pp.CheckResultFiles(errorMessage: ref sb))
+            _postProcessor = new PostProcessor(solver);
+            if (_postProcessor.CheckFinishState(errorMessage: ref sb))
             {
-                var res = MessageBox.Show(@"计算完成，是否直接生成报告？", @"Congratulations", MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.Asterisk);
-                if (res == DialogResult.OK)
+                SolverState ss = _postProcessor.CheckResultFiles(errorMessage: ref sb);
+                if (ss == SolverState.Succeeded)
                 {
-                    pp.ReadFile();
-                    pp.WriteReport();
+                    if (Options.DirectlyReport)
+                    {
+                        ReadAndShowResults(_postProcessor);
+                    }
+                    else
+                    {
+                        var res = MessageBox.Show(@"计算结束且成功，是否直接生成报告？", @"Congratulations", MessageBoxButtons.OKCancel,
+                            MessageBoxIcon.Asterisk);
+                        if (res == DialogResult.OK)
+                        {
+                            ReadAndShowResults(_postProcessor);
+                        }
+                    }
+                }
+                else if (ss == SolverState.FailedWithError)
+                {
+                    var res = MessageBox.Show("Abaqus 计算过程中出错而导致计算终止！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
             }
             else
             {
-                var res = MessageBox.Show("计算过程出现异常！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
+                var res = MessageBox.Show("Abaqus 计算过程未正常结束！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
 
+        private void tsm_WriteReport_Click(object sender, EventArgs e)
+        {
+            ReadAndShowResults(_postProcessor);
+        }
 
+
+        /// <summary>
+        /// 将 Abaqus 的计算结果进行读取，并显示出来
+        /// </summary>
+        /// <param name="pp"></param>
+        private void ReadAndShowResults(PostProcessor pp)
+        {
+            if (pp != null)
+            {
+                try
+                {
+                    if (pp.Results == null)
+                    {
+                        pp.ReadResultFile(resultFilePath: ProjectPaths.F_AbqResult);
+                    }
+                    pp.ShowResultsList();
+                }
+                catch (Exception ex)
+                {
+                    // ignored
+                    var res = MessageBox.Show("后处理过程出现异常！\r\n", @"提示", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                var res = MessageBox.Show(@"未找到有效的计算结果！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void tsm_ReportTest_Click(object sender, EventArgs e)
+        {
+            var pp = new PostProcessor(null);
+            try
+            {
+                if (pp.Results == null)
+                {
+                    pp.ReadResultFile(resultFilePath: ProjectPaths.F_AbqResult);
+                }
+                pp.ShowResultsList();
+            }
+            catch (Exception ex)
+            {
+                // ignored
+                var res = MessageBox.Show("后处理过程出现异常！\r\n", @"提示", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
+
+        /// <summary> 为 Abaqus 的开始计算设置对应的 UI 界面 </summary>
+        private void SetUIForCalculationStart()
+        {
+            button_Terminate.Visible = true;
+            buttonSolve.Enabled = false;
+            label_elapsedTime.Text = "";
+            label_elapsedTime.Visible = true;
+        }
+
+        /// <summary> 为 Abaqus 的结束计算设置对应的 UI 界面 </summary>
+        private void SetUIForCalculationFinished()
+        {
+            progressBar1.Visible = false;
+            button_Terminate.Visible = false;
+            buttonSolve.Enabled = true;
+            label_elapsedTime.Visible = false;
+        }
+
+        #endregion
+
+        #region ---   设置软件环境
+
+        private OptionsForm _opForm;
+
+        private void TSM_Option_Click(object sender, EventArgs e)
+        {
+            if (_opForm == null)
+            {
+                _opForm = new OptionsForm();
+            }
+            _opForm.ShowDialog();
+        }
+
+        //设置当前项目的计算工作路径（项目>工作文件夹）
+        private ModelOptions _mo;
+
+        private void tsm_abqWkDir_Click(object sender, EventArgs e)
+        {
+            if (_mo == null)
+            {
+                _mo = new ModelOptions(_stationModel);
+            }
+            var res = _mo.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                string str = ProjectPaths.D_AbaqusWorkingDir;
+                setToolStripTxtboxText(tst_abqWorkingDir, str);
+
+                //
+                Text = FormTitle + " - " + _stationModel.ModelName;
+            }
+        }
 
         #endregion
     }

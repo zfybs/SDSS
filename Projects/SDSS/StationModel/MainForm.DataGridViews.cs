@@ -11,9 +11,10 @@ using SDSS.Entities;
 using SDSS.StationModel;
 using Component = SDSS.Entities.Component;
 
-namespace SDSS.UIControls
+namespace SDSS.StationModel
 {
-    internal partial class MainForm
+
+    internal partial class MainForm : Form
     {
         /// <summary> 整个模型中每一个具体土层的信息 </summary>
         private BindingList<SoilLayer_Inertial> _soilLayers;
@@ -147,9 +148,7 @@ namespace SDSS.UIControls
             eZdgv.ManipulateRows = true;
             eZdgv.ShowRowNumber = true;
             eZdgv.SupportPaste = false;
-
             //
-
 
             // 创建数据列并绑定到数据源 ----------------------------------------------
 
@@ -174,8 +173,6 @@ namespace SDSS.UIControls
             //
             _eZDataGridViewSoilConstructed = true;
         }
-
-
 
         /// <summary> 根据最新的土层信息刷新表格 </summary>
         private void RefreshSoilData(StationModel1 sm)
@@ -224,12 +221,13 @@ namespace SDSS.UIControls
         private void SoilLayersOnListChanged(object sender, ListChangedEventArgs e)
         {
             var layers = sender as BindingList<SoilLayerEntity>;
+
             OnSoilLayerChanged(layers);
         }
 
         /// <summary> 土层的数量或者参数发生变化 </summary>
         /// <param name="layers"></param>
-        private void OnSoilLayerChanged(BindingList<SoilLayerEntity> layers)
+        private void OnSoilLayerChanged(IEnumerable<SoilLayerEntity> layers)
         {
             //_stationModel;
             var top = _stationModel.SoilProperty.TopElevation;
@@ -245,6 +243,7 @@ namespace SDSS.UIControls
             }
             //
             _stationModel.SoilLayers = soils;
+            _stationModel.SoilProperty.GetKc(importantSoilLayers: soils);
             //
             RefreshUI_PictureBox(_stationModel);
         }
@@ -254,8 +253,6 @@ namespace SDSS.UIControls
             var newL = new SoilLayerEntity(soilHeight: 1.0f, kci0: 0.38f);
             e.NewObject = newL;
         }
-
-
 
         #endregion
 
@@ -272,10 +269,10 @@ namespace SDSS.UIControls
             if (column != null)
             {
                 // 设置一个默认的定义
-                Definition defaltDef = null;
+                Definition defaultDef = null;
                 if (definitions != null && definitions.Any())
                 {
-                    defaltDef = definitions.First();
+                    defaultDef = definitions.First();
                 }
                 //
                 // 刷新数据列中每一个单元格的选择
@@ -285,17 +282,17 @@ namespace SDSS.UIControls
                     DataGridViewComboBoxCell cell = r.Cells[column.Index] as DataGridViewComboBoxCell;
                     Definition df = cell.Value as Definition;
                     //
-                    if (defaltDef != null)
+                    if (defaultDef != null)
                     {
                         if (df == null) // 说明此单元格还没有赋值 
                         {
-                            cell.Value = definitions.First();
+                            cell.Value = defaultDef;
                         }
                         else
                         {
                             if (!definitions.Contains(df))
                             {
-                                cell.Value = definitions.First();
+                                cell.Value = defaultDef;
                             }
                         }
                     }

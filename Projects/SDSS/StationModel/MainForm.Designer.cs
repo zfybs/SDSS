@@ -1,4 +1,6 @@
-﻿namespace SDSS.UIControls
+﻿using SDSS.UIControls;
+
+namespace SDSS.StationModel
 {
     partial class MainForm
     {
@@ -62,15 +64,19 @@
             this.TSM_Export = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.TSM_Exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.选择ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSM_Option = new System.Windows.Forms.ToolStripMenuItem();
             this.项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.工作文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.生成报告ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_ModelInfos = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_WriteReport = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_ReportTest = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.文档ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.tst_abqWorkingDir = new System.Windows.Forms.ToolStripTextBox();
+            this._bgw_Solve = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.button_Terminate = new System.Windows.Forms.Button();
+            this.label_elapsedTime = new System.Windows.Forms.Label();
             this.modelDrawer1 = new SDSS.UIControls.ModelDrawer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -85,7 +91,7 @@
             // buttonSolve
             // 
             this.buttonSolve.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSolve.Location = new System.Drawing.Point(782, 547);
+            this.buttonSolve.Location = new System.Drawing.Point(782, 552);
             this.buttonSolve.Name = "buttonSolve";
             this.buttonSolve.Size = new System.Drawing.Size(75, 24);
             this.buttonSolve.TabIndex = 1;
@@ -180,7 +186,7 @@
             // button_Boundary
             // 
             this.button_Boundary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Boundary.Location = new System.Drawing.Point(561, 547);
+            this.button_Boundary.Location = new System.Drawing.Point(566, 553);
             this.button_Boundary.Margin = new System.Windows.Forms.Padding(2);
             this.button_Boundary.Name = "button_Boundary";
             this.button_Boundary.Size = new System.Drawing.Size(75, 24);
@@ -218,8 +224,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.textBoxNum_OverLaying);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxNum_topEle);
             this.splitContainer1.Panel2.Controls.Add(this.eZDataGridViewSoilLayers);
-            this.splitContainer1.Size = new System.Drawing.Size(543, 450);
-            this.splitContainer1.SplitterDistance = 263;
+            this.splitContainer1.Size = new System.Drawing.Size(543, 456);
+            this.splitContainer1.SplitterDistance = 277;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 7;
             // 
@@ -257,7 +263,7 @@
             this.eZDataGridViewFrame.RowTemplate.Height = 23;
             this.eZDataGridViewFrame.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewFrame.ShowRowNumber = false;
-            this.eZDataGridViewFrame.Size = new System.Drawing.Size(539, 234);
+            this.eZDataGridViewFrame.Size = new System.Drawing.Size(583, 250);
             this.eZDataGridViewFrame.SupportPaste = false;
             this.eZDataGridViewFrame.TabIndex = 1;
             this.eZDataGridViewFrame.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.eZDataGridViewFrame_DataError);
@@ -300,7 +306,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(302, 8);
+            this.label9.Location = new System.Drawing.Point(133, 9);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(23, 12);
             this.label9.TabIndex = 7;
@@ -309,7 +315,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(125, 8);
+            this.label8.Location = new System.Drawing.Point(291, 9);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(23, 12);
             this.label8.TabIndex = 7;
@@ -318,7 +324,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(175, 8);
+            this.label6.Location = new System.Drawing.Point(6, 8);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 12);
             this.label6.TabIndex = 7;
@@ -327,7 +333,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 8);
+            this.label5.Location = new System.Drawing.Point(175, 8);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 7;
@@ -335,7 +341,7 @@
             // 
             // textBoxNum_OverLaying
             // 
-            this.textBoxNum_OverLaying.Location = new System.Drawing.Point(246, 4);
+            this.textBoxNum_OverLaying.Location = new System.Drawing.Point(77, 4);
             this.textBoxNum_OverLaying.Name = "textBoxNum_OverLaying";
             this.textBoxNum_OverLaying.PositiveOnly = true;
             this.textBoxNum_OverLaying.Size = new System.Drawing.Size(50, 21);
@@ -345,7 +351,7 @@
             // 
             // textBoxNum_topEle
             // 
-            this.textBoxNum_topEle.Location = new System.Drawing.Point(69, 4);
+            this.textBoxNum_topEle.Location = new System.Drawing.Point(235, 4);
             this.textBoxNum_topEle.Name = "textBoxNum_topEle";
             this.textBoxNum_topEle.PositiveOnly = true;
             this.textBoxNum_topEle.Size = new System.Drawing.Size(50, 21);
@@ -367,14 +373,14 @@
             this.eZDataGridViewSoilLayers.RowTemplate.Height = 23;
             this.eZDataGridViewSoilLayers.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.eZDataGridViewSoilLayers.ShowRowNumber = false;
-            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(539, 158);
+            this.eZDataGridViewSoilLayers.Size = new System.Drawing.Size(583, 168);
             this.eZDataGridViewSoilLayers.SupportPaste = false;
             this.eZDataGridViewSoilLayers.TabIndex = 1;
             // 
             // buttonSavePic
             // 
             this.buttonSavePic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSavePic.Location = new System.Drawing.Point(9, 547);
+            this.buttonSavePic.Location = new System.Drawing.Point(10, 553);
             this.buttonSavePic.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSavePic.Name = "buttonSavePic";
             this.buttonSavePic.Size = new System.Drawing.Size(75, 24);
@@ -400,11 +406,12 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSM_File,
             this.项目ToolStripMenuItem,
-            this.帮助ToolStripMenuItem});
+            this.帮助ToolStripMenuItem,
+            this.tst_abqWorkingDir});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(868, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(868, 27);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -415,63 +422,74 @@
             this.TSM_Export,
             this.toolStripSeparator1,
             this.TSM_Exit,
-            this.选择ToolStripMenuItem});
+            this.TSM_Option});
             this.TSM_File.Name = "TSM_File";
-            this.TSM_File.Size = new System.Drawing.Size(45, 20);
+            this.TSM_File.Size = new System.Drawing.Size(45, 23);
             this.TSM_File.Text = "文件";
             // 
             // TSM_Import
             // 
             this.TSM_Import.Name = "TSM_Import";
-            this.TSM_Import.Size = new System.Drawing.Size(122, 22);
+            this.TSM_Import.Size = new System.Drawing.Size(117, 22);
             this.TSM_Import.Text = "打开";
             this.TSM_Import.Click += new System.EventHandler(this.TSM_Import_Click);
             // 
             // TSM_Export
             // 
             this.TSM_Export.Name = "TSM_Export";
-            this.TSM_Export.Size = new System.Drawing.Size(122, 22);
+            this.TSM_Export.Size = new System.Drawing.Size(117, 22);
             this.TSM_Export.Text = "导出";
             this.TSM_Export.Click += new System.EventHandler(this.TSM_Export_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(119, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(114, 6);
             // 
             // TSM_Exit
             // 
             this.TSM_Exit.Name = "TSM_Exit";
-            this.TSM_Exit.Size = new System.Drawing.Size(122, 22);
+            this.TSM_Exit.Size = new System.Drawing.Size(117, 22);
             this.TSM_Exit.Text = "退出";
             this.TSM_Exit.Click += new System.EventHandler(this.TSM_Exit_Click);
             // 
-            // 选择ToolStripMenuItem
+            // TSM_Option
             // 
-            this.选择ToolStripMenuItem.Name = "选择ToolStripMenuItem";
-            this.选择ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.选择ToolStripMenuItem.Text = "选项(_O)";
+            this.TSM_Option.Name = "TSM_Option";
+            this.TSM_Option.Size = new System.Drawing.Size(117, 22);
+            this.TSM_Option.Text = "选项(&O)";
+            this.TSM_Option.Click += new System.EventHandler(this.TSM_Option_Click);
             // 
             // 项目ToolStripMenuItem
             // 
             this.项目ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.工作文件夹ToolStripMenuItem,
-            this.生成报告ToolStripMenuItem});
+            this.tsm_ModelInfos,
+            this.tsm_WriteReport,
+            this.tsm_ReportTest});
             this.项目ToolStripMenuItem.Name = "项目ToolStripMenuItem";
-            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
             this.项目ToolStripMenuItem.Text = "项目";
             // 
-            // 工作文件夹ToolStripMenuItem
+            // tsm_ModelInfos
             // 
-            this.工作文件夹ToolStripMenuItem.Name = "工作文件夹ToolStripMenuItem";
-            this.工作文件夹ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.工作文件夹ToolStripMenuItem.Text = "工作文件夹";
+            this.tsm_ModelInfos.Name = "tsm_ModelInfos";
+            this.tsm_ModelInfos.Size = new System.Drawing.Size(152, 22);
+            this.tsm_ModelInfos.Text = "模型信息";
+            this.tsm_ModelInfos.Click += new System.EventHandler(this.tsm_abqWkDir_Click);
             // 
-            // 生成报告ToolStripMenuItem
+            // tsm_WriteReport
             // 
-            this.生成报告ToolStripMenuItem.Name = "生成报告ToolStripMenuItem";
-            this.生成报告ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.生成报告ToolStripMenuItem.Text = "生成报告";
+            this.tsm_WriteReport.Name = "tsm_WriteReport";
+            this.tsm_WriteReport.Size = new System.Drawing.Size(152, 22);
+            this.tsm_WriteReport.Text = "生成报告";
+            this.tsm_WriteReport.Click += new System.EventHandler(this.tsm_WriteReport_Click);
+            // 
+            // tsm_ReportTest
+            // 
+            this.tsm_ReportTest.Name = "tsm_ReportTest";
+            this.tsm_ReportTest.Size = new System.Drawing.Size(152, 22);
+            this.tsm_ReportTest.Text = "测试生成报告";
+            this.tsm_ReportTest.Click += new System.EventHandler(this.tsm_ReportTest_Click);
             // 
             // 帮助ToolStripMenuItem
             // 
@@ -479,7 +497,7 @@
             this.文档ToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
             this.帮助ToolStripMenuItem.Text = "帮助";
             // 
             // 文档ToolStripMenuItem
@@ -494,11 +512,19 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // _backgroundWorker
+            // tst_abqWorkingDir
             // 
-            this._backgroundWorker.WorkerSupportsCancellation = true;
-            this._backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this._backgroundWorker_DoWork);
-            this._backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this._backgroundWorker_RunWorkerCompleted);
+            this.tst_abqWorkingDir.Enabled = false;
+            this.tst_abqWorkingDir.Name = "tst_abqWorkingDir";
+            this.tst_abqWorkingDir.Size = new System.Drawing.Size(300, 23);
+            // 
+            // _bgw_Solve
+            // 
+            this._bgw_Solve.WorkerReportsProgress = true;
+            this._bgw_Solve.WorkerSupportsCancellation = true;
+            this._bgw_Solve.DoWork += new System.ComponentModel.DoWorkEventHandler(this._bgw_Solver_DoWork);
+            this._bgw_Solve.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this._bgw_Solve_ProgressChanged);
+            this._bgw_Solve.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this._backgroundWorker_RunWorkerCompleted);
             // 
             // progressBar1
             // 
@@ -510,6 +536,29 @@
             this.progressBar1.TabIndex = 9;
             this.progressBar1.Visible = false;
             // 
+            // button_Terminate
+            // 
+            this.button_Terminate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_Terminate.Location = new System.Drawing.Point(701, 553);
+            this.button_Terminate.Name = "button_Terminate";
+            this.button_Terminate.Size = new System.Drawing.Size(75, 23);
+            this.button_Terminate.TabIndex = 10;
+            this.button_Terminate.Text = "终止计算";
+            this.button_Terminate.UseVisualStyleBackColor = true;
+            this.button_Terminate.Visible = false;
+            this.button_Terminate.Click += new System.EventHandler(this.button_Terminate_Click);
+            // 
+            // label_elapsedTime
+            // 
+            this.label_elapsedTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label_elapsedTime.AutoSize = true;
+            this.label_elapsedTime.BackColor = System.Drawing.Color.Transparent;
+            this.label_elapsedTime.Location = new System.Drawing.Point(170, 569);
+            this.label_elapsedTime.Name = "label_elapsedTime";
+            this.label_elapsedTime.Size = new System.Drawing.Size(95, 12);
+            this.label_elapsedTime.TabIndex = 11;
+            this.label_elapsedTime.Text = "Elapsed time : ";
+            // 
             // modelDrawer1
             // 
             this.modelDrawer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -517,7 +566,7 @@
             this.modelDrawer1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.modelDrawer1.Location = new System.Drawing.Point(10, 31);
             this.modelDrawer1.Name = "modelDrawer1";
-            this.modelDrawer1.Size = new System.Drawing.Size(284, 510);
+            this.modelDrawer1.Size = new System.Drawing.Size(284, 520);
             this.modelDrawer1.TabIndex = 0;
             this.modelDrawer1.TabStop = false;
             this.modelDrawer1.Paint += new System.Windows.Forms.PaintEventHandler(this.modelDrawer1_Paint);
@@ -528,6 +577,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(868, 587);
+            this.Controls.Add(this.label_elapsedTime);
+            this.Controls.Add(this.modelDrawer1);
+            this.Controls.Add(this.button_Terminate);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.textBoxNum_spans);
@@ -542,7 +594,6 @@
             this.Controls.Add(this.button_Boundary);
             this.Controls.Add(this.button_Materials);
             this.Controls.Add(this.buttonSolve);
-            this.Controls.Add(this.modelDrawer1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(679, 528);
@@ -595,21 +646,25 @@
         private System.Windows.Forms.ToolStripMenuItem TSM_Export;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem TSM_Exit;
-        private System.ComponentModel.BackgroundWorker _backgroundWorker;
+        private System.ComponentModel.BackgroundWorker _bgw_Solve;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 文档ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 项目ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 工作文件夹ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 生成报告ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 选择ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsm_ModelInfos;
+        private System.Windows.Forms.ToolStripMenuItem tsm_WriteReport;
+        private System.Windows.Forms.ToolStripMenuItem TSM_Option;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private eZstd.UserControls.TextBoxNum textBoxNum_OverLaying;
         private eZstd.UserControls.TextBoxNum textBoxNum_topEle;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button_Terminate;
+        private System.Windows.Forms.ToolStripTextBox tst_abqWorkingDir;
+        private System.Windows.Forms.ToolStripMenuItem tsm_ReportTest;
+        private System.Windows.Forms.Label label_elapsedTime;
     }
 }
 

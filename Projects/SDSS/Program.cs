@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using SDSS.Definitions;
 using SDSS.StationModel;
 using SDSS.UIControls;
+using SDSS.Project;
 
 namespace SDSS
 {
@@ -14,28 +16,28 @@ namespace SDSS
         [STAThread]
         static void Main(string[] args)
         {
-            Test(args);
-            // return;
-            StartProgram(args);
+            BeforeProgramStarted(args);
+            //
+            if (Test(args))
+            {
+                StartProgram(args);
+            }
+            //
+            AfterProgramFinished(args);
         }
 
         private static void StartProgram(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //
-            var sm = StationModel1.GetUniqueInstance() as StationModel1;
-            //ConstructStationModel(sm);
-
-            //
-            var mf = new MainForm(sm);
             Application.Run(new EnterSplash());
         }
 
         #region ---   测试
 
-        private static void Test(string[] args)
+        private static bool Test(string[] args)
         {
+            return true;
         }
 
         /// <summary> 构造一个车站模型实例 </summary>
@@ -50,7 +52,7 @@ namespace SDSS
             //
             Profile rec = new Rectangular("rec1", 0.5, 1.5);
             sm.Definitions.Profiles.Add(rec);
-            Profile profT = new T("t1", 2, 1, 0.1, 0.1);
+            Profile profT = new TT("t1", 2, 1, 0.1, 0.1);
             sm.Definitions.Profiles.Add(profT);
 
             //
@@ -61,6 +63,22 @@ namespace SDSS
             sm.Columns[0].Material = mat2;
         }
 
+        #endregion
+
+        #region ---   程序运行前后的操作
+
+        /// <summary> 在程序开始前的操作 </summary>
+        /// <param name="args"></param>
+        private static void BeforeProgramStarted(string[] args)
+        {
+            Options.Load();
+        }
+
+        /// <summary> 程序结束后的操作 </summary>
+        private static void AfterProgramFinished(string[] args)
+        {
+            Options.Save();
+        }
         #endregion
     }
 }

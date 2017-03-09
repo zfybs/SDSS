@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using eZstd.Enumerable;
-using SDSS.Constants;
+using SDSS.Project;
 using SDSS.Definitions;
 using SDSS.Entities;
 
@@ -100,11 +101,14 @@ namespace SDSS.StationModel
         /// <summary> 构造函数 </summary>
         private StationModel1() : base()
         {
+            _uiniqueInstance = this;
+            //
             Beams = new XmlList<Beam>();
             Columns = new XmlList<Column>();
             //
             LayerHeights = new float[0];
             SpanWidths = new float[0];
+            //
         }
 
         private StationModel1(string name)
@@ -201,7 +205,7 @@ namespace SDSS.StationModel
             if (LayerHeights != null && SpanWidths != null)
             {
                 ssg = new SoilStructureGeometry(
-                    soilWidth: 60,
+                    soilWidth: SpanWidths.Sum()* 3.0f,
                     soilHeight: SoilLayers.Select(r => r.Top - r.Bottom).ToArray(),
                     overlyingSoilHeight: SoilProperty.OverLayingSoilHeight,
                     stationFloors: LayerHeights.Select(r => (float)r).Reverse().ToArray(),
@@ -213,5 +217,6 @@ namespace SDSS.StationModel
         }
 
         #endregion
+
     }
 }

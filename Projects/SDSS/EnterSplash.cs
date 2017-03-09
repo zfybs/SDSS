@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using eZstd.Miscellaneous;
 using SDSS.Definitions;
+using SDSS.Project;
 using SDSS.StationModel;
 using SDSS.UIControls;
 using SDSS.Utility;
@@ -28,7 +29,7 @@ namespace SDSS
             {
                 if (Directory.Exists(value))
                 {
-                    ProjectPaths.SetAbaqusWorkingDir(value);
+                    // ProjectPaths.SetAbaqusWorkingDir(value);
                 }
                 _abqWorkingDir = value;
             }
@@ -159,7 +160,7 @@ namespace SDSS
         private void buttonOk_Click(object sender, EventArgs e)
         {
             string text = textBox2.Text;
-            if (string.IsNullOrEmpty(text) || Utils.StringHasNonEnglish(text))
+            if (string.IsNullOrEmpty(text) || Utility.sdUtils.StringHasNonEnglish(text))
             {
                 MessageBox.Show(@"模型名称未指定，或者名称中包含非英文的字符！", @"提示",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -167,6 +168,7 @@ namespace SDSS
             }
 
             string modelName = text;
+            Options.OModelName = text;
             AbqWorkingDir = textBox1.Text;
             this.Hide();
             //
@@ -205,8 +207,7 @@ namespace SDSS
             return sm;
         }
 
+
         #endregion
-
-
     }
 }

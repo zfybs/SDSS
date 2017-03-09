@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
+using System.Timers;
 using System.Windows.Forms;
 using eZstd.Diagnostics;
 using SDSS.Definitions;
+using SDSS.Project;
 using SDSS.Utility;
+using Timer = System.Timers.Timer;
 
 namespace SDSS.Solver
 {
@@ -27,6 +29,11 @@ namespace SDSS.Solver
 
         /// <summary> 求解器当前的求解状态 </summary>
         public SolverState State { get; private set; }
+
+        public Process AbqProcess { get; private set; }
+
+        /// <summary> 是否要强制退出 Abaqus 计算过程 </summary>
+        public bool ForceKillProcess { get; private set; }
 
         #endregion
 
@@ -70,8 +77,12 @@ namespace SDSS.Solver
             string solGui = "";
             switch (_solverGui)
             {
-                case SolverGUI.CAE: solGui = "script"; break;
-                default: solGui = "noGUI"; break;
+                case SolverGUI.CAE:
+                    solGui = "script";
+                    break;
+                default:
+                    solGui = "noGUI";
+                    break;
             }
 
             string cmd = @"@echo off
@@ -110,11 +121,9 @@ abaqus cae noGUI=beamExample.py
                 }
 
                 // 1. 指定用来计算的车站模型文件
-                if (!File.Exists(ProjectPaths.F_CalculationModel))
-                {
-                    ProjectPaths.F_CalculationModel = ProjectPaths.F_DefaultModel;
-                }
-                Utils.ExportToXmlFile(xmlFilePath: ProjectPaths.F_CalculationModel, src: sm, errorMessage: ref errorMessage);
+
+                sdUtils.ExportToXmlFile(xmlFilePath: ProjectPaths.F_CalculationModel, src: sm,
+                    errorMessage: ref errorMessage);
                 //
 
                 // 2. 创建启动 Abaqus 的 .bat 文件
@@ -159,6 +168,14 @@ abaqus cae noGUI=beamExample.py
             // 2. 开始计算
             var succ = RunAndWaitforExit(batFileName: ProjectPaths.F_InitialBat, waitingSeconds: waitingSeconds);
 
+            // 整个计算完成 --------------
+            _timer.Stop();
+            _timer.Dispose();
+            _timer = null;
+            //
+            ForceKillProcess = false;
+            AbqProcess = null;
+            //
             errorMessage = "计算完成";
             return succ;
         }
@@ -171,62 +188,126 @@ abaqus cae noGUI=beamExample.py
         /// <returns></returns>
         private SolverState RunAndWaitforExit(string batFileName, uint waitingSeconds)
         {
-
             State = SolverState.Calculating;
             //batFileName = @"C:\Users\zengfy\Desktop\AbaqusScriptTest\run.cmd";
 
             // var t = IO.ShellExecute(IntPtr.Zero, "open", batFileName, "", "", ShowCommands.SW_HIDE);
             // 上面的这种方式也可以达到通过 cmd 运行 Abaqus，并隐藏 cmd窗口的效果，但是 ShellExecute() 为异步操作
-            Process p = new Process();
-            p.StartInfo.FileName = batFileName;
+            AbqProcess = new Process();
+            AbqProcess.StartInfo.FileName = batFileName;
 
             // :warning: 要想通过cmd运行.bat文件，又不显示cmd黑窗，必须使用下面两个组合属性
-            p.StartInfo.UseShellExecute = false; // false
-            p.StartInfo.CreateNoWindow = (_solverGui == SolverGUI.NoGUI); // true
+            AbqProcess.StartInfo.UseShellExecute = false; // false
+            AbqProcess.StartInfo.CreateNoWindow = (_solverGui == SolverGUI.NoGUI); // true
 
             //
-            p.Start(); // 异步执行
+            AbqProcess.Start(); // 异步执行，不阻塞
             State = SolverState.Calculating;
-            p.WaitForExit((int)waitingSeconds * 1000); // 线程等待
-            State = SolverState.Succeeded;
-            while (!p.HasExited)
-            {
-                var res = MessageBox.Show($"已经等待{waitingSeconds}秒，计算还未完成，是否继续等待？",
-                    @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (res == DialogResult.Yes)
-                {
-                    p.WaitForExit((int)waitingSeconds * 1000);
-                    State = SolverState.Succeeded;
-                }
-                else
-                {
-                    try
-                    {
-                        TerminateAbqCmd(p);
-                        State = SolverState.UserTerminated;
-                    }
-                    catch (Exception ex)
-                    {
-                        // MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
-                        State = SolverState.UserTerninationFailed;
-                        // ignored
-                    }
-                }
-            }
+            // 计时操作
+            _lastWaitingTime = DateTime.Now;
+            _calcStartTime = _lastWaitingTime;
+            _timer = new Timer(interval: 1000);
+            _timer.Elapsed += TimerOnElapsed;
+            _timer.Start();
+            // 
+            WaitForTerminate(waitingSeconds); // AbqProcess.WaitForExit((int)waitingSeconds * 1000); // 线程等待
             return State;
         }
 
-        /// <summary> 终止 Abaqus 的计算进程树 </summary>
-        private static void TerminateAbqCmd(Process proc)
-        {
-            ProcessesKiller.KillProcessAndChildren(proc.Id);
+        #endregion
 
-            //Process[] ps = Process.GetProcessesByName("cmd"); // abq6121 或 ABQcaeK 或 cmd
-            //if (ps.Any())
-            //{
-            //    Process p = ps[0];
-            //    ProcessesKiller.KillProcessAndChildren(p.Id);
-            //}
+        #region ---   计算过程的计时
+
+        /// <summary> 当计算过程执行了一段时间 </summary>
+        public event Action<Timer, TimeSpan> CalculationTimerElapsed;
+
+        /// <summary> 用户上次刷新等待的时间点 </summary>
+        private DateTime _lastWaitingTime;
+
+        /// <summary> Abaqus 开始计算的时间点 </summary>
+        private DateTime _calcStartTime;
+
+        private Timer _timer;
+
+        private void TimerOnElapsed(object sender, ElapsedEventArgs e)
+        {
+            var tsp = e.SignalTime.Subtract(_calcStartTime);
+            // 触发事件
+            CalculationTimerElapsed?.Invoke(_timer, tsp);
+        }
+
+        #endregion
+
+        #region ---   计算 的终止
+
+        /// <summary> 从外部强制终止 Abaqus 的计算过程（任意线程） </summary>
+        public void TerminateAbqCalculation()
+        {
+            ForceKillProcess = true;
+        }
+
+        /// <summary> 从外部强制终止 Abaqus 的计算过程（任意线程） </summary>
+        private void WaitForTerminate(uint waitingSeconds)
+        {
+            if (AbqProcess != null)
+            {
+                while (!AbqProcess.HasExited)
+                {
+                    if (ForceKillProcess)
+                    {
+                        TerminateAbqCmd();
+                        return;
+                    }
+                    var now = DateTime.Now;
+                    var seconds = (now - _lastWaitingTime).Seconds;
+                    if (seconds >= waitingSeconds)
+                    {
+                        var res = MessageBox.Show($"已经等待{waitingSeconds}秒，计算还未完成，是否继续等待？",
+                            @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (res == DialogResult.Yes)
+                        {
+                            _lastWaitingTime = now;
+                            State = SolverState.Calculating;
+                        }
+                        else
+                        {
+                            TerminateAbqCmd();
+                            return;
+                        }
+                    }
+                }
+                State = SolverState.SelfFinished;
+            }
+        }
+
+        /// <summary> 终止 Abaqus 的计算进程树 </summary>
+        /// <remarks> 注意此进程从哪个线程中启动，也只能从哪个线程中终止 </remarks>
+        private void TerminateAbqCmd()
+        {
+            if (AbqProcess != null && !AbqProcess.HasExited)
+            {
+                try
+                {
+                    ProcessesKiller.KillProcessAndChildren(AbqProcess.Id);
+
+                    //Process[] ps = Process.GetProcessesByName("cmd"); // abq6121 或 ABQcaeK 或 cmd
+                    //if (ps.Any())
+                    //{
+                    //    Process p = ps[0];
+                    //    ProcessesKiller.KillProcessAndChildren(p.Id);
+                    //}
+
+                    State = SolverState.UserTerminated;
+                }
+                catch (Exception)
+                {
+                    State = SolverState.UserTerninationFailed;
+                }
+                finally
+                {
+                    AbqProcess = null;
+                }
+            }
         }
 
         #endregion

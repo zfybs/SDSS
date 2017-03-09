@@ -5,7 +5,6 @@ using System.Text;
 
 namespace SDSS.Constants
 {
-
     public static class Word
     {
         /// <summary> 集合的第一个无素的下标 </summary>

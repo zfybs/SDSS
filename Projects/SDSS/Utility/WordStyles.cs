@@ -19,6 +19,8 @@ namespace SDSS.Utility
         Title3 = 5,
         Title4 = 6,
         Picture = 7,
+        Caption_Pic = 8,
+        Table = 9,
     }
 
     /// <summary> Word 中的样式名称 </summary>
@@ -31,6 +33,8 @@ namespace SDSS.Utility
         private const string Title3 = "标题 3";
         private const string Title4 = "标题 4";
         private const string Picture = "图片";
+        private const string Caption_Pic = "图片题注";
+        private const string Table = "网格型";
 
         private static string GetStyleName(WordStyle style)
         {
@@ -43,6 +47,8 @@ namespace SDSS.Utility
                 case WordStyle.Title3: return Title3;
                 case WordStyle.Title4: return Title4;
                 case WordStyle.Picture: return Picture;
+                case WordStyle.Caption_Pic: return Caption_Pic;
+                case WordStyle.Table: return Table;
                 default: return Content;
             }
         }
@@ -51,6 +57,12 @@ namespace SDSS.Utility
         public static void SetStyle(Range rg, WordStyle style)
         {
             rg.set_Style(GetStyleName(style));
+        }
+
+        /// <summary> 为指定的范围设置样式 </summary>
+        public static void SetStyle(Table table, WordStyle style)
+        {
+            table.set_Style(GetStyleName(style));
         }
     }
 }

@@ -12,12 +12,17 @@ def ImportUserModel1(filePath):
     root = tree.getroot()
 
     modelName = root.attrib['ModelName']
+
+    # -------------- 根节点下的第一级子节点的搜索 ----------------------------------------------------------
+
     # find the element of definitions the elementTree
-    eleDefinitions = 0
+    eleDefinitions = root
+    soilProperty = root
     for c in root:
         if c.tag == 'Definitions':
             eleDefinitions = c
-
+        elif c.tag == 'SoilProperty':
+            soilProperty = c
     # ------------------------------------------------------------------------
 
     materials={}
@@ -111,7 +116,10 @@ def ImportUserModel1(filePath):
 
     # ------------------------------------------------------------------------
 
-    load = uLoad(kx= 1e6,ky= 1e6,kc = 0.5)
+    kx = float(soilProperty.attrib['Kx'])
+    ky = float(soilProperty.attrib['Ky'])
+    kc = float(soilProperty.attrib['Kc'])
+    load = uLoad(kx= kx, ky= ky, kc = kc)
 
     frame = uFrame(modelName, mE,pE, spans, layers, columns, beams, load)
 

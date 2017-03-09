@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using SDSS.Constants;
+using SDSS.Project;
 
-namespace SDSS
+namespace SDSS.Utility
 {
-    public static class Utils
+    public static class sdUtils
     {
         #region ---   文件的打开或保存
         // --------------------------------------------------------------------
@@ -294,5 +296,111 @@ namespace SDSS
             // 1、用ASCII码判断：在 ASCII码表中，英文的范围是0 - 127，而汉字则是大于127。
             return str.Any(t => (int)t > 127);
         }
+
+        #region ---   色彩的处理
+
+        /// <summary> 根据经典的有限元插值色系作为基准来进行颜色的插值扩展 </summary>
+        /// <param name="colorsCount">目标颜色集的个数</param>
+        /// <returns>数组中元素的个数为colorsCount </returns>
+        public static Color[] ClassicalColorsExpand(int colorsCount)
+        {
+            if (colorsCount <= 0) return new Color[0];
+
+            // 定义6种经典的过渡颜色用于插值
+            Color[] baseColors = new Color[6]
+            {
+                Color.FromArgb(255, 0,  0   ),
+                Color.FromArgb(255 ,192,0   ),
+                Color.FromArgb(255 ,255,0   ),
+                Color.FromArgb(0,   176,80  ),
+                Color.FromArgb(0,   112,192 ),
+                Color.FromArgb(20,   50, 150  ),
+            };
+
+            return ColorExpand(baseColors, colorsCount);
+        }
+
+        /// <summary> 根据多个基准色平均插值出指定数量的渐变颜色集 </summary>
+        /// <param name="baseColors">用来进行插值的基准色</param>
+        /// <param name="colorsCount">目标颜色集的数量</param>
+        /// <returns>数组中元素的个数为colorsCount</returns>
+        public static Color[] ColorExpand(Color[] baseColors, int colorsCount)
+        {
+            if (colorsCount <= 0) throw new ArgumentException("进行颜色插值的目标个数至少为1");
+
+            if (baseColors == null || baseColors.Length == 0) throw new ArgumentException("进行颜色插值的基准色至少要有一个");
+
+            //
+            int baseCount = baseColors.Length;  // 基准色的数量
+            Color[] colors = new Color[colorsCount];  // 最后插值完成后的颜色集
+            if (baseCount == 1)
+            {
+                for (int i = 0; i < colorsCount; i++)
+                {
+                    colors[i] = baseColors[0];
+                }
+            }
+            else  // 基准色不只一个
+            {
+                // 开始插值
+                if (colorsCount == 1)
+                {
+                    colors[0] = baseColors[0];
+                    return colors;
+                }
+                // 当要插值的颜色多于1个时，即 colorsCount 至少为 2
+                double interval = 1D / (colorsCount - 1);  // 全局中每个目标色之间的间隔
+                for (int i = 0; i < colorsCount; i++)
+                {
+                    double interpRatio = interval * i; // interpRatio 的值处于[0,1]之间，0代表第一个基准色，1代表最后一个基准色
+
+                    // 由 interpRatio 的值确定要在哪两个基准色之间进行插值
+                    if (interpRatio == 0)
+                    {
+                        colors[i] = baseColors[0];
+                        continue;
+                    }
+                    else if (interpRatio == 1)
+                    {
+                        colors[i] = baseColors[baseCount - 1];
+                        continue;
+                    }
+                    else if (interpRatio > 0 && interpRatio < 1)
+                    {
+                        double baseInterval = 1D / (baseCount - 1);
+
+                        int baseColor1 = (int)Math.Ceiling(interpRatio / baseInterval); // 第一个基准色
+                        int baseColor2 = baseColor1 + 1;  // 第二个基准色
+                                                          // 换算新的插值比例
+                        var x0 = baseInterval * (baseColor1 - 1);
+                        var x1 = baseInterval * (baseColor1);
+                        var localInterpRatio = (interpRatio - x0) / (x1 - x0);
+
+                        // 在两个基准颜色之间进行插值
+                        colors[i] = ColorInterp(baseColors[baseColor1 - 1], baseColors[baseColor2 - 1], localInterpRatio);
+                    }
+                }
+            }
+            return colors;
+        }
+
+        /// <summary>
+        /// RGB 颜色插值
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <param name="x">x的值位于[0,1]的闭区间内，当其值为0时，它代表颜色c1，当其值为1时，它代表颜色c2</param>
+        /// <returns>插值后的RGB颜色</returns>
+        private static Color ColorInterp(Color c1, Color c2, double x)
+        {
+            // 插值
+            var r = (byte)(c1.R + (c2.R - c1.R) * x);
+            var g = (byte)(c1.G + (c2.G - c1.G) * x);
+            var b = (byte)(c1.B + (c2.B - c1.B) * x);
+            //
+            return Color.FromArgb(r, g, b);
+        }
+
+        #endregion
     }
 }

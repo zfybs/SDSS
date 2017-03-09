@@ -81,18 +81,17 @@ def Calculate1(myFrame):
     myJob.waitForCompletion()
 
     # =============== visualization ======================================================
-    # import visualization
-    # vpName = 'bending moment'
-    # myVieport = session.Viewport(name=vpName, origin=(20, 20), width=150, height=120)
-    # myOdb = visualization.openOdb(path=myJob.name + '.odb')
-    # myViewport.setValues(displayedObject=myOdb)
-    # myViewport.odbDisplay.display.setValues(plotState=CONTOURS_ON_DEF)
-    #
-    # myViewport.odbDisplay.commonOptions.setValues(renderStyle=FILLED)
-    # myViewport.odbDisplay.setPrimaryVariable(
-    #     variableLabel='U', outputPosition=NODAL, refinement=(INVARIANT, 'Magnitude'), )
-    #
-    # session.printToFile(fileName='1', format=PNG, canvasObjects=(session.viewports[vpName], ))
+    vpName = 'bending moment'
+    myViewport = session.Viewport(name=vpName, origin=(20, 20), width=150, height=120)
+    myOdb = visualization.openOdb(path=myJob.name + '.odb')
+    myViewport.setValues(displayedObject=myOdb)
+    myViewport.odbDisplay.display.setValues(plotState=CONTOURS_ON_DEF)
+
+    myViewport.odbDisplay.commonOptions.setValues(renderStyle=FILLED)
+    myViewport.odbDisplay.setPrimaryVariable(
+        variableLabel='U', outputPosition=NODAL, refinement=(INVARIANT, 'Magnitude'), )
+
+    session.printToFile(fileName='1', format=PNG, canvasObjects=(myViewport, ))
 
     return myModel, myJob
 
