@@ -6,11 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SDSS.StationModel;
+using SDSS.Utility;
 
 namespace SDSS.UIControls
 {
     internal class ModelDrawer : PictureBox
     {
+        /// <summary> 模型的缩放比例，大于1表示放大 </summary>
+        private float modelScale;
         //画图
         public void DrawSoilStructureModel(SoilStructureGeometry ssg, Graphics g = null)
         {
@@ -18,18 +21,20 @@ namespace SDSS.UIControls
             g.Clear(BackColor);
             //
             float soilHeight = 0;
-            foreach (float i in ssg.SoilHeight)
-            {
-                soilHeight += i;
-            }
+            double rx, ry, r;
+            soilHeight = ssg.SoilHeight.Sum();
+            rx = (float)this.Width / ssg.SoilWidth;
+            ry = (float)this.Height / soilHeight;
+            r = Math.Min(rx, ry); // r 值越小，则模型缩得越多
+            modelScale = (float)(r * 0.8);
 
-            float scale = (this.Width * 4 / 5) / ssg.SoilWidth;
-            float translatex = (this.Width - ssg.SoilWidth * scale) / 2;
-            float translatey = (this.Height - soilHeight * scale) / 2;
+            float translatex = (this.Width - ssg.SoilWidth * modelScale) / 2;
+            float translatey = (this.Height - soilHeight * modelScale) / 2;
+
             //图形平移
             g.TranslateTransform(translatex, translatey);
             //图形缩放
-            g.ScaleTransform(scale, scale);
+            g.ScaleTransform(modelScale, modelScale);
 
             //结构的整体宽度和高度
             float structureWidth = 0;
@@ -48,6 +53,7 @@ namespace SDSS.UIControls
 
             //画土层
             Pen soilPen = new Pen(Color.Black, 1);
+            var colors = sdUtils.ClassicalColorsExpand(ssg.SoilHeight.Length);
             for (int i = 0; i < ssg.SoilHeight.Length; i++)
             {
                 float[] SoilHeighti = new float[i];
@@ -58,9 +64,19 @@ namespace SDSS.UIControls
                     soilHeighti += f;
                 }
                 //g.DrawLine(soilPen, 0, soilHeighti, ssg.SoilWidth, soilHeighti);
-                SolidBrush soil = new SolidBrush(Color.FromArgb(25 * (int)i + 50, 125 - 25 * (int)i, 25 * (int)i, 225 - 25 * (int)i));
-                g.FillRectangle(soil, 0, soilHeighti, ssg.SoilWidth, ssg.SoilHeight[i]);
+                try
+                {
+                    // SolidBrush soil = new SolidBrush(Color.FromArgb(25 * (int)i + 50, 225 - 25 * (int)i, 25 * (int)i, 225 - 25 * (int)i));
+                    SolidBrush soil = new SolidBrush(colors[i]);
+                    g.FillRectangle(soil, 0, soilHeighti, ssg.SoilWidth, ssg.SoilHeight[i]);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
+
             #region--列举法画土层
             //SolidBrush soil1 = new SolidBrush(Color.FromArgb(0, 0, 225));
             //SolidBrush soil2 = new SolidBrush(Color.FromArgb(0,225 , 0));
@@ -84,8 +100,8 @@ namespace SDSS.UIControls
             #endregion
 
             //画结构
-            Pen structurePen1 = new Pen(Color.Black, 0.6f);
-            Pen structurePen2 = new Pen(Color.Black, 0.3f);
+            Pen structurePen1 = new Pen(Color.Black, 2f / modelScale);
+            Pen structurePen2 = new Pen(Color.Black, 1f / modelScale);
             SolidBrush structure = new SolidBrush(Color.White);
             g.FillRectangle(structure, sLeftUp, ssg.OverlyingSoilHeight, structureWidth, structureHeight);
 
@@ -108,7 +124,8 @@ namespace SDSS.UIControls
                 {
                     stationSegmenti += f;
                 }
-                g.DrawLine(structurePen2, sLeftUp + stationSegmenti, ssg.OverlyingSoilHeight, sLeftUp + stationSegmenti, ssg.OverlyingSoilHeight + structureHeight);
+                g.DrawLine(structurePen2, sLeftUp + stationSegmenti, ssg.OverlyingSoilHeight,
+                    sLeftUp + stationSegmenti, ssg.OverlyingSoilHeight + structureHeight);
             }
             for (int i = 0; i < ssg.StationFloors.Length; i++)
             {
@@ -119,7 +136,8 @@ namespace SDSS.UIControls
                 {
                     stationFloori += f;
                 }
-                g.DrawLine(structurePen2, sLeftUp, ssg.OverlyingSoilHeight + stationFloori, sLeftUp + structureWidth, ssg.OverlyingSoilHeight + stationFloori);
+                g.DrawLine(structurePen2, sLeftUp, ssg.OverlyingSoilHeight + stationFloori,
+                    sLeftUp + structureWidth, ssg.OverlyingSoilHeight + stationFloori);
             }
         }
 

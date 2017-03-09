@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using SDSS.Definitions;
 using SDSS.Constants;
+using SDSS.Definitions;
+using SDSS.Project;
 
 namespace SDSS.Entities
 {
@@ -17,7 +18,6 @@ namespace SDSS.Entities
     {
         #region ---   XmlAttribute
 
-        private static uint _id = 0;
         [XmlAttribute()]
         [Category(Categories.Property), Description("节点的ID编号")]
         public uint ID { get; set; }

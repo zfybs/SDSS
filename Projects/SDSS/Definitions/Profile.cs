@@ -4,15 +4,16 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using SDSS.Definitions;
 using SDSS.Constants;
+using SDSS.Definitions;
+using SDSS.Project;
 
 namespace SDSS.Definitions
 {
     /// <summary> 构件截面信息 </summary>
     [Serializable()]
     [XmlInclude(typeof(Rectangular))]
-    [XmlInclude(typeof(T))]
+    [XmlInclude(typeof(TT))]
     public class Profile : Definition
     {
         #region ---   XmlAttribute
@@ -54,7 +55,7 @@ namespace SDSS.Definitions
         #endregion
 
         #region ---   构造函数
-        public Rectangular() : base("矩形", ProfileType.Rectangular)
+        public Rectangular() : base("RectangularShape", ProfileType.Rectangular)
         {
 
         }
@@ -65,12 +66,11 @@ namespace SDSS.Definitions
         }
 
         #endregion
-
     }
 
     /// <summary> T形截面信息 </summary>
     [Serializable()]
-    public class T : Profile
+    public class TT : Profile
     {
         #region ---   XmlAttribute
 
@@ -83,13 +83,18 @@ namespace SDSS.Definitions
         public double Height { get; set; }
 
         [XmlAttribute()]
-        [Category(Categories.Property), Description("腹板与翼缘的平均厚度，单位为 mm")]
-        public double GeneralThickness { get; set; }
+        [Category(Categories.Property), Description("腹板厚度，单位为 m")]
+        public double WebThickness { get; set; }
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("翼缘厚度，单位为 m")]
+        public double FlangeThickness { get; set; }
+
         #endregion
 
         #region ---   构造函数
 
-        public T() : base("T形", ProfileType.T)
+        public TT() : base("TShape", ProfileType.T)
         {
         }
 
@@ -97,12 +102,14 @@ namespace SDSS.Definitions
         /// <param name="name"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        /// <param name="generalThickness">腹板与翼缘的平均厚度</param>
-        public T(string name, double width, double height, double generalThickness) : base(name, ProfileType.T)
+        /// <param name="webThickness">腹板厚度</param>
+        /// <param name="flangeThickness">翼缘厚度</param>
+        public TT(string name, double width, double height, double webThickness, double flangeThickness) : base(name, ProfileType.T)
         {
             Width = width;
             Height = height;
-            GeneralThickness = generalThickness;
+            WebThickness = webThickness;
+            FlangeThickness = flangeThickness;
         }
 
         #endregion
