@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 using SDSS.Constants;
+using SDSS.Project;
 using SDSS.Definitions;
 using SDSS.Entities;
 using SDSS.StationModel;

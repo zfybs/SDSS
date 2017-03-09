@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using SDSS.Definitions;
+using SDSS.Utility;
 
 namespace SDSS.UIControls
 {
@@ -108,7 +109,7 @@ namespace SDSS.UIControls
                 errorMessage.AppendLine( "必须为添加的参数定义指定一个名称。");
                 return false;
             }
-            if (Utils.StringHasNonEnglish(defToAdd.Name))
+            if (sdUtils.StringHasNonEnglish(defToAdd.Name))
             {
                 errorMessage .AppendLine( "定义的命名不能包含非英文的字符。");
                 return false;
@@ -223,12 +224,12 @@ namespace SDSS.UIControls
         {
             if (typeof(T) == typeof(Profile))
             {
-                string filePath = Utils.ChooseOpenProfiles("导入截面");
+                string filePath = sdUtils.ChooseOpenProfiles("导入截面");
                 if (filePath.Length > 0)
                 {
                     StringBuilder errorMessage = new StringBuilder();
                     bool succeeded;
-                    var profiles = Utils.ImportFromXml(filePath, typeof(List<Profile>),
+                    var profiles = sdUtils.ImportFromXml(filePath, typeof(List<Profile>),
                         out succeeded, ref errorMessage) as List<Profile>;
                     if (succeeded)
                     {
@@ -252,12 +253,12 @@ namespace SDSS.UIControls
             }
             else if (typeof(T) == typeof(Material))
             {
-                string filePath = Utils.ChooseOpenMaterials("导入材料");
+                string filePath = sdUtils.ChooseOpenMaterials("导入材料");
                 if (filePath.Length > 0)
                 {
                     StringBuilder errorMessage = new StringBuilder();
                     bool succeeded;
-                    var materials = Utils.ImportFromXml(filePath, typeof(List<Material>),
+                    var materials = sdUtils.ImportFromXml(filePath, typeof(List<Material>),
                         out succeeded, ref errorMessage) as List<Material>;
                     if (succeeded)
                     {
@@ -293,7 +294,7 @@ namespace SDSS.UIControls
         {
             if (typeof(T) == typeof(Profile))
             {
-                string filePath = Utils.ChooseSaveProfiles("导出截面");
+                string filePath = sdUtils.ChooseSaveProfiles("导出截面");
                 if (filePath.Length > 0)
                 {
                     bool succ = ExportToXml(filePath, _definitions.ToList() as List<Profile>);
@@ -304,7 +305,7 @@ namespace SDSS.UIControls
             }
             else if (typeof(T) == typeof(Material))
             {
-                string filePath = Utils.ChooseSaveMaterials("导出材料");
+                string filePath = sdUtils.ChooseSaveMaterials("导出材料");
                 if (filePath.Length > 0)
                 {
                     bool succ = ExportToXml(filePath, _definitions.ToList() as List<Material>);

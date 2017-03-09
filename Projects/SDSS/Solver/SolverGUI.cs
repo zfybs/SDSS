@@ -6,7 +6,7 @@ using System.Text;
 namespace SDSS.Solver
 {
     /// <summary> Abaqus 求解器的显示方式 </summary>
-    internal enum SolverGUI
+    public enum SolverGUI
     {
         NoGUI = 0,
         CommandWindow = 1,

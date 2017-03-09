@@ -217,9 +217,9 @@ if __name__ == '__main__':
             pythonSourceDirField= 'PythonSourceDir')   # buildInDeveloperMode  build
 
         # 构造 路径字典 数据，以供后面调用
-        from szmDefinitions.Constants import  uConstants
-        from szmDefinitions.ProjectPath import  projectPath
-        from szmPostProcess.EnvirmtHandler import  envirmtHandler
+        from szmDefinitions.Constants import uConstants
+        from szmDefinitions.ProjectPath import projectPath
+        from szmPostProcess.EnvirmtHandler import envirmtHandler
         projectPath.PathDict = pathsdict
 
         # change the abaqus working directory
@@ -240,7 +240,12 @@ if __name__ == '__main__':
         stackTrace = traceback.format_exc()
         print(ex.args)
         print(stackTrace)
+        #
+        if envirmttHdl != None:
+            envirmttHdl.writeLine(str(ex.args))
+            envirmttHdl.writeLine(str(stackTrace))
 
+        pass
     finally:
         if envirmttHdl != None:
             envirmttHdl.writeLine(finishTag)

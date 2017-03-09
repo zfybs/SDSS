@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using eZstd.Miscellaneous;
+using SDSS.Project;
 using SDSS.Solver;
 using SDSS.Utility;
 
@@ -13,13 +15,17 @@ namespace SDSS.PostProcess
 {
     internal class PostProcessor
     {
-        private AbaqusSolver _solver;
-        private string _resultFilePath;
+        public AbaqusSolver Solver { get; private set; }
         private StreamReader _sr;
+
+        /// <summary> 整个 Abaqus 计算得到的所有结果，而不是用来导出的筛选过的结果 </summary>
+        public Result Results { get; private set; }
+
+        #region ---   构造函数
+
         public PostProcessor(AbaqusSolver solver)
         {
-            _solver = solver;
-            _resultFilePath = ProjectPaths.F_AbqResult;
+            Solver = solver;
         }
 
         /// <summary> 析构函数 </summary>
@@ -31,24 +37,25 @@ namespace SDSS.PostProcess
             }
         }
 
+        #endregion
+
         #region ---   检查生成报告的条件
 
-        /// <summary> 检查求解结果的状态 </summary>
-        /// <returns> 如果可以继续生成报告，则返回 true </returns>
-        public bool CheckSolveState(ref StringBuilder errorMessage)
+        /// <summary> 检查求解过程是否是由Abaqus自行结束 </summary>
+        /// <returns> 如果是，则不论求解过程是否成功，都则返回 true。返回 false 则表示是由用户强制终止计算过程 </returns>
+        public bool CheckFinishState(ref StringBuilder errorMessage)
         {
-            // 后处理
-            switch (_solver.State)
+            if ((Solver.State & SolverState.SelfFinished) > 0)
             {
-                case SolverState.Succeeded:
-                    errorMessage.AppendLine(@"Abaqus 求解过程正常");
-                    return true;
-                case SolverState.UserTerminated:
-                    errorMessage.AppendLine(@"用户强行终止计算");
-                    return false;
+
+                return true;
+
             }
-            errorMessage.AppendLine(@"求解状态 SolverState 的值异常。");
-            return false;
+            else
+            {
+                errorMessage.AppendLine(@"Abaqus 求解过程被用户强制终止。");
+                return false;
+            }
         }
 
         /// <summary>
@@ -56,11 +63,11 @@ namespace SDSS.PostProcess
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public bool CheckResultFiles(ref StringBuilder errorMessage)
+        public SolverState CheckResultFiles(ref StringBuilder errorMessage)
         {
             // 检查 output 文件中的数据
             string outputFile = ProjectPaths.F_PyOutput;
-            bool outputSucceeded = false;
+            SolverState state = SolverState.SelfFinished;
             if (File.Exists(outputFile))
             {
                 using (var sr = new StreamReader(outputFile))
@@ -71,13 +78,13 @@ namespace SDSS.PostProcess
                         line = sr.ReadLine();
                         if (line.Equals(Constants.FileExtensions.CalculationSucceededTag))
                         {
-                            outputSucceeded = true;
+                            state = SolverState.Succeeded;
                             break;
                         }
                         else if (line.Equals(Constants.FileExtensions.CalculationFailedTag))
                         {
                             errorMessage.AppendLine("Abaqus 计算过程出错而导致计算结束。");
-                            outputSucceeded = false;
+                            state = SolverState.FailedWithError;
                             break;
                         }
                     } while (sr.EndOfStream);
@@ -85,12 +92,12 @@ namespace SDSS.PostProcess
             }
             else
             {
-                errorMessage.AppendLine("指定的Abaqus计算结果文件未找到");
-                return false;
+                errorMessage.AppendLine("指定的Abaqus output 文件未找到");
+                return SolverState.FailedWithError;
             }
 
             // 检查 result 文件中的数据
-            if (outputSucceeded)
+            if (state == SolverState.Succeeded)
             {
                 //
                 string resultFile = ProjectPaths.F_AbqResult;
@@ -98,70 +105,39 @@ namespace SDSS.PostProcess
                 if (!File.Exists(resultFile))
                 {
                     errorMessage.AppendLine("指定的Abaqus计算结果文件未找到");
-                    return false;
+                    return SolverState.FailedWithError;
                 }
             }
 
-            return outputSucceeded;
+            return state;
         }
 
         #endregion
 
         #region ---   计算结果数据的提取
 
-        private Result _result;
         /// <summary> 从 Result.sdr 文件中读取计算结果 </summary>
-        public void ReadFile()
+        public void ReadResultFile(string resultFilePath)
         {
-            _sr = new StreamReader(_resultFilePath);
-
-            //var s = _sr.ReadLine();
-            //MessageBox.Show(s);
-            _sr.Close();
-            _result = new Result();
+            var res = ResultConstructor.ReadResult(resultFilePath);
+            this.Results = res;
         }
 
         #endregion
 
         #region ---   撰写报告
 
-        /// <summary> 撰写报告 </summary>
-        public void WriteReport()
+        /// <summary> 列出所有的计算结果，并显示在窗口中，以供用户选择性导出 </summary>
+        public void ShowResultsList()
         {
-            if (_result != null)
+           if (this.Results != null)
             {
-                try
-                {
-                    Reporter rp = new Reporter();
-                    bool succ = rp.NewDocument();
-                    if (succ)
-                    {
-                        //
-                        _sr = new StreamReader(_resultFilePath);
-                        while (!_sr.EndOfStream)
-                        {
-                            var s = _sr.ReadLine();
-                            if (s.StartsWith("T"))
-                            {
-                                rp.InsertParagrph(rp.CollapsToEnd(), s, style: WordStyle.Title2);
-                            }
-                            else
-                            {
-                                rp.InsertParagrph(rp.CollapsToEnd(), s, style: WordStyle.Content);
-                            }
-                        }
-
-                        _sr.Close();
-                    }
-                    rp.SetVisibility(true);
-                }
-                catch (Exception ex)
-                {
-                    DebugUtils.ShowDebugCatch(ex, "撰写报告时出现错误");
-                }
-
+                var rl = new ResultLister(Results);
+                rl.ShowDialog(null);
             }
         }
+
+
         #endregion
     }
 }

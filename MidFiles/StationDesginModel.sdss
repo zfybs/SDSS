@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<StationModel1 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ModelName="Dongchuanlu" ModelType="Frame" CalculationMethod="InertialForce" LayerHeightsStr="4, 5, 6, " SpanWidthsStr="3, 6, ">
+<StationModel1 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ModelName="Dongchuanlu12" ModelType="Frame" CalculationMethod="InertialForce" LayerHeights="4, 5, 6, " SpanWidths="3, 6, ">
   <Definitions>
     <Materials>
       <Material Name="elas1" Type="Elastic" Density="1900" Elasticity="200000000000" PoissonRatio="0.3">
-        <ID>71476d01-5769-4003-b075-d3763ebefca8</ID>
+        <ID>95ea8bdd-0d3a-4143-abc8-8b4269b70080</ID>
       </Material>
       <Material xsi:type="MohrCoulomb" Name="MC" Type="MohrCoulomb" Density="1900" Elasticity="200000000000" PoissonRatio="0.3" Cohesion="60000000" FrictionAngle="30">
-        <ID>1fe00aad-31f8-43f1-8bdb-cadf12c1fe99</ID>
+        <ID>cbcffaa8-e732-4094-bfc8-cce8cde016b4</ID>
       </Material>
     </Materials>
     <Profiles>
       <Profile xsi:type="Rectangular" Name="rec1" Type="Rectangular" Width="0.5" Height="1.5">
-        <ID>41dc0c1b-32f0-4973-8e39-2d8e07c80f12</ID>
+        <ID>939ecaa1-0525-40cf-ab97-4f2f6e8500ff</ID>
       </Profile>
-      <Profile xsi:type="T" Name="t1" Type="T" Width="2" Height="1" WebThickness="0.1" FlangeThickness="0.1">
-        <ID>ad6f0684-4a34-4713-904a-a112c1c5d74e</ID>
+      <Profile xsi:type="TT" Name="t1" Type="T" Width="2" Height="1" WebThickness="0.1" FlangeThickness="0.1">
+        <ID>b95394f6-e46a-4f1d-893e-85cdd19940b6</ID>
       </Profile>
     </Profiles>
     <FrameVertices>
@@ -32,12 +32,7 @@
       <FrameVertice ID="12" X="9" Y="15" Index_X="2" Index_Y="3" />
     </FrameVertices>
   </Definitions>
-  <SystemProperty ModelType="Frame" Es="2.1E+08" fy="300" fcy="21172">
-    <kx>0</kx>
-    <ky>0</ky>
-    <overLayingSoil>0</overLayingSoil>
-    <soilWidth>0</soilWidth>
-  </SystemProperty>
+  <SoilProperty Kx="1000000" Ky="1000000" Kc="0.5" TopElevation="0" OverLayingSoilHeight="0" />
   <SoilLayers />
   <Beams>
     <Beam GeomType="Line" ComponentType="Beam" ID="1" LocationTag="(1,0)" MaterialName="elas1" ProfileName="t1" LeftVerticeId="1" RightVerticeId="2" />

@@ -9,8 +9,9 @@ using System.Xml.Serialization;
 using eZstd.Miscellaneous;
 using SDSS.Definitions;
 using SDSS.Solver;
+using SDSS.Project;
 
-namespace SDSS.Utility
+namespace SDSS.Project
 {
     /// <summary> 整个项目中与路径相关的信息 </summary>
     public static class ProjectPaths
@@ -40,17 +41,40 @@ namespace SDSS.Utility
         /// <summary> 输出的报告所对应的 word 模块文件所在的文件夹 </summary>
         public static readonly string D_WordTemplate = D_MiddleFiles;
 
+        #region ---   AbaqusWorkingDir
 
-        /// <summary> Abaqus 的默认工作文件夹 </summary>
+        /// <summary> 设置 Abaqus 计算的默认文件夹（如果用户未显式指定，则使用此文件夹） </summary>
         /// <remarks>
         /// Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         ///  @"D:\Workspace\abaqus\ModelStationTest";
         /// </remarks>
-        public static readonly string D_AbaqusDefaultWorkingDir =
-           Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Abauqs");
+        public static string D_AbaqusDefaultWorkingDir
+        {
+            get
+            {
+                return Options.DefaultAbqWorkingDir;
+            }
+        }
 
+        private static string _D_AbaqusWorkingDir;
         /// <summary> Abaqus 的工作文件夹 </summary>
-        public static string D_AbaqusWorkingDir { get; private set; }
+        public static string D_AbaqusWorkingDir
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_D_AbaqusWorkingDir))
+                {
+                    _D_AbaqusWorkingDir = Options.DefaultAbqWorkingDir;
+                }
+                return _D_AbaqusWorkingDir;
+            }
+            private set
+            {
+                _D_AbaqusWorkingDir = value;
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -58,14 +82,11 @@ namespace SDSS.Utility
 
         #region -- 记录车站模型数据的 xml 文件
 
-        /// <summary> 记录车站模型的 xml 文件的路径 </summary>
-        public static string F_CalculationModel;
-
         /// <summary> 默认的车站模型的计算文件的名称 </summary>
         public const string FN_DefaultModel = "StationDesginModel" + Constants.FileExtensions.StationModel;
 
         /// <summary> 默认的车站模型的计算文件的名称 </summary>
-        public static string F_DefaultModel
+        public static string F_CalculationModel
         {
             get { return Path.Combine(D_MiddleFiles, FN_DefaultModel); }
         }
@@ -105,6 +126,13 @@ namespace SDSS.Utility
         {
             get { return Path.Combine(D_AbaqusWorkingDir, FN_AbqResult); }
         }
+
+        /// <summary> Abaqus计算完成后，生成的弯矩图所对应的文件 </summary>
+        public static string F_BendingMoment
+        {
+            get { return Path.Combine(D_AbaqusWorkingDir, "Bending Moment.png"); }
+        }
+
         #endregion
 
         /// <summary> 用于启动 Abaqus 的.bat文件 </summary>
@@ -117,11 +145,13 @@ namespace SDSS.Utility
         public readonly static string F_PySolver = Path.Combine(D_PythonSource, "EnvironmentBuild.py");
 
         /// <summary> 用户选项数据所在的文件 </summary>
-        public readonly static string F_Options = Path.Combine(D_MiddleFiles, "Options.txt");
-        
+        public readonly static string F_Options = Path.Combine(D_MiddleFiles, "Options.xml");
+
         #endregion
 
         #region ---   路径设置或获取的方法
+
+
 
         /// <summary>
         /// 根据 Abaqus 工作空间的不同来设置对应的文件路径

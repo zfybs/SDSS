@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using SDSS.Constants;
+using SDSS.Project;
 
 namespace SDSS.Definitions
 {
@@ -22,9 +23,8 @@ namespace SDSS.Definitions
 
         [XmlIgnore]
         private Guid _id;
-
         [XmlElement]
-        [Browsable(false), ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
+        [Browsable(true), ReadOnly(true), Category(Categories.Tag), Description("定义对象的唯一标识符")]
         public Guid ID
         {
             get { return _id; }
@@ -53,8 +53,9 @@ namespace SDSS.Definitions
             {
                 return false;
             }
-            return _id.Equals(def.ID);
+            return this.Name.Equals(def.Name) && (this.ID == def.ID);
         }
+
         /// <summary> 返回一个<seealso cref="Definition"/>对象 </summary>
         public object Clone()
         {

@@ -46,6 +46,7 @@ namespace SDSS.UIControls
         /// <summary> 构造函数 </summary>
         private FrameConstructor()
         {
+            _uiniqueInstance = this;
             InitializeComponent();
             //
             KeyPreview = true;
@@ -58,8 +59,10 @@ namespace SDSS.UIControls
             dgv_Spans.ShowRowNumber = true;
             dgv_Spans.SupportPaste = true;
             //
-            ColumnLayerHeight.ValueType = typeof(double);
-            ColumnSpanWidth.ValueType = typeof(double);
+            ColumnLayerHeight.ValueType = typeof(float);
+            ColumnSpanWidth.ValueType = typeof(float);
+
+            //
         }
 
         #endregion
@@ -169,14 +172,17 @@ namespace SDSS.UIControls
                 for (int i = 0; i < _layerCount; i++)
                 {
                     var obj = dgv_Layers.Rows[i].Cells[0].Value;
-                    if (obj == null || string.IsNullOrEmpty(obj.ToString()) || (double)obj <= 0) throw new NullReferenceException($"倒数第{i + 1}层的层高值必须大于0");
+
+                 if (string.IsNullOrEmpty(obj.ToString())
+                        || ((float)obj <= 0)) throw new NullReferenceException($"倒数第{i + 1}层的层高值必须大于0");
+
                     LayerHeights[i] = (float)obj;
                 }
                 SpanWidths = new float[_spanCount];
                 for (int i = 0; i < _spanCount; i++)
                 {
                     var obj = dgv_Spans.Rows[i].Cells[0].Value;
-                    if (obj == null || string.IsNullOrEmpty(obj.ToString()) || (double)obj <= 0) throw new NullReferenceException($"左数第{i + 1}跨的跨度值必须大于0");
+                    if (string.IsNullOrEmpty(obj.ToString()) || (float)obj <= 0) throw new NullReferenceException($"左数第{i + 1}跨的跨度值必须大于0");
                     SpanWidths[i] = (float)obj;
                 }
                 // close the form

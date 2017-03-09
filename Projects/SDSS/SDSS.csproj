@@ -70,11 +70,24 @@
     <Compile Include="PostProcess\PostProcessor.cs" />
     <Compile Include="PostProcess\Reporter.cs" />
     <Compile Include="PostProcess\Result.cs" />
-    <Compile Include="PostProcess\StateSaver.cs" />
+    <Compile Include="PostProcess\ResultConstructor.cs" />
+    <Compile Include="PostProcess\ResultItem.cs" />
+    <Compile Include="PostProcess\ResultLister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PostProcess\ResultLister.Designer.cs">
+      <DependentUpon>ResultLister.cs</DependentUpon>
+    </Compile>
     <Compile Include="Solver\SolverGUI.cs" />
     <Compile Include="Solver\SolverState.cs" />
     <Compile Include="Entities\SoilLayer.cs" />
     <Compile Include="StationModel\DefinitionCollection.cs" />
+    <Compile Include="StationModel\ModelOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StationModel\ModelOptions.Designer.cs">
+      <DependentUpon>ModelOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="StationModel\StationGeometry.cs" />
     <Compile Include="UIControls\BoundaryParamForm.cs">
       <SubType>Form</SubType>
@@ -88,10 +101,16 @@
     <Compile Include="UIControls\FrameConstructor.Designer.cs">
       <DependentUpon>FrameConstructor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UIControls\MainForm.DataGridViews.cs">
+    <Compile Include="StationModel\MainForm.DataGridViews.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utility\Constants.cs" />
+    <Compile Include="Project\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Project\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Project\Constants.cs" />
     <Compile Include="Definitions\Definition.cs" />
     <Compile Include="Definitions\ProfileType.cs" />
     <Compile Include="Definitions\IGeomObject.cs" />
@@ -114,10 +133,10 @@
     <Compile Include="UIControls\DefinitionManager.Designer.cs">
       <DependentUpon>DefinitionManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="UIControls\MainForm.cs">
+    <Compile Include="StationModel\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UIControls\MainForm.Designer.cs">
+    <Compile Include="StationModel\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UIControls\ModelDrawer.cs">
@@ -128,15 +147,21 @@
     <Compile Include="Solver\AbaqusSolver.cs" />
     <Compile Include="StationModel\SoilStructureGeometry.cs" />
     <Compile Include="Program1.cs" />
-    <Compile Include="Utility\Options.cs" />
-    <Compile Include="Utility\ProjectPaths.cs" />
+    <Compile Include="Project\Options.cs" />
+    <Compile Include="Project\ProjectPaths.cs" />
     <Compile Include="Utility\StaticSerializer.cs" />
-    <Compile Include="Utility\Utils.cs" />
+    <Compile Include="Utility\sdUtils.cs" />
     <Compile Include="Utility\WordStyles.cs" />
-    <Compile Include="Utility\WordUtils.cs" />
+    <Compile Include="Utility\WordTemplate.cs" />
     <Compile Include="Utility\WordWriter.cs" />
     <EmbeddedResource Include="EnterSplash.resx">
       <DependentUpon>EnterSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PostProcess\ResultLister.resx">
+      <DependentUpon>ResultLister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StationModel\ModelOptions.resx">
+      <DependentUpon>ModelOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\BoundaryParamForm.resx">
       <DependentUpon>BoundaryParamForm.cs</DependentUpon>
@@ -153,7 +178,7 @@
       <DependentUpon>FrameConstructor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UIControls\MainForm.resx">
+    <EmbeddedResource Include="StationModel\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -166,6 +191,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Project\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
@@ -185,13 +213,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Frame.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\eZstd\Projects\eZstd\eZstd.csproj">
       <Project>{fb9b6528-5424-4b7a-aeba-6733450dc44b}</Project>
       <Name>eZstd</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Frame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
