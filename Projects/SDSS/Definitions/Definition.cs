@@ -53,7 +53,7 @@ namespace SDSS.Definitions
             {
                 return false;
             }
-            return this.Name.Equals(def.Name) && (this.ID == def.ID);
+            return (this.ID == def.ID);
         }
 
         /// <summary> 返回一个<seealso cref="Definition"/>对象 </summary>

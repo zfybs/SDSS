@@ -1,6 +1,6 @@
 PythonSourceDir * E:\GitHubProjects\SDSS\AbaqusSolver
 AbaqusWorkingDir * D:\UserFiles\Documents\Abauqs
-ModelFile * E:\GitHubProjects\SDSS\MidFiles\StationDesginModel.sdss
+ModelFile * D:\UserFiles\Documents\Abauqs\StationDesginModel.sdss
 MiddleFileDir * E:\GitHubProjects\SDSS\MidFiles
 PyMessageFile * D:\UserFiles\Documents\Abauqs\CalculationMessage.sdmsg
 PyOutputFile * D:\UserFiles\Documents\Abauqs\Output.sdo

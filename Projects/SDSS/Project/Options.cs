@@ -14,9 +14,7 @@ namespace SDSS.Project
     {
         #region ---   Attributes
 
-        /// <summary>用来在OptionsForm中显示的当前项目名</summary>
-        public static string OModelName ;
-
+     
         [XmlAttribute()]
         public static uint WaitingSeconds = 60;
 
@@ -54,9 +52,9 @@ namespace SDSS.Project
         [XmlAttribute()]
         public static SolverGUI SolverGUI;
 
-        /// <summary>计算报告使用的模板</summary>
+        /// <summary>计算报告使用的模板的绝对路径</summary>
         [XmlAttribute()]
-        public static WordTemplateType WordTemplate;
+        public static string  WordTemplate;
 
         #endregion
 

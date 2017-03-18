@@ -37,7 +37,7 @@ class uVerticeFrame(uVertice):
         self.connectedWeight = 0
 
     def __str__(self):
-        b,c = list(),list()
+        b, c = list(), list()
         for cp in self.connectedComponents:
             tp = type(cp)
             if tp is uBeam:
@@ -45,5 +45,5 @@ class uVerticeFrame(uVertice):
             elif tp is uColumn:
                 b.append(cp.index)
 
-        s = 'beams: %s columns: %s' %(str(b),str(c))
+        s = 'beams: %s columns: %s' %(str(b), str(c))
         return s

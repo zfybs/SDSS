@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Model1 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ModelName="XinZhuang" ID="8312f207-7c97-408e-b6a1-298f66797e2d" ModelType="Frame" CalculationMethod="InertialForce">
+  <Definitions>
+    <Materials>
+      <Material Name="Q450" Type="Elastic" Density="1900" Elasticity="200000000000" PoissonRatio="0.3">
+        <ID>e4a7b7a5-2275-4e9e-97e8-44751e827020</ID>
+      </Material>
+      <Material xsi:type="MohrCoulomb" Name="C30" Type="MohrCoulomb" Density="1900" Elasticity="200000000000" PoissonRatio="0.3" Cohesion="60000000" FrictionAngle="30">
+        <ID>c7bd9a3a-fae2-43ec-8cd5-06a5265ef99f</ID>
+      </Material>
+    </Materials>
+    <Profiles>
+      <Profile xsi:type="Rectangular" Name="Beam14" Type="Rectangular" Width="0.5" Height="1.5">
+        <ID>07314986-01e4-401c-90d2-c33a26a4c3c6</ID>
+      </Profile>
+      <Profile xsi:type="TT" Name="Col22" Type="T" Width="2" Height="1" WebThickness="0.1" FlangeThickness="0.1">
+        <ID>7080c1e3-cbc4-4144-87b3-25593e62fb4a</ID>
+      </Profile>
+    </Profiles>
+  </Definitions>
+  <SoilLayers>
+    <SoilLayer_Inertial Name="cd04363a-7b54-41ef-b850-0b6d3a1fee3f" Top="-3" Bottom="-8" Kci0="0.38">
+      <ID>cd04363a-7b54-41ef-b850-0b6d3a1fee3f</ID>
+    </SoilLayer_Inertial>
+    <SoilLayer_Inertial Name="8435fca3-a98f-4319-a384-0fc6da073fdd" Top="-8" Bottom="-13" Kci0="0.4">
+      <ID>8435fca3-a98f-4319-a384-0fc6da073fdd</ID>
+    </SoilLayer_Inertial>
+    <SoilLayer_Inertial Name="dc1128a1-1c02-4001-a25d-086ce5f5df83" Top="-13" Bottom="-18" Kci0="0.38">
+      <ID>dc1128a1-1c02-4001-a25d-086ce5f5df83</ID>
+    </SoilLayer_Inertial>
+    <SoilLayer_Inertial Name="3a03b8ca-9598-493a-9d76-fb9976927f2c" Top="-18" Bottom="-23" Kci0="0.3">
+      <ID>3a03b8ca-9598-493a-9d76-fb9976927f2c</ID>
+    </SoilLayer_Inertial>
+    <SoilLayer_Inertial Name="a8928afc-a143-4213-bb93-a2e690eaa77b" Top="-23" Bottom="-28" Kci0="0.38">
+      <ID>a8928afc-a143-4213-bb93-a2e690eaa77b</ID>
+    </SoilLayer_Inertial>
+  </SoilLayers>
+  <Frame LayerHeights="4, 5, 6, " SpanWidths="3, 6, ">
+    <FrameVertices>
+      <FrameVertice ID="1" X="0" Y="0" Index_X="0" Index_Y="0" />
+      <FrameVertice ID="2" X="3" Y="0" Index_X="1" Index_Y="0" />
+      <FrameVertice ID="3" X="9" Y="0" Index_X="2" Index_Y="0" />
+      <FrameVertice ID="4" X="0" Y="4" Index_X="0" Index_Y="1" />
+      <FrameVertice ID="5" X="3" Y="4" Index_X="1" Index_Y="1" />
+      <FrameVertice ID="6" X="9" Y="4" Index_X="2" Index_Y="1" />
+      <FrameVertice ID="7" X="0" Y="9" Index_X="0" Index_Y="2" />
+      <FrameVertice ID="8" X="3" Y="9" Index_X="1" Index_Y="2" />
+      <FrameVertice ID="9" X="9" Y="9" Index_X="2" Index_Y="2" />
+      <FrameVertice ID="10" X="0" Y="15" Index_X="0" Index_Y="3" />
+      <FrameVertice ID="11" X="3" Y="15" Index_X="1" Index_Y="3" />
+      <FrameVertice ID="12" X="9" Y="15" Index_X="2" Index_Y="3" />
+    </FrameVertices>
+    <Beams>
+      <Beam GeomType="Line" ComponentType="Beam" ID="1" LocationTag="(1,0)" Material="Q450" Profile="Beam14" LeftVerticeId="1" RightVerticeId="2" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="2" LocationTag="(2,0)" Material="C30" Profile="Beam14" LeftVerticeId="2" RightVerticeId="3" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="3" LocationTag="(1,1)" Material="C30" Profile="Beam14" LeftVerticeId="4" RightVerticeId="5" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="4" LocationTag="(2,1)" Material="C30" Profile="Beam14" LeftVerticeId="5" RightVerticeId="6" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="5" LocationTag="(1,2)" Material="Q450" Profile="Beam14" LeftVerticeId="7" RightVerticeId="8" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="6" LocationTag="(2,2)" Material="C30" Profile="Beam14" LeftVerticeId="8" RightVerticeId="9" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="7" LocationTag="(1,3)" Material="C30" Profile="Beam14" LeftVerticeId="10" RightVerticeId="11" />
+      <Beam GeomType="Line" ComponentType="Beam" ID="8" LocationTag="(2,3)" Material="C30" Profile="Beam14" LeftVerticeId="11" RightVerticeId="12" />
+    </Beams>
+    <Columns>
+      <Column GeomType="Line" ComponentType="Column" ID="9" LocationTag="(0,1)" Material="C30" Profile="Col22" TopVerticeId="4" BottomVerticeId="1" />
+      <Column GeomType="Line" ComponentType="Column" ID="10" LocationTag="(1,1)" Material="C30" Profile="Col22" TopVerticeId="5" BottomVerticeId="2" />
+      <Column GeomType="Line" ComponentType="Column" ID="11" LocationTag="(2,1)" Material="Q450" Profile="Col22" TopVerticeId="6" BottomVerticeId="3" />
+      <Column GeomType="Line" ComponentType="Column" ID="12" LocationTag="(0,2)" Material="Q450" Profile="Col22" TopVerticeId="7" BottomVerticeId="4" />
+      <Column GeomType="Line" ComponentType="Column" ID="13" LocationTag="(1,2)" Material="Q450" Profile="Col22" TopVerticeId="8" BottomVerticeId="5" />
+      <Column GeomType="Line" ComponentType="Column" ID="14" LocationTag="(2,2)" Material="Q450" Profile="Col22" TopVerticeId="9" BottomVerticeId="6" />
+      <Column GeomType="Line" ComponentType="Column" ID="15" LocationTag="(0,3)" Material="Q450" Profile="Col22" TopVerticeId="10" BottomVerticeId="7" />
+      <Column GeomType="Line" ComponentType="Column" ID="16" LocationTag="(1,3)" Material="Q450" Profile="Col22" TopVerticeId="11" BottomVerticeId="8" />
+      <Column GeomType="Line" ComponentType="Column" ID="17" LocationTag="(2,3)" Material="Q450" Profile="Col22" TopVerticeId="12" BottomVerticeId="9" />
+    </Columns>
+  </Frame>
+  <MethodProperty Kx="2000000" Ky="1000000" Kc="0.3577328" TopElevation="0" OverLayingSoilHeight="3" />
+</Model1>

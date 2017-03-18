@@ -29,7 +29,7 @@ class uComponent(uAbqEntity):
         :return:
         '''
         minLength = fixedNumber * minSize
-        if length<minLength:
+        if length < minLength:
             return int(length/minSize)
         else:
             return fixedNumber

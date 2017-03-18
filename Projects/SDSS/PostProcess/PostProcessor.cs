@@ -9,32 +9,36 @@ using System.Windows.Forms.VisualStyles;
 using eZstd.Miscellaneous;
 using SDSS.Project;
 using SDSS.Solver;
+using SDSS.Models;
 using SDSS.Utility;
 
 namespace SDSS.PostProcess
 {
     internal class PostProcessor
     {
-        public AbaqusSolver Solver { get; private set; }
-        private StreamReader _sr;
-
+        public readonly ModelBase Model;
+        public readonly AbaqusSolver Solver;
+        private readonly AbqWorkingDir _abqWorkingDir;
         /// <summary> 整个 Abaqus 计算得到的所有结果，而不是用来导出的筛选过的结果 </summary>
         public Result Results { get; private set; }
 
         #region ---   构造函数
 
-        public PostProcessor(AbaqusSolver solver)
+        public PostProcessor()
         {
+        }
+
+        public PostProcessor(ModelBase model, AbaqusSolver solver) : this()
+        {
+            Model = model;
             Solver = solver;
+            _abqWorkingDir = solver.WorkingDir;
         }
 
         /// <summary> 析构函数 </summary>
         ~PostProcessor()
         {
-            if (_sr != null)
-            {
-                _sr.Close();
-            }
+
         }
 
         #endregion
@@ -66,7 +70,7 @@ namespace SDSS.PostProcess
         public SolverState CheckResultFiles(ref StringBuilder errorMessage)
         {
             // 检查 output 文件中的数据
-            string outputFile = ProjectPaths.F_PyOutput;
+            string outputFile = _abqWorkingDir.F_PyOutput;
             SolverState state = SolverState.SelfFinished;
             if (File.Exists(outputFile))
             {
@@ -83,7 +87,11 @@ namespace SDSS.PostProcess
                         }
                         else if (line.Equals(Constants.FileExtensions.CalculationFailedTag))
                         {
+                            //
                             errorMessage.AppendLine("Abaqus 计算过程出错而导致计算结束。");
+                            // 将具体的出错信息提取出来
+                            GetErrorMessage(sr, ref errorMessage);
+                            //
                             state = SolverState.FailedWithError;
                             break;
                         }
@@ -100,7 +108,7 @@ namespace SDSS.PostProcess
             if (state == SolverState.Succeeded)
             {
                 //
-                string resultFile = ProjectPaths.F_AbqResult;
+                string resultFile = _abqWorkingDir.F_AbqResult;
 
                 if (!File.Exists(resultFile))
                 {
@@ -112,6 +120,16 @@ namespace SDSS.PostProcess
             return state;
         }
 
+        private void GetErrorMessage(StreamReader sr, ref StringBuilder errorMsg)
+        {
+            string line = sr.ReadLine();
+            errorMsg.AppendLine(line);
+            while (!line.Equals(Constants.FileExtensions.CalculationFailedEndTag))
+            {
+                errorMsg.AppendLine(line);
+                line = sr.ReadLine();
+            }
+        }
         #endregion
 
         #region ---   计算结果数据的提取
@@ -130,9 +148,9 @@ namespace SDSS.PostProcess
         /// <summary> 列出所有的计算结果，并显示在窗口中，以供用户选择性导出 </summary>
         public void ShowResultsList()
         {
-           if (this.Results != null)
+            if (this.Results != null)
             {
-                var rl = new ResultLister(Results);
+                var rl = new ResultLister(Model, Results, _abqWorkingDir);
                 rl.ShowDialog(null);
             }
         }

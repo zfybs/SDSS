@@ -23,16 +23,16 @@ namespace SDSS.PostProcess
                 //var s = _sr.ReadLine();
                 //MessageBox.Show(s);
 
-                res = new Result(@"此结果对象的名称暂时还是随意设定的啦", dict);
+                res = new Result(modelName: @"此结果对象的名称暂时还是随意设定的啦", items: dict);
             }
             return res;
         }
-        
+
         #region ---   将 Result 文本的数据构造成一个 Dictionary
 
-        private static Dictionary<string, ResultItem> ReadDictionary(StreamReader sr)
+        private static Dictionary<string, ResultFileItem> ReadDictionary(StreamReader sr)
         {
-            var dict = new Dictionary<string, ResultItem>();
+            var dict = new Dictionary<string, ResultFileItem>();
             string strLine = sr.ReadLine();
             string pattern = @"T \* (.*) \* (.*) \* (.*)"; //  以 “liner-组名-”开头
             //
@@ -50,22 +50,22 @@ namespace SDSS.PostProcess
                     case ResultValueType.Vector:
                         double[] vec = null;
                         strLine = GetVector(sr, out vec);
-                        dict.Add(keyName, new ResultItem(keyName, ResultValueType.Vector, value: vec, description: description));
+                        dict.Add(keyName, new ResultFileItem(keyName, ResultValueType.Vector, value: vec, description: description));
                         break;
                     case ResultValueType.Number:
                         double num = 0;
                         strLine = GetNumber(sr, out num);
-                        dict.Add(keyName, new ResultItem(keyName, ResultValueType.Number, value: num, description: description));
+                        dict.Add(keyName, new ResultFileItem(keyName, ResultValueType.Number, value: num, description: description));
                         break;
                     case ResultValueType.Array2D:
                         double[,] arr2D;
                         strLine = GetArray2D(sr, out arr2D);
-                        dict.Add(keyName, new ResultItem(keyName, ResultValueType.Array2D, value: arr2D, description: description));
+                        dict.Add(keyName, new ResultFileItem(keyName, ResultValueType.Array2D, value: arr2D, description: description));
                         break;
                     case ResultValueType.String:
                         string str;
                         strLine = GetString(sr, out str);
-                        dict.Add(keyName, new ResultItem(keyName, ResultValueType.String, value: str, description: description));
+                        dict.Add(keyName, new ResultFileItem(keyName, ResultValueType.String, value: str, description: description));
                         break;
                 }
                 if (sr.EndOfStream) { break; }

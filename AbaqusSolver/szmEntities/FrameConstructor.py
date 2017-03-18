@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import xml.etree.ElementTree as ET
 
-from Frame import uMaterialType,uMaterial,uProfile,uProfileType
+from szmDefinitions.Definition import uMaterialType,uMaterial,uProfile,uProfileType
 from szmEntities.Component import uBeam,uColumn
 from szmEntities.Vertice import uVerticeFrame
-from Frame import uFrame,uLoad
+from szmEntities.uFrame import uFrame1
+from szmEntities.Structure1 import Structure1
+from szmEntities.Method1 import Method1
 
 def ImportUserModel1(filePath):
     # filePath = r'E:\SDSS\bin\StationDesginModel.sdss'
@@ -17,12 +19,15 @@ def ImportUserModel1(filePath):
 
     # find the element of definitions the elementTree
     eleDefinitions = root
-    soilProperty = root
+    eleSoilProperty = root
+    eleFrame = root
     for c in root:
         if c.tag == 'Definitions':
             eleDefinitions = c
-        elif c.tag == 'SoilProperty':
-            soilProperty = c
+        elif c.tag == 'MethodProperty':
+            eleSoilProperty = c
+        elif c.tag == 'Frame':
+            eleFrame = c
     # ------------------------------------------------------------------------
 
     materials={}
@@ -42,11 +47,12 @@ def ImportUserModel1(filePath):
         if d.tag=='Profiles':
             for fv in d:
                 profileType=uProfileType.GetProfileType(fv.attrib['Type'])
+                prof = None
                 if profileType== uProfileType.rectangular:
                     prof=uProfile(fv.attrib['Name'],profileType,float(fv.attrib['Width']),float(fv.attrib['Height']))
                 elif profileType== uProfileType.T:
                     prof=uProfile(fv.attrib['Name'],profileType,float(fv.attrib['Width']),float(fv.attrib['Height']),float(fv.attrib['FlangeThickness']),float(fv.attrib['WebThickness']),)
-                profile={fv.attrib['Name']:prof}
+                profile={fv.attrib['Name']: prof}
                 profiles.update(profile)
     pEs=profiles.values()
     pE=tuple(pEs)
@@ -56,7 +62,7 @@ def ImportUserModel1(filePath):
     spans = 0
     layers = 0
     vertices={}
-    for d in eleDefinitions :
+    for d in eleFrame :
         if d.tag=='FrameVertices':
             for fv in d:
                 idX = int(fv.attrib['Index_X'])
@@ -69,11 +75,11 @@ def ImportUserModel1(filePath):
                                   index =(idX, idY),  connectedComponents = None)
 
                 vertices[fv.attrib['ID']] = v
-
+            break
     # ------------------------------------------------------------------------
 
     beams=[]
-    for c in root:
+    for c in eleFrame:
         if c.tag=='Beams':
             for fv in c:
 
@@ -83,20 +89,19 @@ def ImportUserModel1(filePath):
                 index=(leftP.index[0] + 1, leftP.index[1])
                 length= rightP.x - leftP.x
                 leftpoint = (leftP.x, leftP.y)
-
-                mat = None
-                if materials.has_key(fv.attrib['MaterialName']):
-                    mat = materials[fv.attrib['MaterialName']]
-
+                ##
+                mat = materials[fv.attrib['Material']]
+                prof = profiles[fv.attrib['Profile']]
+                ##
                 name =  "b_"+str(index[0])+"_" + str(index[1])
-                prof = profiles[fv.attrib['ProfileName']]
                 beam=uBeam(name,prof,mat,index,length,leftpoint)
 
                 beams.append(beam)
+            break
     beams=tuple(beams)
 
     columns=[]
-    for c in root:
+    for c in eleFrame:
         if c.tag=='Columns':
             for fv in c:
 
@@ -104,25 +109,27 @@ def ImportUserModel1(filePath):
                 topP = vertices[fv.attrib['TopVerticeId']]
 
                 index=(bottomP.index[0] , bottomP.index[1] + 1)
-
+                ##
                 height = topP.y - bottomP.y
                 bottomPoint=(bottomP.x, bottomP.y)
-                mat=None
-                if materials.has_key(fv.attrib['MaterialName']):
-                    mat = materials[fv.attrib['MaterialName']]
-                column=uColumn("c_"+str(index[0])+"_"+str(index[1]),profiles[fv.attrib['ProfileName']],mat,index,height,bottomPoint)
+                ##
+                mat = materials[fv.attrib['Material']]
+                prof = profiles[fv.attrib['Profile']]
+                column=uColumn("c_"+str(index[0])+"_"+ str(index[1]),prof, mat, index, height, bottomPoint)
                 columns.append(column)
+            break
     columns=tuple(columns)
 
     # ------------------------------------------------------------------------
 
-    kx = float(soilProperty.attrib['Kx'])
-    ky = float(soilProperty.attrib['Ky'])
-    kc = float(soilProperty.attrib['Kc'])
-    load = uLoad(kx= kx, ky= ky, kc = kc)
+    kx = float(eleSoilProperty.attrib['Kx'])
+    ky = float(eleSoilProperty.attrib['Ky'])
+    kc = float(eleSoilProperty.attrib['Kc'])
 
-    frame = uFrame(modelName, mE,pE, spans, layers, columns, beams, load)
-
+    ##
+    method1 = Method1(kx= kx, ky= ky, kc = kc)
+    strut = Structure1(spans, layers, columns, beams)
+    frame = uFrame1(modelName, mE, pE, strut, method1)
     return frame
 
 pass

@@ -5,7 +5,7 @@ using SDSS.Constants;
 using SDSS.Project;
 using SDSS.Definitions;
 using SDSS.Entities;
-using SDSS.StationModel;
+using SDSS.Models;
 
 namespace SDSS.Entities
 {
@@ -30,7 +30,7 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
+                var definitions = DefinitionCollection.ActiveDefiCollForDeserialize;
                 Material = definitions.GetMaterial(value);
             }
         }
