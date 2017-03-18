@@ -2,11 +2,8 @@
 import sys , os
 
 '''
-
 execfile(r'E:\GitHubProjects\SDSS\AbaqusSolver\deleteModules.py')
 execfile(r'E:\GitHubProjects\SDSS\AbaqusSolver\EnvironmentBuild.py')
-
-
 '''
 
 names = ("SSModels","Model1","Model1Functions","Frame","Entity","TestCode",'EnvironmentBuild','ProgramEntrance','PostProcess')

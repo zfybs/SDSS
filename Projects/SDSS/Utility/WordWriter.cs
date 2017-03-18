@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
-using SDSS.StationModel;
+using SDSS.Models;
 using Application = Microsoft.Office.Interop.Word.Application;
 using SDSS.Utility;
 
@@ -84,13 +84,12 @@ namespace SDSS.Utility
         #endregion
 
         #region ---   Document 操作
-
-
+        
         /// <summary> 创建一个新的文档 </summary>
-        /// <param name="wordTemplate"> word 模块的名称，空则表示默认的 Normal 模板。</param>
-        public virtual bool NewDocument(WordTemplateType wordTemplate)
+        /// <param name="wordTemplate"> word 模块的绝对路径，空则表示默认的 Normal 模板。</param>
+        public virtual bool NewDocument(string wordTemplate)
         {
-            string templatePath = WordTemplates.GetTemplatePath(wordTemplate);
+            string templatePath = wordTemplate;
             if (!File.Exists(templatePath))
             {
                 MessageBox.Show(@"用来撰写报告的 Word 模板文件不存在，请自行尝试找回，或者重新安装本软件。");
@@ -130,10 +129,10 @@ namespace SDSS.Utility
 
         /// <summary> 在文档中插入一些内容，并且自动换行 </summary>
         /// <param name="position"> 文字从哪个位置插入</param>
-        /// <param name="data"> 输入的数据 </param>
+        /// <param name="data"> 输入的数据，如果不赋值，则直接插入一个换行符 </param>
         /// <param name="style"> 新添加的内容的样式的名称 </param>
         /// <returns>返回的范围为新添加的内容所占的区域，与原内容无关</returns>
-        public Range InsertParagrph(string data, int position, WordStyle style = WordStyle.Follow)
+        public Range InsertParagrph(int position, string data = null, WordStyle style = WordStyle.Follow)
         {
             data = data + Constants.Word.CrLf;
             return InsertText(data, position, style);
@@ -149,11 +148,8 @@ namespace SDSS.Utility
             var rg = Document.Range(position, position);
 
             rg.InsertAfter(data);
+            WordStyles.SetStyle(rg, style);
 
-            if (style != WordStyle.Follow)
-            {
-                WordStyles.SetStyle(rg, style);
-            }
             return rg;
         }
 
@@ -197,26 +193,21 @@ namespace SDSS.Utility
             return tb;
         }
 
-        /// <summary> 在文档中插入一张图片</summary>
-        /// <param name="PP">图片的文件路径</param>
-        /// <param name="PN">图片的名字</param>>
+        /// <summary> 在文档正文中插入一张图片</summary>
+        /// <param name="picPath">图片的文件路径</param>
+        /// <param name="width">图片的宽度，单位为 point </param>>
+        /// <param name="height">图片的高度，单位为 point </param>>
         /// <returns></returns>
-        public Range InsertPicture(Range rg, string PP, string PN, float width, float height, bool? start = false, WordStyle style = WordStyle.Picture)
+        public InlineShape InsertPicture(int position, string picPath,
+            float width, float height, WordStyle style = WordStyle.Picture)
         {
-            if (start == true)
-            {
-                rg = rg.Document.Range(Start: rg.Start, End: rg.Start);
-            }
-            else if (start == false)
-            {
-                rg = rg.Document.Range(Start: rg.End, End: rg.End);
-            }
+            var rg = Document.Range(position, position);
 
-            InlineShape shape = rg.InlineShapes.AddPicture(PP);
+            InlineShape shape = rg.InlineShapes.AddPicture(picPath);
             shape.Width = width;
             shape.Height = height;
-            InsertText(Constants.Word.CrLf + PN, rg.End, WordStyle.Follow);
-            return rg;
+            WordStyles.SetStyle(shape.Range, style);
+            return shape;
         }
 
         #endregion

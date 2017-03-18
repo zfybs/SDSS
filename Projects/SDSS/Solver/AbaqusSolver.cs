@@ -6,8 +6,8 @@ using System.Text;
 using System.Timers;
 using System.Windows.Forms;
 using eZstd.Diagnostics;
-using SDSS.Definitions;
 using SDSS.Project;
+using SDSS.Models;
 using SDSS.Utility;
 using Timer = System.Timers.Timer;
 
@@ -16,14 +16,12 @@ namespace SDSS.Solver
     /// <summary>
     /// Abaqus 计算求解器
     /// </summary>
-    internal class AbaqusSolver
+    internal class AbaqusSolver : IDisposable
     {
         #region ---   Fields
 
         /// <summary> Abaqus 的工作文件夹 </summary>
-        private readonly string _workingDir;
-
-        private readonly ModelType _modelType;
+        public readonly AbqWorkingDir WorkingDir;
 
         private readonly SolverGUI _solverGui;
 
@@ -40,16 +38,20 @@ namespace SDSS.Solver
         /// <summary> 构造函数 </summary>
         /// <param name="workingDir">Abaqus 的工作文件夹</param>
         /// <param name="modelType">  </param>
-        public AbaqusSolver(string workingDir, ModelType modelType, SolverGUI solverGui)
+        public AbaqusSolver(AbqWorkingDir workingDir, SolverGUI solverGui)
         {
             //workingDir = @"C:\Users\zengfy\Desktop\AbaqusScriptTest\run.cmd";
-            _workingDir = workingDir;
-            ProjectPaths.SetAbaqusWorkingDir(workingDir);
+            WorkingDir = workingDir;
+            // ProjectPaths.SetAbaqusWorkingDir(workingDir);
             //
             State = SolverState.NotStarted;
             _solverGui = solverGui;
-            _modelType = modelType;
             //
+        }
+
+        public void Dispose()
+        {
+            // TerminateAbqCmd();
         }
 
         #region ---   创建 .bat 命令文件，以启动 Abaqus 的计算
@@ -60,7 +62,7 @@ namespace SDSS.Solver
             {
                 StreamWriter sw = new StreamWriter(ProjectPaths.F_InitialBat, append: false);
 
-                string fp = CreateBatCommand(workingDir: _workingDir, pyFile: ProjectPaths.F_PySolver);
+                string fp = CreateBatCommand(workingDir: WorkingDir.WorkingDirectory, pyFile: ProjectPaths.F_PySolver);
                 sw.WriteLine(fp);
                 sw.Close();
                 return true;
@@ -110,11 +112,11 @@ abaqus cae noGUI=beamExample.py
         /// <summary> 检查计算环境，文件配置 </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public bool CheckEnvironment(StationModel.StationModel sm, ref StringBuilder errorMessage)
+        public bool CheckEnvironment(ModelBase sm, ref StringBuilder errorMessage)
         {
             try
             {
-                if (!Directory.Exists(_workingDir))
+                if (!Directory.Exists(WorkingDir.WorkingDirectory))
                 {
                     errorMessage.AppendLine("指定的Abaqus工作文件夹不存在");
                     return false;
@@ -122,15 +124,20 @@ abaqus cae noGUI=beamExample.py
 
                 // 1. 指定用来计算的车站模型文件
 
-                sdUtils.ExportToXmlFile(xmlFilePath: ProjectPaths.F_CalculationModel, src: sm,
+                sdUtils.ExportToXmlFile(xmlFilePath: WorkingDir.F_CalculationModel, src: sm,
                     errorMessage: ref errorMessage);
                 //
 
                 // 2. 创建启动 Abaqus 的 .bat 文件
                 CreateBatCommand();
 
+                // 这一条在最后程序完成后要删除：将此文件写入 MiddleFiles 文件夹只是为了在调试时方便。
+                ProjectPaths.WriteCalcFilePaths(WorkingDir,
+                    Path.Combine(ProjectPaths.D_MiddleFiles, Path.GetFileName(WorkingDir.F_FilePaths)));
+
                 // 3. 将存储有模型参数、计算参数的文件所在的路径写入到一个单独的文本中，以供 Python 程序读取。
-                ProjectPaths.WriteCalcFilePaths();
+                ProjectPaths.WriteCalcFilePaths(WorkingDir, WorkingDir.F_FilePaths);
+
 
                 //
                 errorMessage.AppendLine("计算环境正常，可以开始计算");
@@ -155,7 +162,7 @@ abaqus cae noGUI=beamExample.py
         public SolverState Execute(uint waitingSeconds, out string errorMessage)
         {
             // 1. delete the abaqus lock file,if this file exists, the cmd will be terminated.
-            var lockFiles = Directory.EnumerateFiles(path: _workingDir, searchPattern: "*.lck",
+            var lockFiles = Directory.EnumerateFiles(path: WorkingDir.WorkingDirectory, searchPattern: "*.lck",
                 searchOption: SearchOption.TopDirectoryOnly);
             if (lockFiles.Any())
             {

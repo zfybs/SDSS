@@ -6,8 +6,17 @@ from textRepr import *
 from abaqus import *
 from odbAccess import *
 from abaqusConstants import *
+from szmEntities.uFrame import *
 
-def GetResult1(model, job, myFrame):
+def GetResult1(job, myFrame):
+    '''
+
+    :param model:
+    :param job:
+    :param myFrame:
+    :type myFrame: uFrame1
+    :return:
+    '''
 
     name = job.name+'.odb'
     odbFilePath = projectPath.get_AbaqusWorkingDir() + '\\' + name
@@ -140,7 +149,7 @@ def GetResult1(model, job, myFrame):
     '''
     maxLayerX, coordinatesMaxLX,maxLayerY, coordinatesMaxLY = [], [], [], []
 
-    for i in range(0, myFrame.layers+1):
+    for i in range(0, myFrame.strut.layers+1):
         #获取每一层节点的值和相应节点label
         nameSet = 'FLOOR'+str(i+1)+'NODES'
         nodeSetI=o.rootAssembly.nodeSets[nameSet]
@@ -194,7 +203,7 @@ def GetResult1(model, job, myFrame):
     :param coordinatesMaxLAF：每一层最大轴力点的坐标
     '''
     maxLayerAxialF, coordinatesMaxLAF, maxLayerShearF, coordinatesMaxLSF,maxLayerMoment, coordinatesMaxLM = [], [], [], [], [], []
-    for i in range(myFrame.layers+1):
+    for i in range(myFrame.strut.layers+1):
         #获取每一层单元的值和相应单元的label
         nameSetF = 'FLOOR' + str(i+1) + 'ELEMENTS'
         elementSetF = o.rootAssembly.elementSets[nameSetF]
@@ -222,7 +231,7 @@ def GetResult1(model, job, myFrame):
         maxLayerAxialF.append(maxAxialFi)
         coordinatesMaxLAF.append(coordinateMaxFi1)
 
-    for i in range(myFrame.layers):
+    for i in range(myFrame.strut.layers):
         #获取每一层单元的值和相应单元的label
         nameSetL = 'LAYER' + str(i+1) + 'ELEMENTS'
         elementSetL = o.rootAssembly.elementSets[nameSetL]
@@ -277,27 +286,6 @@ def GetResult1(model, job, myFrame):
     coordinatesMaxLSF = tuple(coordinatesMaxLSF)
     maxLayerMoment = tuple(maxLayerMoment)
     coordinatesMaxLM = tuple(coordinatesMaxLM)
-    # ============== 测试(print)========================
-    # print(coordinateMaxU1)
-    # print(coordinateMaxU2)
-    # print(coordinateMaxF1)
-    # print(coordinateMaxF2)
-    # print(coordinateMaxM)
-    # print(coordinatesMaxLX)
-    # print(coordinatesMaxLY)
-    # print(coordinatesMaxLAF)
-    # print(coordinatesMaxLSF)
-    # print(coordinatesMaxLM)
-    # print(maxLayerMoment)
-    # print(maxLayerShearF)
-    # print(maxLayerAxialF)
-    # print(maxLayerY)
-    # print(maxLayerX)
-    # print(maxDeflectionX)
-    # print(maxDeflectionY)
-    # print(maxAxialF)
-    # print(maxShearF)
-    # print(maxMoment)
 
     myResult = uResult1(maxDeflectionX,coordinateMaxU1,
                         maxDeflectionY,coordinateMaxU2,
@@ -310,4 +298,93 @@ def GetResult1(model, job, myFrame):
                         maxLayerShearF,coordinatesMaxLSF,
                         maxLayerMoment,coordinatesMaxLM)
     return myResult
+
+# =================================输出结果图片================================
+def printPicture(job,frame):
+    '''
+
+    :param job:
+    :param frame:
+    :type frame: uFrame1
+    :return:
+    '''
+
+    name = job.name+'.odb'
+    nameUMagnitude = job.name + '-UM'
+    nameU1 = job.name + '-U1'
+    nameU2 = job.name + '-U2'
+    nameSF1 = job.name + '-SF1'
+    nameSF2 = job.name + '-SF2'
+    nameSM1 = job.name + '-SM'
+
+    odbFilePath = projectPath.get_AbaqusWorkingDir() + '\\' + name
+
+    # 获取当前目录下的ODB文件
+    o = session.openOdb(name=odbFilePath, readOnly = False)
+
+    # 创建一个新的视口，并在新视口中打开ODB文件
+    width = None
+    if (frame.strut.iNodes[-1] > frame.strut.jNodes[-1]):
+        width = frame.strut.iNodes[-1]*120/frame.strut.jNodes[-1] + 66
+    else:
+        width = 200
+
+    myViewport=session.Viewport(name='Print contour plots',
+                                origin=(0, 0), width=width,
+                                height=120)
+    myViewport.setValues(displayedObject=
+                         o, border = False)
+
+    # 设置云图模式
+    myViewport.odbDisplay.display.setValues(plotState=(CONTOURS_ON_DEF, ))
+
+    # 设置 common plot option 里面的参数
+    myViewport.odbDisplay.commonOptions.setValues(deformationScaling=UNIFORM, uniformScaleFactor=0)
+    myViewport.odbDisplay.commonOptions.setValues(edgeLineThickness=MEDIUM)
+
+    # 设置 contour plot options 里面的参数
+    myViewport.odbDisplay.contourOptions.setValues(showMinLocation=ON, showMaxLocation=ON)
+
+    # 设置 viewportAnnotationOptions 里面的参数，主要针对一些注释性的内容
+    myViewport.viewportAnnotationOptions.setValues(compass=OFF, triad=ON, legend=ON, title=OFF, state=OFF, annotations=OFF)
+    myViewport.viewportAnnotationOptions.setValues(legendBox=ON,legendMinMax=OFF)
+    myViewport.viewportAnnotationOptions.setValues(legendFont='-*-verdana-bold-r-normal-*-*-100-*-*-p-*-*-*')
+    myViewport.viewportAnnotationOptions.setValues(triadPosition=(3, 6))
+
+    # 设置 view 里面的参数
+    myViewport.view.fitView()
+    myViewport.view.setValues(width=1.25*frame.strut.iNodes[-1], height=1.25*frame.strut.jNodes[-1], viewOffsetX=-41.25*frame.strut.iNodes[-1]/width)
+
+    # ====================== 打印位移云图 ========================
+    # 设置显示的结果种类
+    myViewport.odbDisplay.setPrimaryVariable(variableLabel='U', outputPosition=NODAL, refinement=(INVARIANT, 'Magnitude'), )
+    # 打印图片
+    session.printOptions.setValues(vpBackground=ON, compass=ON, rendition=COLOR)
+    session.printToFile(fileName= projectPath.get_AbaqusWorkingDir() + '\\' + nameUMagnitude, format=PNG, canvasObjects=(myViewport, ))
+
+    # ====================== 打印水平位移云图 ========================
+    myViewport.odbDisplay.setPrimaryVariable(variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, 'U1'), )
+    session.printOptions.setValues(vpBackground=ON, compass=ON, rendition=COLOR)
+    session.printToFile(fileName= projectPath.get_AbaqusWorkingDir() + '\\' + nameU1, format=PNG, canvasObjects=(myViewport, ))
+
+    # ====================== 打印竖向位移云图 ========================
+    myViewport.odbDisplay.setPrimaryVariable(variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, 'U2'), )
+    session.printOptions.setValues(vpBackground=ON, compass=ON, rendition=COLOR)
+    session.printToFile(fileName= projectPath.get_AbaqusWorkingDir() + '\\' + nameU2, format=PNG, canvasObjects=(myViewport, ))
+
+    # ====================== 打印轴力云图 ========================
+    myViewport.odbDisplay.setPrimaryVariable(variableLabel='SF', outputPosition=INTEGRATION_POINT, refinement=(COMPONENT, 'SF1'), )
+    session.printOptions.setValues(vpBackground=ON, compass=ON, rendition=COLOR)
+    session.printToFile(fileName= projectPath.get_AbaqusWorkingDir() + '\\' + nameSF1, format=PNG, canvasObjects=(myViewport, ))
+
+    # ====================== 打印剪力云图 ========================
+    myViewport.odbDisplay.setPrimaryVariable(variableLabel='SF', outputPosition=INTEGRATION_POINT, refinement=(COMPONENT, 'SF2'), )
+    session.printOptions.setValues(vpBackground=ON, compass=ON, rendition=COLOR)
+    session.printToFile(fileName= projectPath.get_AbaqusWorkingDir() + '\\' + nameSF2, format=PNG, canvasObjects=(myViewport, ))
+
+    # ====================== 打印弯矩云图 ========================
+    myViewport.odbDisplay.setPrimaryVariable(variableLabel='SM', outputPosition=INTEGRATION_POINT, refinement=(COMPONENT, 'SM1'), )
+    session.printOptions.setValues(vpBackground=ON, compass=ON, rendition=COLOR)
+    session.printToFile(fileName= projectPath.get_AbaqusWorkingDir() + '\\' + nameSM1, format=PNG, canvasObjects=(myViewport, ))
+    pass
 

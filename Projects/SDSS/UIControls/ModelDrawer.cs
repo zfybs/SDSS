@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SDSS.StationModel;
+using SDSS.Models;
 using SDSS.Utility;
+using SDSS.Structures;
 
 namespace SDSS.UIControls
 {
@@ -17,15 +18,24 @@ namespace SDSS.UIControls
         //画图
         public void DrawSoilStructureModel(SoilStructureGeometry ssg, Graphics g = null)
         {
+
             g = g ?? CreateGraphics();
             g.Clear(BackColor);
             //
             float soilHeight = 0;
             double rx, ry, r;
             soilHeight = ssg.SoilHeight.Sum();
-            rx = (float)this.Width / ssg.SoilWidth;
-            ry = (float)this.Height / soilHeight;
-            r = Math.Min(rx, ry); // r 值越小，则模型缩得越多
+            if (this.Width != 0 && this.Height != 0 && ssg.SoilWidth > 0)
+            {
+                rx = (float)this.Width / ssg.SoilWidth;
+                ry = (float)this.Height / soilHeight;
+                r = Math.Min(rx, ry); // r 值越小，则模型缩得越多
+            }
+            else
+            {
+                r = 10;
+            }
+
             modelScale = (float)(r * 0.8);
 
             float translatex = (this.Width - ssg.SoilWidth * modelScale) / 2;

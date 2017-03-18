@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using SDSS.Definitions;
-using SDSS.StationModel;
+using SDSS.Models;
 using SDSS.UIControls;
 using SDSS.Project;
+using SDSS.Utility;
+using System.Xml;
+using System.Xml.Schema;
+using SDSS.Structures;
 
 namespace SDSS
 {
@@ -42,7 +50,7 @@ namespace SDSS
 
         /// <summary> 构造一个车站模型实例 </summary>
         /// <param name="sm"></param>
-        public static void ConstructStationModel(StationModel1 sm)
+        public static void ConstructStationModel(Model1 sm)
         {
             //
             Material mat1 = new Material("elas1", 1900, 200e9, 0.3, MaterialType.Elastic);
@@ -56,11 +64,11 @@ namespace SDSS
             sm.Definitions.Profiles.Add(profT);
 
             //
-            sm.GenerateFrame(new float[] { 4, 5, 6, }, new float[] { 3, 6 }, defaultMat: mat1, defaultProfile: rec);
+            sm.Frame = Frame.Create(new float[] { 4, 5, 6, }, new float[] { 3, 6 }, defaultMat: mat1, defaultProfile: rec);
 
             //
-            sm.Beams[0].Profile = profT;
-            sm.Columns[0].Material = mat2;
+            sm.Frame.Beams[0].Profile = profT;
+            sm.Frame.Columns[0].Material = mat2;
         }
 
         #endregion

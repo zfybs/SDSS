@@ -4,10 +4,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using eZstd.Miscellaneous;
 using Microsoft.Office.Interop.Word;
 using SDSS.Project;
+using SDSS.Models;
 using SDSS.Utility;
 using CheckBox = System.Windows.Forms.CheckBox;
 using Options = SDSS.Project.Options;
@@ -19,16 +21,20 @@ namespace SDSS.PostProcess
     /// </summary>
     internal partial class ResultLister : Form
     {
+        public readonly ModelBase Model;
         private readonly Result _result;
+        private readonly AbqWorkingDir _workingDir;
         private Reporter _reporter;
 
         /// <summary> 构造函数 </summary>
         /// <param name="result"></param>
-        public ResultLister(Result result)
+        public ResultLister(ModelBase model, Result result, AbqWorkingDir workingDir)
         {
             InitializeComponent();
             //
+            Model = model;
             _result = result;
+            _workingDir = workingDir;
             //
             ShowResultItems(result);
         }
@@ -38,10 +44,10 @@ namespace SDSS.PostProcess
         private void ShowResultItems(Result res)
         {
             var values = res.Items.Values.ToList();
-            float maxWidth = 0;
+            float maxWidth = 0;  // 所有的 CheckBox 的最大宽度，用来将这些 CheckBox 进行对齐
             //
             //flowLayoutPanel_Items.Controls.Clear();
-            foreach (ResultItem item in values)
+            foreach (ResultFileItem item in values)
             {
                 CheckBox cb = new CheckBox()
                 {
@@ -52,7 +58,12 @@ namespace SDSS.PostProcess
                 };
 
                 // 为控件添加提示文字
-                var tip = item.Description + "\r\n" + item.GetValueString();
+                string tip = null;
+                if (!string.IsNullOrEmpty(item.Description))
+                {
+                    tip = item.Description + "\r\n";
+                }
+                tip += item.GetValueString();
                 toolTip1.SetToolTip(cb, tip);
                 //
                 maxWidth = Math.Max(maxWidth, cb.CreateGraphics().MeasureString(item.Name, cb.Font).Width);
@@ -95,7 +106,7 @@ namespace SDSS.PostProcess
             if (_result != null && !_bgw_Report.IsBusy)
             {
                 // Start the asynchronous operation.
-                _bgw_Report.RunWorkerAsync(argument: null);
+                _bgw_Report.RunWorkerAsync(argument: _result);
             }
         }
 
@@ -108,6 +119,11 @@ namespace SDSS.PostProcess
                 if (succ)
                 {
                     WriteCheckedResultItems();
+                    _reporter.SetVisibility(true);
+
+                    InsertPictures();
+                    _reporter.SetVisibility(true);
+
 
                     return;
                     _reporter.WriteContents(_result, errorMessage: ref sb);
@@ -128,13 +144,13 @@ namespace SDSS.PostProcess
         /// <param name="errorMessage"></param>
         /// <param name="reporter"></param>
         /// <returns></returns>
-        private static bool OpenWordReporter(ref StringBuilder errorMessage, out Reporter reporter)
+        private bool OpenWordReporter(ref StringBuilder errorMessage, out Reporter reporter)
         {
             reporter = null;
             bool succ = false;
             try
             {
-                reporter = new Reporter(visible: true, openWordSucceeded: ref succ);
+                reporter = new Reporter(model: Model, visible: false, openWordSucceeded: ref succ);
             }
             catch (Exception)
             {
@@ -149,38 +165,6 @@ namespace SDSS.PostProcess
         }
 
         /// <summary> 只作测试，最后删除 </summary> 
-        private void WriteReport()
-        {
-            if (_result != null)
-            {
-                var sb = new StringBuilder();
-                bool succ = OpenWordReporter(ref sb, out _reporter);
-
-                if (succ)
-                {
-                    //
-
-                    var sr = new StreamReader(ProjectPaths.F_AbqResult);
-                    while (!sr.EndOfStream)
-                    {
-                        var s = sr.ReadLine();
-                        if (s.StartsWith("T"))
-                        {
-                            _reporter.InsertParagrph(s, _reporter.ContentEnd, style: WordStyle.Title2);
-                        }
-                        else
-                        {
-                            _reporter.InsertParagrph(s, _reporter.ContentEnd, style: WordStyle.Content);
-                        }
-                    }
-
-                    sr.Close();
-                }
-                _reporter.SetVisibility(true);
-            }
-        }
-
-        /// <summary> 只作测试，最后删除 </summary> 
         private void WriteCheckedResultItems()
         {
             var endPosi = _reporter.ContentEnd;
@@ -190,14 +174,14 @@ namespace SDSS.PostProcess
                 var chkBox = cont as CheckBox;
                 if (chkBox.Checked)
                 {
-                    var item = chkBox.Tag as ResultItem;
+                    var item = chkBox.Tag as ResultFileItem;
                     if (item != null)
                     {
-                        rg = _reporter.InsertParagrph(item.Name, endPosi, style: WordStyle.Title2);
+                        rg = _reporter.InsertParagrph(endPosi, item.Name, style: WordStyle.Title2);
                         endPosi = rg.End;
                         if (!string.IsNullOrEmpty(item.Description))
                         {
-                            rg = _reporter.InsertParagrph(item.Description, endPosi, style: WordStyle.Content);
+                            rg = _reporter.InsertParagrph(endPosi, item.Description, style: WordStyle.Content);
                             endPosi = rg.End;
                         }
                         var v = item.GetValueString();
@@ -211,8 +195,43 @@ namespace SDSS.PostProcess
                         }
                         else
                         {
-                            rg = _reporter.InsertParagrph(v, endPosi, style: WordStyle.Content);
+                            rg = _reporter.InsertParagrph(endPosi, v, style: WordStyle.Content);
                             endPosi = rg.End;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary> 只作测试，最后删除 </summary> 
+        private void InsertPictures()
+        {
+            var d = new DirectoryInfo(_workingDir.WorkingDirectory);
+            string modelName = Model.ModelName;
+            string pattern = modelName + "-(.+).png";
+            var rg = _reporter.Content;
+            rg.Collapse(WdCollapseDirection.wdCollapseEnd);
+            //
+            rg = _reporter.InsertParagrph(rg.End, "计算结果图", style: WordStyle.Title2);
+            foreach (var f in d.GetFiles("*.png"))
+            {
+                var reg = new Regex(pattern);
+                var m = reg.Match(f.Name);
+                string description;
+                if (m.Success)
+                {
+                    var tp = OutputField.GetOutputField(m.Groups[1].Value);
+                    if (tp != null)
+                    {
+                        description = OutputField.GetOutputFieldDescription(tp.Value);
+                        switch (tp.Value)
+                        {
+                            default:
+                                var shp = _reporter.InsertPicture(rg.End, f.FullName, width: 400, height: 200);
+                                rg = shp.Range;
+                                rg = _reporter.InsertParagrph(rg.End);
+                                rg = _reporter.InsertParagrph(rg.End, description, WordStyle.Caption_Pic);
+                                break;
                         }
                     }
                 }
