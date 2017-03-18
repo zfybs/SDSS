@@ -7,7 +7,8 @@ using System.Xml.Serialization;
 using SDSS.Constants;
 using SDSS.Project;
 using SDSS.Definitions;
-using SDSS.StationModel;
+using SDSS.Models;
+using SDSS.Structures;
 
 namespace SDSS.Entities
 {
@@ -37,7 +38,7 @@ namespace SDSS.Entities
         [Category(Categories.Property), ReadOnly(true), Description("用来确定此构件的定位标识的信息，比如对于框架梁，可以通过二维向量“(1,2)”表示最左跨，倒数第二层顶部梁。")]
         public string LocationTag { get; set; }
 
-        [XmlAttribute()]
+        [XmlAttribute(attributeName: "Material")]
         [Category(Categories.Property), Description("构件材料信息")]
         public string MaterialName
         {
@@ -51,7 +52,7 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
+                var definitions = DefinitionCollection.ActiveDefiCollForDeserialize;
                 Material = definitions.GetMaterial(value);
             }
         }
@@ -60,7 +61,7 @@ namespace SDSS.Entities
         [Category(Categories.Property), Description("构件材料信息")]
         public Material Material { get; set; }
 
-        [XmlAttribute()]
+        [XmlAttribute(attributeName: "Profile")]
         [Category(Categories.Property), Description("构件横截面信息")]
         public string ProfileName
         {
@@ -74,7 +75,7 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
+                var definitions = DefinitionCollection.ActiveDefiCollForDeserialize;
                 Profile = definitions.GetProfile(value);
             }
         }
@@ -121,6 +122,7 @@ namespace SDSS.Entities
     {
 
         #region ---   XmlAttribute
+
         [XmlAttribute()]
         [Category(Categories.Property), Description("梁的左边节点")]
         public uint LeftVerticeId
@@ -135,8 +137,8 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
-                LeftVertice = definitions.GetFrameVertice(value);
+                var vertices = Frame.ActiveFrameForDeserialize.FrameVertices;
+                LeftVertice = vertices.FirstOrDefault(r => r.ID == value);
             }
         }
         [XmlIgnore()]
@@ -156,8 +158,8 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
-                RightVertice = definitions.GetFrameVertice(value);
+                var vertices = Frame.ActiveFrameForDeserialize.FrameVertices;
+                RightVertice = vertices.FirstOrDefault(r => r.ID == value);
             }
         }
         [XmlIgnore]
@@ -206,8 +208,8 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
-                TopVertice = definitions.GetFrameVertice(value);
+                var vertices = Frame.ActiveFrameForDeserialize.FrameVertices;
+                TopVertice = vertices.FirstOrDefault(r => r.ID == value);
             }
         }
         [XmlIgnore()]
@@ -227,8 +229,8 @@ namespace SDSS.Entities
             }
             set
             {
-                var definitions = DefinitionCollection.GetUniqueInstance();
-                BottomVertice = definitions.GetFrameVertice(value);
+                var vertices = Frame.ActiveFrameForDeserialize.FrameVertices;
+                BottomVertice = vertices.FirstOrDefault(r => r.ID == value);
             }
         }
         [XmlIgnore()]

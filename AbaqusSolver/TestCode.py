@@ -3,14 +3,14 @@ import re
 import traceback
 from os import path
 
-p = r'E:\GitHubProjects\SDSS\AbaqusSolver'
 
-m = path.join(p, path.pardir, r'MidFiles')  # E:\GitHubProjects\SDSS\AbaqusSolver\..\MidFiles
 
-try:
-    try:
-        raise IOError()
-    except ZeroDivisionError as ex:
-        print('error captured in inner try...catch block')
-except IOError as ex:
-    print('error captured in outer try...catch block')
+class Friend():
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return "Friend : %s" % self.name
+
+friend = Friend('Liang')
+print friend

@@ -4,16 +4,18 @@
 import sys,os
 from abaqus import *
 from abaqusConstants import *
+# from symbolicConstants import *
 import part,material,section,assembly,step,load,mesh,job,visualization,regionToolset
 
 from Model1Functions import *
+from szmPostProcess.PostProcess import  *
 from SSModels import ImportUserModel1
-from szmEntities.Frame import uFrame
+from szmEntities.uFrame import uFrame1
 
 def Calculate1(myFrame):
     '''
     :param myFrame:
-    :type myFrame: uFrame
+    :type myFrame: uFrame1
     :return:
     '''
 
@@ -59,16 +61,16 @@ def Calculate1(myFrame):
 
     # =============== Load ======================================================
     # set boundaries
-    setBoundary(myAssembly,myInstance,myFrame,myFrame.load)
+    setBoundary(myAssembly,myInstance,myFrame)
 
     # create sets
     createNodesSet (myAssembly,myInstance,myFrame)
     createElementsSet(myAssembly,myInstance,myFrame)
 
     # concentrated force on each intersect point between columns and beams
-    setConcentratedForce(myModel,myInstance,myStep.name, myFrame,myFrame.load)
+    setConcentratedForce(myModel,myInstance,myStep.name, myFrame)
     # apply line load on the columns at the left side of the frame
-    setLineLoad(myModel,myInstance,myStep.name,myFrame,myFrame.load)
+    setLineLoad(myModel,myInstance,myStep.name,myFrame)
 
     # =============== Job ======================================================
     # create a job
@@ -81,18 +83,7 @@ def Calculate1(myFrame):
     myJob.waitForCompletion()
 
     # =============== visualization ======================================================
-    vpName = 'bending moment'
-    myViewport = session.Viewport(name=vpName, origin=(20, 20), width=150, height=120)
-    myOdb = visualization.openOdb(path=myJob.name + '.odb')
-    myViewport.setValues(displayedObject=myOdb)
-    myViewport.odbDisplay.display.setValues(plotState=CONTOURS_ON_DEF)
-
-    myViewport.odbDisplay.commonOptions.setValues(renderStyle=FILLED)
-    myViewport.odbDisplay.setPrimaryVariable(
-        variableLabel='U', outputPosition=NODAL, refinement=(INVARIANT, 'Magnitude'), )
-
-    session.printToFile(fileName='1', format=PNG, canvasObjects=(myViewport, ))
-
+    # printPicture(myJob, myModel)
     return myModel, myJob
 
 def Calculate2(myFrame):

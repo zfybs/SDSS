@@ -5,6 +5,16 @@ using System.Text;
 
 namespace SDSS.Constants
 {
+
+    public static class Project
+    {
+        /// <summary> 整个SDSS项目的标题 </summary>
+        public const string ProjectTitle = @"地下车站抗震设计";
+        /// <summary> 所有模型的默认名称 </summary>
+        public const string DefaultModelName = @"SubStructures";
+    }
+
+
     public static class Word
     {
         /// <summary> 集合的第一个无素的下标 </summary>
@@ -62,6 +72,8 @@ namespace SDSS.Constants
 
         /// <summary> output 文件中，标识Abaqus计算过程出错的字符串 </summary>
         public const string CalculationFailedTag = "*** Calculation terminated with error! ***";
+        /// <summary> output 文件中，标识Abaqus计算过程出错的字符串 </summary>
+        public const string CalculationFailedEndTag = "*** Error message ends here ***";
 
         /// <summary> Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中 </summary>
         public const string AbqResult = ".sdr";

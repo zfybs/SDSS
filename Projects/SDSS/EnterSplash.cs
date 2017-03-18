@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
-using eZstd.Miscellaneous;
 using SDSS.Definitions;
 using SDSS.Project;
-using SDSS.StationModel;
-using SDSS.UIControls;
+using SDSS.Properties;
+using SDSS.Models;
+using SDSS.ModelForms;
 using SDSS.Utility;
 
 namespace SDSS
@@ -20,20 +16,6 @@ namespace SDSS
         private Color _originalBackColor;
         private ModelType _modelType;
         private CalculationMethod _calculationMethod;
-
-        private string _abqWorkingDir;
-        private string AbqWorkingDir
-        {
-            get { return _abqWorkingDir; }
-            set
-            {
-                if (Directory.Exists(value))
-                {
-                    // ProjectPaths.SetAbaqusWorkingDir(value);
-                }
-                _abqWorkingDir = value;
-            }
-        }
 
         #region ---   窗口的打开与关闭
 
@@ -59,7 +41,7 @@ namespace SDSS
             pictureBoxes_Click(pictureBox_Frame, null);
 
             // 将 settings 中的数据刷新到 界面中
-            var s = new Properties.Settings();
+            var s = new Settings();
             textBox1.Text = s.AbaWorkingDir;
             textBox2.Text = s.ModelName;
         }
@@ -71,12 +53,15 @@ namespace SDSS
 
         private void EnterSplash_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape) { Close(); }
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
         }
 
         private void EnterSplash_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var s = new Properties.Settings();
+            var s = new Settings();
             s.AbaWorkingDir = textBox1.Text;
             s.ModelName = textBox2.Text;
             s.Save();
@@ -103,15 +88,18 @@ namespace SDSS
                 }
             }
         }
+
         private void PictureboxCheck(PictureBox p)
         {
             p.BackColor = Color.Red;
             _modelType = (ModelType)p.Tag;
         }
+
         private void PictureboxUncheck(PictureBox p)
         {
             p.BackColor = _originalBackColor;
         }
+
         #endregion
 
         #region ---   radioButton 的选择与取消选择
@@ -132,7 +120,6 @@ namespace SDSS
 
         private void button_chooseDir_Click(object sender, EventArgs e)
         {
-
             string rootDir = textBox1.Text;
             if (!Directory.Exists(rootDir))
             {
@@ -159,54 +146,68 @@ namespace SDSS
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            // 模型名称
             string text = textBox2.Text;
-            if (string.IsNullOrEmpty(text) || Utility.sdUtils.StringHasNonEnglish(text))
+            if (string.IsNullOrEmpty(text) || sdUtils.StringHasNonEnglish(text))
             {
                 MessageBox.Show(@"模型名称未指定，或者名称中包含非英文的字符！", @"提示",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
             string modelName = text;
-            Options.OModelName = text;
-            AbqWorkingDir = textBox1.Text;
-            this.Hide();
+
+
+
+            // Abaqus 计算文件夹
+            string abqWkDir = Options.DefaultAbqWorkingDir;
+            text = textBox1.Text;
+            if (!string.IsNullOrEmpty(text))
+            {
+                if (sdUtils.StringHasNonEnglish(text))
+                {
+                    MessageBox.Show(@"模型名称未指定，或者名称中包含非英文的字符！", @"提示",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else if (!Directory.Exists(text))
+                {
+                    var res = MessageBox.Show(@"指定的 Abaqus 计算文件夹不存在，是否创建此文件夹？", @"提示",
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                    if (res == DialogResult.OK)
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(text);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(@"创建 Abaqus 计算文件夹失败\r\n" + ex.Message, @"出错",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    abqWkDir = text;
+                }
+            }
+            Hide();
             //
-            MainForm mf = GetMainForm(modelName);
+            var mf = GetMainFormMdi(modelName, abqWkDir);
+            mf.ModelForm.SetAbqWorkingDir(abqWkDir);
             mf.ShowDialog();
 
             // 关闭整个程序
-            this.Close();
+            Close();
         }
-
-        private MainForm GetMainForm(string modelName)
+        
+        private MainFormMdi GetMainFormMdi(string modelName, string abqWkDir)
         {
-            switch (_modelType)
-            {
-                case ModelType.Frame: break;
-                case ModelType.Model2: break;
-            }
-            switch (_calculationMethod)
-            {
-                case CalculationMethod.InertialForce: break;
-            }
-
-            var stationModel = ConstructStationModel();
-            stationModel.ModelName = modelName;
-            var mf = new MainForm(stationModel as StationModel1);
-
-            return mf;
+            var mfm = new MainFormMdi(_modelType, _calculationMethod, modelName);
+            // mfm.ActiveMdiChild.Text = modelName;
+            return mfm;
         }
-
-        private StationModel.StationModel ConstructStationModel()
-        {
-            var sm = StationModel1.GetUniqueInstance() as StationModel1;
-            Program.ConstructStationModel(sm);
-            //ImExportModel(sm);
-
-            return sm;
-        }
-
 
         #endregion
     }

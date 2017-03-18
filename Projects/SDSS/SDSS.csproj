@@ -13,6 +13,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,6 +57,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="eZstd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\eZstd\bin\eZstd.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -67,42 +86,77 @@
       <DependentUpon>EnterSplash.cs</DependentUpon>
     </Compile>
     <Compile Include="Definitions\ModelType.cs" />
+    <Compile Include="Methods\Method1.cs" />
+    <Compile Include="ModelForms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelForms\MainFormMdi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForms\MainFormMdi.Designer.cs">
+      <DependentUpon>MainFormMdi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelForms\Model1Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForms\Model1Form.Designer.cs">
+      <DependentUpon>Model1Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelForms\Model2Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForms\Model2Form.Designer.cs">
+      <DependentUpon>Model2Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelForms\ModelOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForms\ModelOptions.Designer.cs">
+      <DependentUpon>ModelOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DefinitionCollection.cs" />
+    <Compile Include="Models\Model1.cs" />
+    <Compile Include="Models\Model2.cs" />
+    <Compile Include="Models\ModelBase.cs" />
     <Compile Include="PostProcess\PostProcessor.cs" />
     <Compile Include="PostProcess\Reporter.cs" />
     <Compile Include="PostProcess\Result.cs" />
     <Compile Include="PostProcess\ResultConstructor.cs" />
-    <Compile Include="PostProcess\ResultItem.cs" />
+    <Compile Include="PostProcess\OutputField.cs" />
+    <Compile Include="PostProcess\ResultFileItem.cs" />
     <Compile Include="PostProcess\ResultLister.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PostProcess\ResultLister.Designer.cs">
       <DependentUpon>ResultLister.cs</DependentUpon>
     </Compile>
+    <Compile Include="Project\AbqWorkingDir.cs" />
     <Compile Include="Solver\SolverGUI.cs" />
     <Compile Include="Solver\SolverState.cs" />
     <Compile Include="Entities\SoilLayer.cs" />
-    <Compile Include="StationModel\DefinitionCollection.cs" />
-    <Compile Include="StationModel\ModelOptions.cs">
+    <Compile Include="Structures\Frame.cs" />
+    <Compile Include="Structures\FrameConstructor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Structures\FrameConstructor.Designer.cs">
+      <DependentUpon>FrameConstructor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Structures\FrameConstructorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StationModel\ModelOptions.Designer.cs">
-      <DependentUpon>ModelOptions.cs</DependentUpon>
+    <Compile Include="Structures\FrameConstructorForm.Designer.cs">
+      <DependentUpon>FrameConstructorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StationModel\StationGeometry.cs" />
+    <Compile Include="Structures\SoilStructureGeometry.cs" />
+    <Compile Include="Structures\StationGeometry.cs" />
     <Compile Include="UIControls\BoundaryParamForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UIControls\BoundaryParamForm.Designer.cs">
       <DependentUpon>BoundaryParamForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UIControls\FrameConstructor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UIControls\FrameConstructor.Designer.cs">
-      <DependentUpon>FrameConstructor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StationModel\MainForm.DataGridViews.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Project\OptionsForm.cs">
       <SubType>Form</SubType>
@@ -118,9 +172,6 @@
     <Compile Include="Definitions\Profile.cs" />
     <Compile Include="Entities\Component.cs" />
     <Compile Include="Entities\Vertise.cs" />
-    <Compile Include="StationModel\StationModel.cs" />
-    <Compile Include="StationModel\StationModel1.cs" />
-    <Compile Include="Entities\SoilPropertys.cs" />
     <Compile Include="UIControls\EditDefinition.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,19 +184,12 @@
     <Compile Include="UIControls\DefinitionManager.Designer.cs">
       <DependentUpon>DefinitionManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="StationModel\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StationModel\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UIControls\ModelDrawer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver\AbaqusSolver.cs" />
-    <Compile Include="StationModel\SoilStructureGeometry.cs" />
     <Compile Include="Program1.cs" />
     <Compile Include="Project\Options.cs" />
     <Compile Include="Project\ProjectPaths.cs" />
@@ -157,11 +201,29 @@
     <EmbeddedResource Include="EnterSplash.resx">
       <DependentUpon>EnterSplash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModelForms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelForms\MainFormMdi.resx">
+      <DependentUpon>MainFormMdi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelForms\Model1Form.resx">
+      <DependentUpon>Model1Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelForms\Model2Form.resx">
+      <DependentUpon>Model2Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelForms\ModelOptions.resx">
+      <DependentUpon>ModelOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PostProcess\ResultLister.resx">
       <DependentUpon>ResultLister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StationModel\ModelOptions.resx">
-      <DependentUpon>ModelOptions.cs</DependentUpon>
+    <EmbeddedResource Include="Structures\FrameConstructor.resx">
+      <DependentUpon>FrameConstructor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Structures\FrameConstructorForm.resx">
+      <DependentUpon>FrameConstructorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\BoundaryParamForm.resx">
       <DependentUpon>BoundaryParamForm.cs</DependentUpon>
@@ -173,13 +235,6 @@
     <EmbeddedResource Include="UIControls\DefinitionManager.resx">
       <DependentUpon>DefinitionManager.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UIControls\FrameConstructor.resx">
-      <DependentUpon>FrameConstructor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StationModel\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -216,10 +271,21 @@
     <None Include="Resources\Frame.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\eZstd\Projects\eZstd\eZstd.csproj">
-      <Project>{fb9b6528-5424-4b7a-aeba-6733450dc44b}</Project>
-      <Name>eZstd</Name>
-    </ProjectReference>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

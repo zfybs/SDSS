@@ -33,7 +33,7 @@ namespace SDSS.Utility
         private const string Title3 = "标题 3";
         private const string Title4 = "标题 4";
         private const string Picture = "图片";
-        private const string Caption_Pic = "图片题注";
+        private const string Caption_Pic = "题注";
         private const string Table = "网格型";
 
         private static string GetStyleName(WordStyle style)
@@ -52,17 +52,23 @@ namespace SDSS.Utility
                 default: return Content;
             }
         }
-        
+
         /// <summary> 为指定的范围设置样式 </summary>
         public static void SetStyle(Range rg, WordStyle style)
         {
-            rg.set_Style(GetStyleName(style));
+            if (style != WordStyle.Follow)
+            {
+                rg.set_Style(GetStyleName(style));
+            }
         }
 
         /// <summary> 为指定的范围设置样式 </summary>
         public static void SetStyle(Table table, WordStyle style)
         {
-            table.set_Style(GetStyleName(style));
+            if (style != WordStyle.Follow)
+            {
+                table.set_Style(GetStyleName(style));
+            }
         }
     }
 }

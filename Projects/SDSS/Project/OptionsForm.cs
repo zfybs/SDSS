@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using System.IO;
 using SDSS.Utility;
 using SDSS.Solver;
-using SDSS.StationModel;
+using SDSS.Models;
 
 namespace SDSS.Project
 {
+    /// <summary> 与整个程序相关，但是与模型无关的一些设置选项 </summary>
     public partial class OptionsForm : Form
     {
 
@@ -20,7 +21,11 @@ namespace SDSS.Project
         {
             InitializeComponent();
             comboBox_GUI.DataSource = Enum.GetValues(typeof(SolverGUI));
-            comboBox_WT.DataSource = Enum.GetValues(typeof(WordTemplateType));
+            //comboBox_WT.DataSource = Enum.GetValues(typeof(WordTemplateType));
+
+            var dict = WordTemplates.GetWordTemplateFiles(ProjectPaths.D_WordTemplate);
+            comboBox_WT.DataSource = dict.Keys.ToArray();
+
             this.comboBox_GUI.SelectedIndexChanged += new System.EventHandler(this.comboBox_GUI_SelectedIndexChanged);
             this.comboBox_WT.SelectedIndexChanged += new System.EventHandler(this.comboBox_WT_SelectedIndexChanged); ;
             refeshOF();
@@ -122,7 +127,11 @@ namespace SDSS.Project
         #region---   设置报告模板
         private void comboBox_WT_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Options.WordTemplate = (WordTemplateType)comboBox_WT.SelectedItem;
+            if (comboBox_WT.SelectedItem != null)
+            {
+                var templateName = comboBox_WT.SelectedItem.ToString();
+                Options.WordTemplate = WordTemplates.GetTemplatePath(templateName);
+            }
         }
         #endregion
 

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from szmEntities.Frame import uFrame, uMaterialType,uMaterial,uProfile,uProfileType,uLoad
+from szmEntities.uFrame import *
 from szmEntities.Component import uBeam,uColumn
-from szmEntities import Frame,Vertice
+from szmEntities.Method1 import Method1
+from szmEntities.Structure1 import Structure1
 
 
 # ===============================================================================
@@ -33,12 +34,10 @@ def ImportUserModel1(filePath):
                                    bottomPoint=((bi) * beamLength, (bj - 1) * columnHeight)))
     beams = tuple(beams)
     columns = tuple(columns)
-
-    # loads
-    load = uLoad(kx= 1e6,ky= 1e6,kc = 0.5)
-    frame = uFrame('JianChuanRoad', (mE,), (pBeam, pCol), spans, layers, columns, beams, load)
+    strut = Structure1(spans, layers, columns, beams)
+    method = Method1(10000, 10000, 0.5)
+    frame = uFrame1('JianChuanRoad', (mE,), (pBeam, pCol), strut, method)
 
     return frame
 
-# frame = ImportUserModel1('')
 pass

@@ -31,9 +31,13 @@ namespace SDSS.Solver
         // ------------------------------------------------
 
         /// <summary> Abaqus 计算自行完成而且计算结果正常成功 </summary>
-        Succeeded = 18, // Finished + Succeeded
+        Succeeded = SelfFinished + 16 , // SelfFinished + Succeeded
 
         /// <summary> Abaqus 计算自行完成，但是计算过程中出现错误 </summary>
-        FailedWithError = 34,  // Finished + FailedWithError
+        FailedWithError = SelfFinished + 32,  // SelfFinished + FailedWithError
+
+        /// <summary> 在 C# 的代码中出现异常(Exception)而结束，而不是在 Abaqus 的计算过程中出错而结束 </summary>
+        FailedInCs = SelfFinished + 64,  // SelfFinished + FailedInCs
+
     }
 }
