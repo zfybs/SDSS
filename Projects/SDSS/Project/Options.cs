@@ -33,7 +33,7 @@ namespace SDSS.Project
             {
                 if (string.IsNullOrEmpty(_DefaultAbqWorkingDir))
                 {
-                    _DefaultAbqWorkingDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Abauqs");
+                    _DefaultAbqWorkingDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Abaqus");
                 }
                 return _DefaultAbqWorkingDir;
             }

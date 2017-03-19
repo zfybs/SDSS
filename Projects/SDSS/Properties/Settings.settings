@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="AbaWorkingDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\UserFiles\Documents\Abauqs</Value>
+      <Value Profile="(Default)">D:\UserFiles\Documents\Abaqus</Value>
     </Setting>
     <Setting Name="ModelName" Type="System.String" Scope="User">
       <Value Profile="(Default)">StationModel</Value>

@@ -25,7 +25,7 @@ namespace SDSS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\UserFiles\\Documents\\Abauqs")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\UserFiles\\Documents\\Abaqus")]
         public string AbaWorkingDir {
             get {
                 return ((string)(this["AbaWorkingDir"]));

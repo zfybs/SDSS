@@ -1,7 +1,8 @@
 PythonSourceDir * E:\GitHubProjects\SDSS\AbaqusSolver
-AbaqusWorkingDir * D:\UserFiles\Documents\Abauqs
-ModelFile * D:\UserFiles\Documents\Abauqs\StationDesginModel.sdss
+AbaqusWorkingDir * D:\UserFiles\Documents\Abaqus
+ModelFile * D:\UserFiles\Documents\Abaqus\StationDesginModel.sdss
 MiddleFileDir * E:\GitHubProjects\SDSS\MidFiles
-PyMessageFile * D:\UserFiles\Documents\Abauqs\CalculationMessage.sdmsg
-PyOutputFile * D:\UserFiles\Documents\Abauqs\Output.sdo
-CalculationResultFile * D:\UserFiles\Documents\Abauqs\Result.sdr
+PyMessageFile * D:\UserFiles\Documents\Abaqus\CalculationMessage.sdmsg
+PyOutputFile * D:\UserFiles\Documents\Abaqus\Output.sdo
+CalculationResultFile * D:\UserFiles\Documents\Abaqus\Result.sdr
+uqs\123\Result.sdr

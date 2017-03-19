@@ -23,10 +23,11 @@ def __getPathDict(filepath):
     while line:
         line =line.strip('\r\n') # 删除字符串结尾的换行符
         kv = line.split(fieldSeperator)
-        paths[kv[0]] = kv[1]
+        if len(kv) == 2 :
+            paths[kv[0]] = kv[1]
         line = txtFile.readline()
-
     txtFile.close()
+
     return paths
 
 def __deleteOneModule(moduleName):
