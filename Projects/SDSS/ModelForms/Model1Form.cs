@@ -5,10 +5,10 @@ using System.Windows.Forms;
 using eZstd.Enumerable;
 using eZstd.UserControls;
 using SDSS.Entities;
+using SDSS.Models;
 using SDSS.PostProcess;
 using SDSS.Project;
 using SDSS.Solver;
-using SDSS.Models;
 using SDSS.Structures;
 using SDSS.UIControls;
 
@@ -16,7 +16,7 @@ namespace SDSS.ModelForms
 {
     internal partial class Model1Form : MainForm
     {
-        private Model1 _stationModel1;
+        private readonly Model1 _model1;
 
         #region ---   构造函数
 
@@ -24,12 +24,13 @@ namespace SDSS.ModelForms
         {
             InitializeComponent();
             //
-            _stationModel1 = stationModel;
+            _model1 = stationModel;
         }
 
         private void frameConstructor1_FramePointorChanged(Frame newFrame)
         {
-            _stationModel1.Frame = newFrame;
+            _model1.Frame = newFrame;
+            RefreshUI_PictureBox(_model1, null);
         }
 
         #endregion
@@ -43,18 +44,18 @@ namespace SDSS.ModelForms
             base.Refresh_NewModel(stationModel);
             //  
 
-            frameConstructor1.ImportFrameOrDefinitions(_stationModel1.Frame, _stationModel1.Definitions);
+            frameConstructor1.ImportFrameOrDefinitions(_model1.Frame, _model1.Definitions);
 
             OnSdMaterialDefinitionChanged();
             OnSdProfileDefinitionChanged();
 
             // 土层信息表格
             ConstructeZDataGridViewSoil(eZDataGridViewSoilLayers);
-            RefreshSoilData(_stationModel1);
+            RefreshSoilData(_model1);
 
             // 土层信息
-            textBoxNum_OverLaying.Text = _stationModel1.MethodProperty.OverLayingSoilHeight.ToString();
-            textBoxNum_topEle.Text = _stationModel1.MethodProperty.TopElevation.ToString();
+            textBoxNum_OverLaying.Text = _model1.MethodProperty.OverLayingSoilHeight.ToString();
+            textBoxNum_topEle.Text = _model1.MethodProperty.TopElevation.ToString();
         }
 
         #endregion
@@ -163,7 +164,7 @@ namespace SDSS.ModelForms
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 var cell = eZDataGridViewSoilLayers.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                var v = (float)cell.Value;
+                var v = (float) cell.Value;
                 if (v <= 0)
                 {
                     MessageBox.Show(@"输入的数值必须大于0", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -188,8 +189,8 @@ namespace SDSS.ModelForms
         private void OnSoilLayerChanged(IEnumerable<SoilLayerEntity> layers)
         {
             //_stationModel;
-            var top = _stationModel1.MethodProperty.TopElevation;
-            var overlay = _stationModel1.MethodProperty.OverLayingSoilHeight;
+            var top = _model1.MethodProperty.TopElevation;
+            var overlay = _model1.MethodProperty.OverLayingSoilHeight;
             top = top - overlay;
             //
             var soils = new XmlList<SoilLayer_Inertial>();
@@ -200,7 +201,7 @@ namespace SDSS.ModelForms
             }
             //
             Model.SoilLayers = soils;
-            _stationModel1.MethodProperty.GetKc(importantSoilLayers: soils);
+            _model1.MethodProperty.GetKc(importantSoilLayers: soils);
             //
             RefreshUI_PictureBox(Model, null);
         }
@@ -219,14 +220,14 @@ namespace SDSS.ModelForms
 
         private void textBoxNum_OverLaying_ValueNumberChanged(object arg1, double arg2)
         {
-            _stationModel1.MethodProperty.OverLayingSoilHeight = (float)arg2;
+            _model1.MethodProperty.OverLayingSoilHeight = (float) arg2;
             //
             RefreshUI_PictureBox(Model, null);
         }
 
         private void textBoxNum_topEle_ValueNumberChanged(object arg1, double arg2)
         {
-            _stationModel1.MethodProperty.TopElevation = (float)arg2;
+            _model1.MethodProperty.TopElevation = (float) arg2;
             //
             RefreshUI_PictureBox(Model, null);
         }
@@ -257,7 +258,7 @@ namespace SDSS.ModelForms
 
         private void button_Boundary_Click(object sender, EventArgs e)
         {
-            var sp = _stationModel1.MethodProperty;
+            var sp = _model1.MethodProperty;
             BoundaryParamForm f = new BoundaryParamForm(sp.Kx, sp.Ky);
             f.ShowDialog();
 
