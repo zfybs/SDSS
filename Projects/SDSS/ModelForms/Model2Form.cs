@@ -5,18 +5,22 @@ namespace SDSS.ModelForms
 {
     internal partial class Model2Form : MainForm
     {
+
+        private readonly Model2 _model2;
+
         #region ---   构造函数
 
         public Model2Form(Model2 stationModel) : base(stationModel)
         {
             InitializeComponent();
             //
+            _model2 = stationModel;
         }
 
         private void FrameConstructor1OnFramePointorChanged(Frame newFrame)
         {
-            var md = Model as Model2;
-            md.Frame = newFrame;
+            _model2.Frame = newFrame;
+            RefreshUI_PictureBox(_model2, null);
         }
 
         #endregion
