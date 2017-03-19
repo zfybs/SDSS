@@ -4,7 +4,7 @@
 <item id="ref-2" xsi:type="SOAP-ENC:string">WaitingSeconds</item>
 <item xsi:type="xsd:unsignedInt">60</item>
 <item id="ref-3" xsi:type="SOAP-ENC:string">_DefaultAbqWorkingDir</item>
-<item id="ref-4" xsi:type="SOAP-ENC:string">D:\UserFiles\Documents\Abauqs</item>
+<item id="ref-4" xsi:type="SOAP-ENC:string">D:\UserFiles\Documents\Abaqus</item>
 <item id="ref-5" xsi:type="SOAP-ENC:string">DirectlyReport</item>
 <item xsi:type="xsd:boolean">false</item>
 <item id="ref-6" xsi:type="SOAP-ENC:string">SolverGUI</item>
