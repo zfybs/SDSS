@@ -5,7 +5,7 @@ using SDSS.Constants;
 namespace SDSS.Project
 {
     /// <summary> 用来进行 Abaqus 的计算的文件夹 </summary>
-    public class AbqWorkingDir
+    internal class AbqWorkingDir
     {
         /// <summary> 用来进行 Abaqus 的计算的文件夹 </summary>
         public readonly string WorkingDirectory;
@@ -17,7 +17,7 @@ namespace SDSS.Project
         public string F_FilePaths { get; private set; }
 
 
-        private const string FN_DefaultModel = "StationDesginModel" + FileExtensions.StationModel;
+        private const string FN_DefaultModel = "StationDesginModel" + FileExtensions.ModelInfo;
         public string F_CalculationModel { get; private set; }
 
         #endregion
@@ -34,7 +34,7 @@ namespace SDSS.Project
         public string F_PyOutput { get; private set; }
 
 
-        private const string FN_AbqResult = "Result" + FileExtensions.AbqResult;
+        private const string FN_AbqResult = "Result" + FileExtensions.Results;
         /// <summary> Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中 </summary>
         public string F_AbqResult { get; private set; }
 
@@ -58,7 +58,8 @@ namespace SDSS.Project
                 }
                 else
                 {
-                    throw new DirectoryNotFoundException("Abaqus 工作文件夹不存在");
+                    Directory.CreateDirectory(abqWkDir);
+                    //throw new DirectoryNotFoundException("Abaqus 工作文件夹不存在");
                 }
             }
             WorkingDirectory = abqWkDir;
@@ -78,4 +79,5 @@ namespace SDSS.Project
             F_BendingMoment = Path.Combine(WorkingDirectory, FN_BendingMoment);
         }
     }
+
 }

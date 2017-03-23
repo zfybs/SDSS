@@ -13,6 +13,7 @@ using SDSS.Models;
 using SDSS.Utility;
 using CheckBox = System.Windows.Forms.CheckBox;
 using Options = SDSS.Project.Options;
+using System.Collections.Generic;
 
 namespace SDSS.PostProcess
 {
@@ -23,12 +24,12 @@ namespace SDSS.PostProcess
     {
         public readonly ModelBase Model;
         private readonly Result _result;
-        private readonly AbqWorkingDir _workingDir;
+        private readonly AnsysWorkingDir _workingDir;
         private Reporter _reporter;
 
         /// <summary> 构造函数 </summary>
         /// <param name="result"></param>
-        public ResultLister(ModelBase model, Result result, AbqWorkingDir workingDir)
+        public ResultLister(ModelBase model, Result result, AnsysWorkingDir workingDir)
         {
             InitializeComponent();
             //
@@ -118,20 +119,22 @@ namespace SDSS.PostProcess
                 bool succ = OpenWordReporter(ref sb, out _reporter);
                 if (succ)
                 {
-                    WriteCheckedResultItems();
-                    _reporter.SetVisibility(true);
-
-                    InsertPictures();
-                    _reporter.SetVisibility(true);
-
-
-                    return;
-                    _reporter.WriteContents(_result, errorMessage: ref sb);
+                    // 具体进行报告的撰写
+                    var items = new List<ResultFileItem>();
+                    foreach (Control cont in flowLayoutPanel_Items.Controls)
+                    {
+                        var chkBox = cont as System.Windows.Forms.CheckBox;
+                        if (chkBox.Checked)
+                        {
+                            items.Add(chkBox.Tag as ResultFileItem);
+                        }
+                    }
+                    _reporter.WriteContents(Model, _result, _workingDir, items, errorMessage: ref sb);
                     _reporter.SetVisibility(true);
                 }
                 else
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException(sb.ToString());
                 }
             }
             catch (Exception ex)
@@ -164,86 +167,15 @@ namespace SDSS.PostProcess
             return succ;
         }
 
-        /// <summary> 只作测试，最后删除 </summary> 
-        private void WriteCheckedResultItems()
-        {
-            var endPosi = _reporter.ContentEnd;
-            Range rg;
-            foreach (Control cont in flowLayoutPanel_Items.Controls)
-            {
-                var chkBox = cont as CheckBox;
-                if (chkBox.Checked)
-                {
-                    var item = chkBox.Tag as ResultFileItem;
-                    if (item != null)
-                    {
-                        rg = _reporter.InsertParagrph(endPosi, item.Name, style: WordStyle.Title2);
-                        endPosi = rg.End;
-                        if (!string.IsNullOrEmpty(item.Description))
-                        {
-                            rg = _reporter.InsertParagrph(endPosi, item.Description, style: WordStyle.Content);
-                            endPosi = rg.End;
-                        }
-                        var v = item.GetValueString();
-
-                        if (item.ValueType == ResultValueType.Array2D)
-                        {
-                            var arr = item.Value as double[,];
-                            Table tb = _reporter.InsertTable(_reporter.Document, rg.End, data: v,
-                                rows: arr.GetLength(0), columns: arr.GetLength(1));
-                            endPosi = tb.Range.End;
-                        }
-                        else
-                        {
-                            rg = _reporter.InsertParagrph(endPosi, v, style: WordStyle.Content);
-                            endPosi = rg.End;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary> 只作测试，最后删除 </summary> 
-        private void InsertPictures()
-        {
-            var d = new DirectoryInfo(_workingDir.WorkingDirectory);
-            string modelName = Model.ModelName;
-            string pattern = modelName + "-(.+).png";
-            var rg = _reporter.Content;
-            rg.Collapse(WdCollapseDirection.wdCollapseEnd);
-            //
-            rg = _reporter.InsertParagrph(rg.End, "计算结果图", style: WordStyle.Title2);
-            foreach (var f in d.GetFiles("*.png"))
-            {
-                var reg = new Regex(pattern);
-                var m = reg.Match(f.Name);
-                string description;
-                if (m.Success)
-                {
-                    var tp = OutputField.GetOutputField(m.Groups[1].Value);
-                    if (tp != null)
-                    {
-                        description = OutputField.GetOutputFieldDescription(tp.Value);
-                        switch (tp.Value)
-                        {
-                            default:
-                                var shp = _reporter.InsertPicture(rg.End, f.FullName, width: 400, height: 200);
-                                rg = shp.Range;
-                                rg = _reporter.InsertParagrph(rg.End);
-                                rg = _reporter.InsertParagrph(rg.End, description, WordStyle.Caption_Pic);
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-
         private void _bgw_Report_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+
         }
 
+        /// <summary> 撰写报告结束，进行最后的处理与用户提示 </summary>
         private void _bgw_Report_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            MessageBox.Show(@"撰写报告完成", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion

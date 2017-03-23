@@ -25,8 +25,8 @@ namespace SDSS
 
             // 模型类型的绑定
             pictureBox_Frame.Tag = ModelType.Frame;
-            pictureBox2.Tag = ModelType.Model2;
-            pictureBox3.Tag = ModelType.Model3;
+            pictureBox2.Tag = ModelType.Tunnel;
+            pictureBox3.Tag = ModelType.Model2;
 
             // 计算方法的绑定
             radioButton1.Tag = CalculationMethod.InertialForce;

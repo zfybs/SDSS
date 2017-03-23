@@ -1,31 +1,38 @@
-﻿using System;
-using System.IO;
+﻿using SDSS.Structures;
+using SDSS.Definitions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using SDSS.Definitions;
-using SDSS.Structures;
+using SDSS.Methods;
 
 namespace SDSS.Models
 {
     [Serializable()]
-    public class Model2 : ModelBase
+    public class Model3: ModelBase
     {
         #region ---   XmlElement
 
         /// <summary> 模型所对应的框架结构 </summary>
         [XmlElement]
-        public Frame Frame { get; set; }
+        public Tunnel Tunnel { get; set; }
+
+        /// <summary> 与材料、水位标高等相关的系统参数 </summary>
+        [XmlElement]
+        public MethodInertial MethodProperty { get; set; }
 
         #endregion
 
         #region ---   构造函数
 
         /// <summary> 构造函数 </summary>
-        public Model2() : base(ModelType.Frame, CalculationMethod.FanYingWeiYi)
+        public Model3() : base(ModelType.Tunnel, CalculationMethod.InertialForce)
         {
-            DescriptionName = @"矩形车站反应位移法";
+            DescriptionName = @"圆形隧道惯性力法";
             //
-            Frame = new Frame();
+            Tunnel = new Tunnel();
+            MethodProperty = new MethodInertial();
         }
 
         #endregion
@@ -47,27 +54,23 @@ namespace SDSS.Models
         /// <returns>是否写入成功</returns>
         public override bool WriteCalculateFileForAnsys(string filePath, ref StringBuilder errMsg)
         {
-            using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
-            {
-                using (var sw = new StreamWriter(fs))
-                {
-
-
-
-
-
-                }
-            }
-            return true;
+            throw new NotImplementedException();
         }
-
 
         #region ---   几何绘图
 
         public override StationGeometry GetStationGeometry()
         {
-            SoilFrameGeometry ssg = null;
-            return ssg;
+            SoilTunnelGeometry stg = null;
+            if (Tunnel != null)
+            {
+                stg = new SoilTunnelGeometry(
+                    soilWidth: (float)Tunnel.Radius * 6.0f,
+                    soilHeight: SoilLayers.Select(r => r.Top - r.Bottom).ToArray(),
+                    overlyingSoilHeight: MethodProperty.OverLayingSoilHeight,
+                    tunnelRadius: (float)Tunnel.Radius,tunnelSegmentNum:Tunnel.SegmentNum);
+            }
+            return stg;
         }
 
         #endregion

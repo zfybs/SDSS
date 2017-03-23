@@ -12,11 +12,11 @@ namespace SDSS.Definitions
         /// <summary> 矩形框架 </summary>
         Frame = 0,
 
-        /// <summary> </summary>
-        Model2 = 1,
+        /// <summary> 圆形隧道 </summary>
+        Tunnel = 1,
 
-        /// <summary> </summary>
-        Model3 = 2,
+        /// <summary> 矿山法隧道 </summary>
+        Model2 = 2,
     }
 
     /// <summary> 不同的计算方法，比如反应位移法，等效加速度法、惯性力法等 </summary>

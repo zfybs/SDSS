@@ -99,5 +99,54 @@ namespace SDSS.Entities
 
         #endregion
     }
+
+
+    /// <summary> 圆形隧道的几何节点（极坐标） </summary>
+    [Serializable()]
+    public class TunnelVertice : IGeomObject
+    {
+        #region ---   XmlAttribute
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("节点的ID编号")]
+        public uint ID { get; set; }
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("半径")]
+        public double R { get; set; }
+
+        [XmlAttribute()]
+        [Category(Categories.Property), Description("角度")]
+        public double Angle{ get; set; }
+
+        #endregion
+
+        #region ---   构造函数
+
+        public TunnelVertice()
+        {
+            ID = NewId();
+        }
+
+        public TunnelVertice(double r, double angle) : this()
+        {
+            R = r;
+            Angle = angle;
+        }
+
+        /// <summary> 整个系统中的节点的最大编号值 </summary>
+        private static uint _MaxId = 0;
+        private uint NewId()
+        {
+            _MaxId += 1;
+            return _MaxId;
+        }
+        #endregion
+
+        public override string ToString()
+        {
+            return $"({R},{Angle})";
+        }
+    }
 }
 

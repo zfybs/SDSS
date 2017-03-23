@@ -6,12 +6,26 @@ using System.Text;
 namespace SDSS.Constants
 {
 
-    public static class Project
+    /// <summary> 与整个 SDSS 项目相关的常数 </summary>
+    public static class ProjectConsts
     {
         /// <summary> 整个SDSS项目的标题 </summary>
         public const string ProjectTitle = @"地下车站抗震设计";
+
         /// <summary> 所有模型的默认名称 </summary>
         public const string DefaultModelName = @"SubStructures";
+
+
+
+        /// <summary> output 文件中，标识Abaqus计算过程成功的字符串 </summary>
+        public const string CalculationSucceededTag = "*** Calculation finished successfully! ***";
+
+        /// <summary> output 文件中，标识Abaqus计算过程出错的字符串 </summary>
+        public const string CalculationFailedTag = "*** Calculation terminated with error! ***";
+        /// <summary> output 文件中，标识Abaqus计算过程出错的字符串 </summary>
+        public const string CalculationFailedEndTag = "*** Error message ends here ***";
+
+
     }
 
 
@@ -49,8 +63,13 @@ namespace SDSS.Constants
     public static class FileExtensions
     {
         /// <summary> 车站模型的信息文件 </summary>
-        public const string StationModel = ".sdss";
+        public const string ModelInfo = ".sdss";
 
+        /// <summary> 用来提供给 Ansys 的 APDL 代码进行计算的参数文件 </summary>
+        public const string AnsysCalParameters = ".sdmp";
+
+        /// <summary> 用来进行Ansys计算的 APDL 代码文件 </summary>
+        public const string AnsysModelSolver = ".sdinp";
 
         /// <summary> 此文本文件中记录有所有存储有模型参数、计算参数等文件所在的路径 </summary>
         public const string Paths = ".sdp";
@@ -64,19 +83,11 @@ namespace SDSS.Constants
 
         #region ---   Abaqus 计算过程中生成的文件
 
-        /// <summary> Python脚本运行过程中，用户指定输出的与模型相关的数据，以及计算过程是否正常成功 </summary>
+        /// <summary> Python 或 APDL 脚本运行过程中，用户指定输出的与模型相关的数据，以及计算过程是否正常成功 </summary>
         public const string Output = ".sdo";
 
-        /// <summary> output 文件中，标识Abaqus计算过程成功的字符串 </summary>
-        public const string CalculationSucceededTag = "*** Calculation finished successfully! ***";
-
-        /// <summary> output 文件中，标识Abaqus计算过程出错的字符串 </summary>
-        public const string CalculationFailedTag = "*** Calculation terminated with error! ***";
-        /// <summary> output 文件中，标识Abaqus计算过程出错的字符串 </summary>
-        public const string CalculationFailedEndTag = "*** Error message ends here ***";
-
-        /// <summary> Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中 </summary>
-        public const string AbqResult = ".sdr";
+        /// <summary> 计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中 </summary>
+        public const string Results = ".sdr";
 
         /// <summary> Abaqus 计算过程中， sys.stdout 与 Python中的 print() 函数所对应的输出流文件，此文件中的信息没有任何代码上的特殊意义，只供用户自行查看。 </summary>
         public const string PyMessageExt = ".sdmsg";

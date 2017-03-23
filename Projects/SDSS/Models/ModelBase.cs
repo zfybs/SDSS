@@ -38,7 +38,7 @@ namespace SDSS.Models
         /// <summary> 模型的描述类型，比如“矩形框架惯性力法”，可以看成一个常数 </summary>
         [XmlIgnore()]
         public virtual string DescriptionName { get; protected set; }
-        
+
         /// <summary> 模型的标识ID值 </summary>
         [XmlAttribute()]
         public Guid ID { get; set; }
@@ -78,13 +78,13 @@ namespace SDSS.Models
 
         protected ModelBase()
         {
-            ModelName = Constants.Project.DefaultModelName;
+            ModelName = Constants.ProjectConsts.DefaultModelName;
             ID = Guid.NewGuid();
             //
             Definitions = new DefinitionCollection();
             SoilLayers = new XmlList<SoilLayer_Inertial>();
             //
-           
+
             ModelType = ModelType.Frame;
             CalculationMethod = CalculationMethod.InertialForce;
         }
@@ -96,9 +96,14 @@ namespace SDSS.Models
         /// <summary> 提取车站模型的几何信息，用于前处理界面绘图 </summary>
         public abstract StationGeometry GetStationGeometry();
 
-
         /// <summary> 对模型进行检查，如果此模型不满足进行计算的必备条件，则返回false </summary>
         public abstract bool Validate(ref StringBuilder errorMessage);
+
+        /// <summary> 将模型信息写入一个文本文件中，用来作为 Ansys 计算的初始参数提供给 APDL 命令流 </summary>
+        /// <param name="filePath">要写入的文件路径，此文件当前可以不存在</param>
+        /// <param name="errMsg">出错信息</param>
+        /// <returns>是否写入成功</returns>
+        public abstract bool WriteCalculateFileForAnsys(string filePath, ref StringBuilder errMsg);
 
         #endregion
 

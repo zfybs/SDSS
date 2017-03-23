@@ -7,14 +7,16 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using eZstd.Miscellaneous;
+using SDSS.Constants;
 using SDSS.Definitions;
+using SDSS.Models;
 using SDSS.Solver;
 using SDSS.Project;
 
 namespace SDSS.Project
 {
     /// <summary> 整个项目中与路径相关的信息 </summary>
-    public static class ProjectPaths
+    internal static class ProjectPaths
     {
         /// <summary> 前处理程序的文件绝对路径 </summary>
         private static readonly FileInfo _f_PreProc = new FileInfo(Assembly.GetExecutingAssembly().FullName);
@@ -41,7 +43,8 @@ namespace SDSS.Project
         /// <summary> 输出的报告所对应的 word 模块文件所在的文件夹 </summary>
         public static readonly string D_WordTemplate = D_MiddleFiles;
 
-        #region ---   AbaqusWorkingDir
+        /// <summary> 利用 Ansys 的 APDL 代码 进行计算的源代码所在文件夹 </summary>
+        public static readonly string D_AnsysSolver = _d_Solution.GetDirectories("AnsysSolver").First().FullName;
 
         /// <summary> 设置 Abaqus 计算的默认文件夹（如果用户未显式指定，则使用此文件夹） </summary>
         /// <remarks>
@@ -55,8 +58,6 @@ namespace SDSS.Project
                 return Options.DefaultAbqWorkingDir;
             }
         }
-
-        #endregion
 
         #endregion
 
@@ -74,6 +75,11 @@ namespace SDSS.Project
         /// <summary> 用户选项数据所在的文件 </summary>
         public static readonly string F_Options = Path.Combine(D_MiddleFiles, "Options.xml");
 
+        public static string GetAnsysModelSolverFile(ModelBase mb)
+        {
+            return Path.Combine(D_AnsysSolver, mb.GetType().Name + FileExtensions.AnsysModelSolver);
+        }
+
         #endregion
 
         /// <summary>
@@ -82,9 +88,9 @@ namespace SDSS.Project
         /// </summary>
         /// <param name="abqWkDir"> Abaqus 计算文件夹路径 </param>
         /// <param name="filePath"> 要将这些信息写入哪一个文件中 </param>
-        public static void WriteCalcFilePaths(AbqWorkingDir abqWkDir, string filePath)
+        public static void WriteAbqCalcFilePaths(AbqWorkingDir abqWkDir, string filePath)
         {
-            using (var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
+            using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
                 using (var sw = new StreamWriter(fs))
                 {
@@ -111,6 +117,45 @@ namespace SDSS.Project
 
                     // 7. Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中
                     sw.WriteLine("CalculationResultFile" + sep + abqWkDir.F_AbqResult);
+
+                    //
+                    sw.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将存储有模型参数、计算参数的文件所在的路径写入到一个单独的文本中，以供 Python 程序读取。
+        /// 此文件的路径是固定的。
+        /// </summary>
+        /// <param name="abqWkDir"> Abaqus 计算文件夹路径 </param>
+        /// <param name="filePath"> 要将这些信息写入哪一个文件中 </param>
+        public static void WriteAnsysCalcFilePaths(AnsysWorkingDir abqWkDir, string filePath)
+        {
+            using (var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
+            {
+                using (var sw = new StreamWriter(fs))
+                {
+                    // 在此文件中写入各种计算文件的路径，路径含义与路径字符之间通过“ * ”进行分隔
+                    string sep = @" * ";
+
+                    // 1. Python 脚本源代码所在文件夹
+                    sw.WriteLine("PythonSourceDir" + sep + D_PythonSource);
+
+                    // 2. Abaqus 的工作文件夹
+                    sw.WriteLine("AbaqusWorkingDir" + sep + abqWkDir.WorkingDirectory);
+
+                    // 3. 记录模型信息的 xml 文件
+                    sw.WriteLine("ModelFile" + sep + abqWkDir.F_ModelParameter);
+
+                    // 4. SDSS 解决方案的中间文件夹
+                    sw.WriteLine("MiddleFileDir" + sep + D_MiddleFiles);
+
+                    // 6. Python脚本运行过程中，用户指定输出的与模型相关的数据
+                    sw.WriteLine("PyOutputFile" + sep + abqWkDir.F_Output);
+
+                    // 7. Abaqus计算完成后，将最终的计算结果以及报告所须的关键信息都保存在此结果文件中
+                    sw.WriteLine("CalculationResultFile" + sep + abqWkDir.F_AnsysResult);
 
                     //
                     sw.Close();

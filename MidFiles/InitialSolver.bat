@@ -1,6 +1,4 @@
 @echo off
-rem : The directory containing the files created during the calcution as well as the results.
-cd /d D:\UserFiles\Documents\Abaqus
+cd /d D:\Workspace\Ansys
 
-rem : Execute Abaqus without showing the users interface.
-abaqus cae noGUI=E:\GitHubProjects\SDSS\AbaqusSolver\EnvironmentBuild.py
+"C:\Softwares\Civil Engineering\Ansys\v150\ANSYS\bin\winx64\ANSYS150.exe"  -p struct -dir "D:\Workspace\Ansys" -j "XinZhuang" - s read -l en-us -b -i "E:\GitHubProjects\SDSS\AnsysSolver\Model1.sdinp" -o "D:\Workspace\Ansys\Output.sdo"

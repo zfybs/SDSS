@@ -164,7 +164,7 @@ namespace SDSS.ModelForms
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 var cell = eZDataGridViewSoilLayers.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                var v = (float) cell.Value;
+                var v = (float)cell.Value;
                 if (v <= 0)
                 {
                     MessageBox.Show(@"输入的数值必须大于0", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -220,14 +220,14 @@ namespace SDSS.ModelForms
 
         private void textBoxNum_OverLaying_ValueNumberChanged(object arg1, double arg2)
         {
-            _model1.MethodProperty.OverLayingSoilHeight = (float) arg2;
+            _model1.MethodProperty.OverLayingSoilHeight = (float)arg2;
             //
             RefreshUI_PictureBox(Model, null);
         }
 
         private void textBoxNum_topEle_ValueNumberChanged(object arg1, double arg2)
         {
-            _model1.MethodProperty.TopElevation = (float) arg2;
+            _model1.MethodProperty.TopElevation = (float)arg2;
             //
             RefreshUI_PictureBox(Model, null);
         }
@@ -236,13 +236,13 @@ namespace SDSS.ModelForms
 
         private void tsm_TestShowResult_Click(object sender, EventArgs e)
         {
-            var solver = new AbaqusSolver(WorkingDir, Options.SolverGUI);
+            var solver = new AnsysSolver(WorkingDir, Options.SolverGUI);
             var pp = new PostProcessor(Model, solver);
             try
             {
                 if (pp.Results == null)
                 {
-                    pp.ReadResultFile(resultFilePath: WorkingDir.F_AbqResult);
+                    pp.ReadResultFile(resultFilePath: WorkingDir.F_AnsysResult);
                 }
                 pp.ShowResultsList();
             }

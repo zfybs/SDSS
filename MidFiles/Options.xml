@@ -1,16 +1,18 @@
 <SOAP-ENV:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 <SOAP-ENV:Body>
-<SOAP-ENC:Array SOAP-ENC:arrayType="xsd:anyType[5,2]">
+<SOAP-ENC:Array SOAP-ENC:arrayType="xsd:anyType[6,2]">
 <item id="ref-2" xsi:type="SOAP-ENC:string">WaitingSeconds</item>
 <item xsi:type="xsd:unsignedInt">60</item>
 <item id="ref-3" xsi:type="SOAP-ENC:string">_DefaultAbqWorkingDir</item>
-<item id="ref-4" xsi:type="SOAP-ENC:string">D:\UserFiles\Documents\Abaqus</item>
-<item id="ref-5" xsi:type="SOAP-ENC:string">DirectlyReport</item>
+<item id="ref-4" xsi:type="SOAP-ENC:string">D:\Workspace\Ansys</item>
+<item id="ref-5" xsi:type="SOAP-ENC:string">_AnsysExePath</item>
+<item id="ref-6" xsi:type="SOAP-ENC:string">C:\Softwares\Civil Engineering\Ansys\v150\ANSYS\bin\winx64\ANSYS150.exe</item>
+<item id="ref-7" xsi:type="SOAP-ENC:string">DirectlyReport</item>
 <item xsi:type="xsd:boolean">false</item>
-<item id="ref-6" xsi:type="SOAP-ENC:string">SolverGUI</item>
+<item id="ref-8" xsi:type="SOAP-ENC:string">SolverGUI</item>
 <item xsi:type="a2:SolverGUI" xmlns:a2="http://schemas.microsoft.com/clr/nsassem/SDSS.Solver/SDSS%2C%20Version%3D1.0.0.0%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull">NoGUI</item>
-<item id="ref-8" xsi:type="SOAP-ENC:string">WordTemplate</item>
-<item id="ref-9" xsi:type="SOAP-ENC:string">E:\GitHubProjects\SDSS\MidFiles\Reporter_Official.dotm</item>
+<item id="ref-10" xsi:type="SOAP-ENC:string">WordTemplate</item>
+<item id="ref-11" xsi:type="SOAP-ENC:string">E:\GitHubProjects\SDSS\MidFiles\Reporter_Casual.dotm</item>
 </SOAP-ENC:Array>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

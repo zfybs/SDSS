@@ -1,0 +1,51 @@
+! Read model info from the sdmp file in the ansys workspace.
+! *vread fileName should be fixed, i.e., SdssModel.sdmp.
+
+finish
+/clear
+
+Item='Weight'
+data=234.56
+Unit='Kg'
+*Dim,AA,Array,4,1,1
+AA(1)=10.2,324.5,123.7,908
+*Dim,BB,Char,3,1,1
+BB(1)='I am','a good','man'
+
+*CFopen,Result,sdr
+
+*vwrite,
+(5X,'*Vwrite Demo')
+
+*vwrite,
+('******************************************************')
+
+*vwrite,Item,data,Unit
+(A8,F10.2,A8)
+
+*vwrite
+(/'*********** Array Parameter Output Demo**************')
+
+*vwrite,
+('Float Format /SEQU Keyword:')
+
+*vwrite,SEQU,AA(1)
+(F3.0,4F10.4)
+
+*vwrite,AA(1),AA(2),AA(3),AA(4)
+(//'Float /x Format:'/F4.1,2X,F10.4,2X,F10.4,2X,F10.4)
+
+*vwrite,AA(1),AA(2),AA(3),AA(4)
+(//'Float Format:'/4F10.4)
+
+*vwrite,AA(1),AA(2),AA(3),AA(4)
+(//'Double Format:'/D13.5,/D15.6,/D18.10,/D10.3)
+
+*vwrite,
+(/'****************char parametric output demo *******')
+
+*vwrite,BB(1),BB(2),BB(3)
+(3A6)
+
+*CFclos
+

@@ -79,7 +79,7 @@
             this.tsm_Option});
             this.tsm_Files.MergeIndex = 0;
             this.tsm_Files.Name = "tsm_Files";
-            this.tsm_Files.Size = new System.Drawing.Size(59, 23);
+            this.tsm_Files.Size = new System.Drawing.Size(58, 23);
             this.tsm_Files.Text = "文件(&F)";
             this.tsm_Files.DropDownOpening += new System.EventHandler(this.tsm_Files_DropDownOpening);
             // 
@@ -87,7 +87,7 @@
             // 
             this.tsm_Open.Name = "tsm_Open";
             this.tsm_Open.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsm_Open.Size = new System.Drawing.Size(185, 22);
+            this.tsm_Open.Size = new System.Drawing.Size(190, 22);
             this.tsm_Open.Text = "打开(&O)";
             this.tsm_Open.Click += new System.EventHandler(this.tsm_Open_Click);
             // 
@@ -95,7 +95,7 @@
             // 
             this.tsm_Save.Name = "tsm_Save";
             this.tsm_Save.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsm_Save.Size = new System.Drawing.Size(185, 22);
+            this.tsm_Save.Size = new System.Drawing.Size(190, 22);
             this.tsm_Save.Text = "保存(&S)";
             this.tsm_Save.Click += new System.EventHandler(this.tsm_Save_Click);
             // 
@@ -104,27 +104,27 @@
             this.tsm_SaveAs.Name = "tsm_SaveAs";
             this.tsm_SaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.tsm_SaveAs.Size = new System.Drawing.Size(185, 22);
+            this.tsm_SaveAs.Size = new System.Drawing.Size(190, 22);
             this.tsm_SaveAs.Text = "另存为";
             this.tsm_SaveAs.Click += new System.EventHandler(this.tsm_SaveAs_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
             // 
             // TSM_Exit
             // 
             this.TSM_Exit.Name = "TSM_Exit";
             this.TSM_Exit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.TSM_Exit.Size = new System.Drawing.Size(185, 22);
+            this.TSM_Exit.Size = new System.Drawing.Size(190, 22);
             this.TSM_Exit.Text = "退出";
             this.TSM_Exit.Click += new System.EventHandler(this.TSM_Exit_Click);
             // 
             // tsm_Option
             // 
             this.tsm_Option.Name = "tsm_Option";
-            this.tsm_Option.Size = new System.Drawing.Size(185, 22);
+            this.tsm_Option.Size = new System.Drawing.Size(190, 22);
             this.tsm_Option.Text = "选项(&O)";
             this.tsm_Option.Click += new System.EventHandler(this.TSM_Option_Click);
             // 
@@ -140,14 +140,14 @@
             // tsm_Materials
             // 
             this.tsm_Materials.Name = "tsm_Materials";
-            this.tsm_Materials.Size = new System.Drawing.Size(119, 22);
+            this.tsm_Materials.Size = new System.Drawing.Size(120, 22);
             this.tsm_Materials.Text = "材料(&M)";
             this.tsm_Materials.Click += new System.EventHandler(this.tsm_Materials_Click);
             // 
             // tsm_Profiles
             // 
             this.tsm_Profiles.Name = "tsm_Profiles";
-            this.tsm_Profiles.Size = new System.Drawing.Size(119, 22);
+            this.tsm_Profiles.Size = new System.Drawing.Size(120, 22);
             this.tsm_Profiles.Text = "截面(&P)";
             this.tsm_Profiles.Click += new System.EventHandler(this.tsm_Profiles_Click);
             // 
@@ -158,27 +158,27 @@
             this.tsm_ShowResult});
             this.tsm_Project.MergeIndex = 2;
             this.tsm_Project.Name = "tsm_Project";
-            this.tsm_Project.Size = new System.Drawing.Size(45, 23);
+            this.tsm_Project.Size = new System.Drawing.Size(44, 23);
             this.tsm_Project.Text = "项目";
             // 
             // tsm_ModelInfos
             // 
             this.tsm_ModelInfos.Name = "tsm_ModelInfos";
-            this.tsm_ModelInfos.Size = new System.Drawing.Size(126, 22);
+            this.tsm_ModelInfos.Size = new System.Drawing.Size(124, 22);
             this.tsm_ModelInfos.Text = "模型信息";
             this.tsm_ModelInfos.Click += new System.EventHandler(this.tsm_ModelInfos_Click);
             // 
             // tsm_ShowResult
             // 
             this.tsm_ShowResult.Name = "tsm_ShowResult";
-            this.tsm_ShowResult.Size = new System.Drawing.Size(126, 22);
+            this.tsm_ShowResult.Size = new System.Drawing.Size(124, 22);
             this.tsm_ShowResult.Text = "计算结果";
             this.tsm_ShowResult.Click += new System.EventHandler(this.tsm_ShowResult_Click);
             // 
             // tsm_Windows
             // 
             this.tsm_Windows.Name = "tsm_Windows";
-            this.tsm_Windows.Size = new System.Drawing.Size(45, 23);
+            this.tsm_Windows.Size = new System.Drawing.Size(44, 23);
             this.tsm_Windows.Text = "窗口";
             // 
             // tsm_Help
@@ -188,19 +188,19 @@
             this.tsm_About});
             this.tsm_Help.MergeIndex = 12;
             this.tsm_Help.Name = "tsm_Help";
-            this.tsm_Help.Size = new System.Drawing.Size(45, 23);
+            this.tsm_Help.Size = new System.Drawing.Size(44, 23);
             this.tsm_Help.Text = "帮助";
             // 
             // tsm_Documentation
             // 
             this.tsm_Documentation.Name = "tsm_Documentation";
-            this.tsm_Documentation.Size = new System.Drawing.Size(107, 22);
+            this.tsm_Documentation.Size = new System.Drawing.Size(111, 22);
             this.tsm_Documentation.Text = "文档";
             // 
             // tsm_About
             // 
             this.tsm_About.Name = "tsm_About";
-            this.tsm_About.Size = new System.Drawing.Size(107, 22);
+            this.tsm_About.Size = new System.Drawing.Size(111, 22);
             this.tsm_About.Text = "About";
             // 
             // tst_abqWorkingDir
@@ -234,6 +234,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainFormMdi";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "地下车站抗震设计";
             this.Load += new System.EventHandler(this.MainFormMdi_Load);
             this.MdiChildActivate += new System.EventHandler(this.MainFormMdi_MdiChildActivate);

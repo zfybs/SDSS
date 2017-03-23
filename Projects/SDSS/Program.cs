@@ -13,6 +13,7 @@ using SDSS.Utility;
 using System.Xml;
 using System.Xml.Schema;
 using SDSS.Structures;
+using SDSS.ModelForms;
 
 namespace SDSS
 {
@@ -36,8 +37,8 @@ namespace SDSS
 
         private static void StartProgram(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Program1.Main(args);
+            //
             Application.Run(new EnterSplash());
         }
 
@@ -79,6 +80,9 @@ namespace SDSS
         /// <param name="args"></param>
         private static void BeforeProgramStarted(string[] args)
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            //
             Options.Load();
         }
 
