@@ -86,6 +86,12 @@
       <DependentUpon>EnterSplash.cs</DependentUpon>
     </Compile>
     <Compile Include="Definitions\ModelType.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Methods\Method1.cs" />
     <Compile Include="ModelForms\MainForm.cs">
       <SubType>Form</SubType>
@@ -111,6 +117,12 @@
     <Compile Include="ModelForms\Model2Form.Designer.cs">
       <DependentUpon>Model2Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelForms\Model3Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForms\Model3Form.Designer.cs">
+      <DependentUpon>Model3Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModelForms\ModelOptions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +132,7 @@
     <Compile Include="Models\DefinitionCollection.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\Model2.cs" />
+    <Compile Include="Models\Model3.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="PostProcess\PostProcessor.cs" />
     <Compile Include="PostProcess\Reporter.cs" />
@@ -134,6 +147,8 @@
       <DependentUpon>ResultLister.cs</DependentUpon>
     </Compile>
     <Compile Include="Project\AbqWorkingDir.cs" />
+    <Compile Include="Project\AnsysWorkingDir.cs" />
+    <Compile Include="Solver\AnsysSolver.cs" />
     <Compile Include="Solver\SolverGUI.cs" />
     <Compile Include="Solver\SolverState.cs" />
     <Compile Include="Entities\SoilLayer.cs" />
@@ -152,6 +167,13 @@
     </Compile>
     <Compile Include="Structures\SoilStructureGeometry.cs" />
     <Compile Include="Structures\StationGeometry.cs" />
+    <Compile Include="Structures\Tunnel.cs" />
+    <Compile Include="Structures\TunnelConstructor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Structures\TunnelConstructor.Designer.cs">
+      <DependentUpon>TunnelConstructor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIControls\BoundaryParamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +194,12 @@
     <Compile Include="Definitions\Profile.cs" />
     <Compile Include="Entities\Component.cs" />
     <Compile Include="Entities\Vertise.cs" />
+    <Compile Include="UIControls\PathGettor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIControls\PathGettor.Designer.cs">
+      <DependentUpon>PathGettor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIControls\EditDefinition.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,6 +229,9 @@
     <EmbeddedResource Include="EnterSplash.resx">
       <DependentUpon>EnterSplash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ModelForms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -212,6 +243,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ModelForms\Model2Form.resx">
       <DependentUpon>Model2Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelForms\Model3Form.resx">
+      <DependentUpon>Model3Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ModelForms\ModelOptions.resx">
       <DependentUpon>ModelOptions.cs</DependentUpon>
@@ -225,8 +259,14 @@
     <EmbeddedResource Include="Structures\FrameConstructorForm.resx">
       <DependentUpon>FrameConstructorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Structures\TunnelConstructor.resx">
+      <DependentUpon>TunnelConstructor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UIControls\BoundaryParamForm.resx">
       <DependentUpon>BoundaryParamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIControls\PathGettor.resx">
+      <DependentUpon>PathGettor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\EditDefinition.resx">
       <DependentUpon>EditDefinition.cs</DependentUpon>

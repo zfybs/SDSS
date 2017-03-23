@@ -36,6 +36,8 @@ namespace SDSS.Definitions
         Beam = 0,
         /// <summary> 柱  </summary>
         Column = 1,
+        /// <summary> 管片  </summary>
+        Segment = 2,
     }
 
     /// <summary> 构件几何类型  </summary>

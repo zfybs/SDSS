@@ -61,25 +61,11 @@ namespace SDSS.Utility
         // --------------------------------------------------------------------
         /// <summary> 通过选择文件对话框选择要进行数据提取的 xml 文件 </summary>
         /// <param name="title">对话框的标题</param>
-        /// <returns> 要进行数据提取的 xml 文件的绝对路径 </returns>
+        /// <returns> 成功选择，则返回对应文件的绝对路径，否则返回 null </returns>
         public static string ChooseOpenStationModel(string title)
         {
-            string sss = FileExtensions.StationModel;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                Title = title,
-                CheckFileExists = true,
-                AddExtension = true,
-                Filter = $"车站模型(*{sss})| *{sss}",
-                FilterIndex = 2,
-                Multiselect = false,
-            };
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName.Length > 0 ? ofd.FileName : "";
-            }
-            return "";
+            string sss = FileExtensions.ModelInfo;
+            return ChooseOpenFile(title: title, filter: $"车站模型(*{sss})| *{sss}", multiselect: false);
         }
 
         /// <summary> 通过选择文件对话框选择要进行数据写入的 xml 文件 </summary>
@@ -87,7 +73,7 @@ namespace SDSS.Utility
         /// <returns> 要进行数据写入的 xml 文件的绝对路径 </returns>
         public static string ChooseSaveStationModel(string title)
         {
-            string sss = FileExtensions.StationModel;
+            string sss = FileExtensions.ModelInfo;
             SaveFileDialog ofd = new SaveFileDialog
             {
                 Title = title,
@@ -106,25 +92,12 @@ namespace SDSS.Utility
         // --------------------------------------------------------------------
         /// <summary> 通过选择文件对话框选择要进行数据提取的 xml 文件 </summary>
         /// <param name="title">对话框的标题</param>
-        /// <returns> 要进行数据提取的 xml 文件的绝对路径 </returns>
+        /// <returns> 成功选择，则返回对应文件的绝对路径，否则返回 null </returns>
         public static string ChooseOpenMaterials(string title)
         {
             string sss = FileExtensions.Materials;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                Title = title,
-                CheckFileExists = true,
-                AddExtension = true,
-                Filter = $"材料库(*{sss})| *{sss}",
-                FilterIndex = 2,
-                Multiselect = false,
-            };
+            return ChooseOpenFile(title: title, filter: $"材料库(*{sss})| *{sss}", multiselect: false);
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName.Length > 0 ? ofd.FileName : "";
-            }
-            return "";
         }
 
         /// <summary> 通过选择文件对话框选择要进行数据写入的 xml 文件 </summary>
@@ -151,25 +124,11 @@ namespace SDSS.Utility
         // --------------------------------------------------------------------
         /// <summary> 通过选择文件对话框选择要进行数据提取的 xml 文件 </summary>
         /// <param name="title">对话框的标题</param>
-        /// <returns> 要进行数据提取的 xml 文件的绝对路径 </returns>
+        /// <returns> 成功选择，则返回对应文件的绝对路径，否则返回 null </returns>
         public static string ChooseOpenProfiles(string title)
         {
             string sss = FileExtensions.Profiles;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                Title = title,
-                CheckFileExists = true,
-                AddExtension = true,
-                Filter = $"截面库(*{sss})| *{sss}",
-                FilterIndex = 2,
-                Multiselect = false,
-            };
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName.Length > 0 ? ofd.FileName : "";
-            }
-            return "";
+            return ChooseOpenFile(title: title, filter: $"截面库(*{sss})| *{sss}", multiselect: false);
         }
 
         /// <summary> 通过选择文件对话框选择要进行数据写入的 xml 文件 </summary>
@@ -213,6 +172,33 @@ namespace SDSS.Utility
                 return ofd.FileName.Length > 0 ? ofd.FileName : "";
             }
             return "";
+        }
+
+
+        /// <summary> 通过选择一个要打开的文件 </summary>
+        /// <param name="title">对话框的标题</param>
+        /// <param name="filter"> 文件过滤规则，比如 
+        /// 材料库(*.txt)| *.txt
+        /// Excel文件(*.xls; *.xlsx; *.xlsb)| *.xls; *.xlsx; *.xlsb </param>
+        /// <param name="multiselect"> 是否支持多选 </param>
+        /// <returns> 成功选择，则返回对应文件的绝对路径，否则返回 null </returns>
+        public static string ChooseOpenFile(string title, string filter, bool multiselect)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Title = title,
+                CheckFileExists = true,
+                AddExtension = true,
+                Filter = filter,
+                FilterIndex = 2,
+                Multiselect = multiselect,
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                return ofd.FileName.Length > 0 ? ofd.FileName : null;
+            }
+            return null;
         }
 
         #endregion

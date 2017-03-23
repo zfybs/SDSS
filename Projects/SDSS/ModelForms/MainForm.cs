@@ -26,16 +26,16 @@ namespace SDSS.ModelForms
         public virtual ModelBase Model { get; private set; }
 
         /// <summary> 中间求解器 </summary>
-        protected AbaqusSolver _Solver;
+        protected AnsysSolver _Solver;
 
         /// <summary> 后处理：提取结果、撰写报告 </summary>
         protected PostProcessor _PostProcessor;
 
-        public AbqWorkingDir WorkingDir { get; private set; }
+        public AnsysWorkingDir WorkingDir { get; private set; }
 
         public void SetAbqWorkingDir(string workingDir)
         {
-            WorkingDir = new AbqWorkingDir(workingDir);
+            WorkingDir = new AnsysWorkingDir(workingDir);
         }
 
         #endregion
@@ -75,7 +75,7 @@ namespace SDSS.ModelForms
         {
             if (_Solver != null && _Solver.State == SolverState.Calculating)
             {
-                var res = MessageBox.Show(@"Abaqus正在计算中，是否将其终止？", @"提示", MessageBoxButtons.YesNo,
+                var res = MessageBox.Show(@"Ansys正在计算中，是否将其终止？", @"提示", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information);
                 if (res == DialogResult.Yes)
                 {
@@ -164,15 +164,23 @@ namespace SDSS.ModelForms
         /// <param name="g">其值可赋为 null</param>
         protected void RefreshUI_PictureBox(ModelBase sm, Graphics g)
         {
-            // 将新模型进行重新绘制
             if (sm != null)
             {
-                SoilStructureGeometry ssg = sm.GetStationGeometry() as SoilStructureGeometry;
-                if (ssg != null)
+                StationGeometry sg = sm.GetStationGeometry();
+                // 将新模型进行重新绘制
+                if (sg != null)
                 {
-                    modelDrawer1.DrawSoilStructureModel(ssg, g);
+                    if (sg is SoilFrameGeometry)
+                    {
+                        modelDrawer1.DrawSoilFrameModel(sg as SoilFrameGeometry, g);
+                    }
+                    else if (sg is SoilTunnelGeometry)
+                    {
+                        modelDrawer1.DrawSoilTunnelModel(sg as SoilTunnelGeometry, g);
+                    }
                 }
             }
+
         }
 
         #endregion
@@ -207,7 +215,7 @@ namespace SDSS.ModelForms
 
         #endregion
 
-        #region ---   Abaqus 求解 以及 前后处理
+        #region ---   Ansys 求解 以及 前后处理
 
         #region ---   求解计算
 
@@ -216,7 +224,7 @@ namespace SDSS.ModelForms
         /// <summary> 作为 BackgroundWorker.RunWorkerAsync() 的参数 </summary>
         private class BgwParameters
         {
-            public AbaqusSolver Solver;
+            public AnsysSolver Solver;
             public string ErrorMessage;
         }
 
@@ -227,13 +235,13 @@ namespace SDSS.ModelForms
             // 对模型进行检查，看是否可以进行计算
             if (Model.Validate(ref errorMessage))
             {
-                _Solver = new AbaqusSolver(
+                _Solver = new AnsysSolver(
                     workingDir: WorkingDir,
                     solverGui: Options.SolverGUI
                     );
 
                 // 检查计算环境，文件配置
-                if (_Solver.CheckEnvironment(Model, ref errorMessage))
+                if (_Solver.SetEnvironment(Model, ref errorMessage))
                 {
                     // 求解计算
                     _bcParameters = new BgwParameters()
@@ -278,7 +286,7 @@ namespace SDSS.ModelForms
             }
         }
 
-        /// <summary> 强行终止 Abaqus 的计算 </summary>
+        /// <summary> 强行终止 Ansys 的计算 </summary>
         private void ForceSolverShutDown(object sender, EventArgs e)
         {
             if (_Solver != null && _Solver.State == SolverState.Calculating)
@@ -313,7 +321,7 @@ namespace SDSS.ModelForms
         private void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             OnSdCalculationFinished();
-            AbaqusSolver solver = _bcParameters.Solver;
+            AnsysSolver solver = _bcParameters.Solver;
             //
             if (e.Cancelled) // 判断是否是手动退出线程
             {
@@ -326,7 +334,7 @@ namespace SDSS.ModelForms
             _PostProcessor = new PostProcessor(Model, solver);
             if (_PostProcessor.CheckFinishState(errorMessage: ref sb))
             {
-                SolverState ss = _PostProcessor.CheckResultFiles(errorMessage: ref sb);
+                SolverState ss = _PostProcessor.CheckOutputFiles(errorMessage: ref sb);
                 if (ss == SolverState.Succeeded)
                 {
                     if (Options.DirectlyReport)
@@ -345,19 +353,19 @@ namespace SDSS.ModelForms
                 }
                 else if (ss == SolverState.FailedWithError)
                 {
-                    var res = MessageBox.Show("Abaqus 计算过程中出错而导致计算终止！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
+                    var res = MessageBox.Show("Ansys 计算结束！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
             }
             else
             {
-                var res = MessageBox.Show("Abaqus 计算过程未正常结束！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
+                var res = MessageBox.Show("Ansys 计算过程未正常结束！\r\n" + sb.ToString(), @"提示", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// 将 Abaqus 的计算结果进行读取，并显示出来
+        /// 将 Ansys 的计算结果进行读取，并显示出来
         /// </summary>
         /// <param name="pp"></param>
         public void ReadAndShowResults()
@@ -368,7 +376,7 @@ namespace SDSS.ModelForms
                 {
                     if (_PostProcessor.Results == null)
                     {
-                        _PostProcessor.ReadResultFile(resultFilePath: WorkingDir.F_AbqResult);
+                        _PostProcessor.ReadResultFile(resultFilePath: WorkingDir.F_AnsysResult);
                     }
                     _PostProcessor.ShowResultsList();
                 }
@@ -387,7 +395,7 @@ namespace SDSS.ModelForms
 
         #endregion
 
-        /// <summary> 为 Abaqus 的开始计算设置对应的 UI 界面 </summary>
+        /// <summary> 为 Ansys 的开始计算设置对应的 UI 界面 </summary>
         protected virtual void OnSdCalculationStart()
         {
             button_Terminate.Visible = true;
@@ -397,7 +405,7 @@ namespace SDSS.ModelForms
             label_elapsedTime.Visible = true;
         }
 
-        /// <summary> 为 Abaqus 的结束计算设置对应的 UI 界面 </summary>
+        /// <summary> 为 Ansys 的结束计算设置对应的 UI 界面 </summary>
         protected virtual void OnSdCalculationFinished()
         {
             progressBar1.Visible = false;

@@ -1,8 +1,9 @@
 PythonSourceDir * E:\GitHubProjects\SDSS\AbaqusSolver
-AbaqusWorkingDir * D:\UserFiles\Documents\Abaqus
-ModelFile * D:\UserFiles\Documents\Abaqus\StationDesginModel.sdss
+AbaqusWorkingDir * D:\Workspace\Ansys
+ModelFile * D:\Workspace\Ansys\AnsysCal.sdinp
 MiddleFileDir * E:\GitHubProjects\SDSS\MidFiles
-PyMessageFile * D:\UserFiles\Documents\Abaqus\CalculationMessage.sdmsg
-PyOutputFile * D:\UserFiles\Documents\Abaqus\Output.sdo
-CalculationResultFile * D:\UserFiles\Documents\Abaqus\Result.sdr
-uqs\123\Result.sdr
+PyOutputFile * D:\Workspace\Ansys\Output.sdo
+CalculationResultFile * D:\Workspace\Ansys\Result.sdr
+ult.sdr
+* D:\UserFiles\Documents\Abaqus\Result.sdr
+nResultFile * C:\Users\Long\Documents\Abaqus\Result.sdr

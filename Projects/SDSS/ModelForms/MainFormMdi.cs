@@ -96,7 +96,7 @@ namespace SDSS.ModelForms
             if (_model.Validate(ref errorMessage))
             {
                 string filePath = sdUtils.ChooseSaveStationModel("导出车站模型");
-                if (filePath.Length > 0)
+                if (filePath != null)
                 {
                     ModelForm.SetModelFilePath(this, filePath);
                     ModelForm.SaveModel();
@@ -113,13 +113,13 @@ namespace SDSS.ModelForms
         public ModelBase ImportFromXml(out string openedFile)
         {
             openedFile = sdUtils.ChooseOpenStationModel("导入车站模型");
-            if (openedFile.Length > 0)
+            if (openedFile != null)
             {
                 StringBuilder errorMessage = new StringBuilder();
                 try
                 {
                     bool succeeded;
-                    var tp = sdUtils.GetXmlRootType(openedFile, typeof (ModelBase), false);
+                    var tp = sdUtils.GetXmlRootType(openedFile, typeof(ModelBase), false);
                     var sm = sdUtils.ImportFromXml(openedFile, tp,
                         out succeeded, ref errorMessage) as ModelBase;
 
@@ -169,82 +169,93 @@ namespace SDSS.ModelForms
             MainForm mf = null;
             //
             const byte typeBit = 10;
-            var mIndex = (byte) type*typeBit + (byte) method;
+            var mIndex = (byte)type * typeBit + (byte)method;
             switch (mIndex)
             {
                 // 矩形框架
-                case (byte) ModelType.Frame*typeBit + (byte) CalculationMethod.InertialForce:
-                {
-                    Model1 sm = null;
-                    if (model == null)
+                case (byte)ModelType.Frame * typeBit + (byte)CalculationMethod.InertialForce:
                     {
-                        sm = new Model1();
-                        Program.ConstructStationModel(sm);
+                        Model1 sm = null;
+                        if (model == null)
+                        {
+                            sm = new Model1();
+                            Program.ConstructStationModel(sm);
+                        }
+                        else
+                        {
+                            sm = model as Model1;
+                        }
+                        mf = new Model1Form(sm);
+                        break;
                     }
-                    else
+                case (byte)ModelType.Frame * typeBit + (byte)CalculationMethod.FanYingWeiYi:
                     {
-                        sm = model as Model1;
+                        Model2 sm = null;
+                        if (model == null)
+                        {
+                            sm = new Model2();
+                            // Program.ConstructStationModel(sm);
+                        }
+                        else
+                        {
+                            sm = model as Model2;
+                        }
+                        mf = new Model2Form(sm);
+                        break;
                     }
-                    mf = new Model1Form(sm);
-                    break;
-                }
-                case (byte) ModelType.Frame*typeBit + (byte) CalculationMethod.FanYingWeiYi:
-                {
-                    Model2 sm = null;
-                    if (model == null)
+                case (byte)ModelType.Frame * typeBit + (byte)CalculationMethod.Method3:
                     {
-                        sm = new Model2();
-                        // Program.ConstructStationModel(sm);
+                        break;
                     }
-                    else
+                case (byte)ModelType.Frame * typeBit + (byte)CalculationMethod.Method4:
                     {
-                        sm = model as Model2;
+                        break;
                     }
-                    mf = new Model2Form(sm);
-                    break;
-                }
-                case (byte) ModelType.Frame*typeBit + (byte) CalculationMethod.Method3:
-                {
-                    break;
-                }
-                case (byte) ModelType.Frame*typeBit + (byte) CalculationMethod.Method4:
-                {
-                    break;
-                }
                 // 圆形隧道
-                case (byte) ModelType.Model2*typeBit + (byte) CalculationMethod.InertialForce:
-                {
-                    break;
-                }
-                case (byte) ModelType.Model2*typeBit + (byte) CalculationMethod.FanYingWeiYi:
-                {
-                    break;
-                }
-                case (byte) ModelType.Model2*typeBit + (byte) CalculationMethod.Method3:
-                {
-                    break;
-                }
-                case (byte) ModelType.Model2*typeBit + (byte) CalculationMethod.Method4:
-                {
-                    break;
-                }
+                case (byte)ModelType.Tunnel * typeBit + (byte)CalculationMethod.InertialForce:
+                    {
+                        Model3 tm = null;
+                        if (model == null)
+                        {
+                            tm = new Model3();
+                            //Program.ConstructStationModel(sm);
+                        }
+                        else
+                        {
+                            tm = model as Model3;
+                        }
+                        mf = new Model3Form(tm);
+                        break;
+                    }
+                case (byte)ModelType.Tunnel * typeBit + (byte)CalculationMethod.FanYingWeiYi:
+                    {
+                        break;
+                    }
+                case (byte)ModelType.Tunnel * typeBit + (byte)CalculationMethod.Method3:
+                    {
+                        break;
+                    }
+                case (byte)ModelType.Tunnel * typeBit + (byte)CalculationMethod.Method4:
+                    {
+                        break;
+                    }
                 // 矿山法
-                case (byte) ModelType.Model3*typeBit + (byte) CalculationMethod.InertialForce:
-                {
-                    break;
-                }
-                case (byte) ModelType.Model3*typeBit + (byte) CalculationMethod.FanYingWeiYi:
-                {
-                    break;
-                }
-                case (byte) ModelType.Model3*typeBit + (byte) CalculationMethod.Method3:
-                {
-                    break;
-                }
-                case (byte) ModelType.Model3*typeBit + (byte) CalculationMethod.Method4:
-                {
-                    break;
-                }
+                case (byte)ModelType.Model2 * typeBit + (byte)CalculationMethod.InertialForce:
+                    {
+                        break;
+                    }
+                case (byte)ModelType.Model2 * typeBit + (byte)CalculationMethod.FanYingWeiYi:
+                    {
+                        break;
+                    }
+                case (byte)ModelType.Model2 * typeBit + (byte)CalculationMethod.Method3:
+                    {
+                        break;
+                    }
+                case (byte)ModelType.Model2 * typeBit + (byte)CalculationMethod.Method4:
+                    {
+                        break;
+                    }
             }
             // 为新创建的子窗口进行相关初始设置
             if (mf != null)
@@ -280,7 +291,7 @@ namespace SDSS.ModelForms
         private void ModelOnModelNameChanged(ModelBase modelBase, string s)
         {
             ModelForm.Text = $"{modelBase.DescriptionName} - {s}";
-            Text = $"{Constants.Project.ProjectTitle} - {ModelForm.Text}";
+            Text = $"{Constants.ProjectConsts.ProjectTitle} - {ModelForm.Text}";
         }
 
         /// <summary> 子窗口激活的事件 </summary>
@@ -291,7 +302,7 @@ namespace SDSS.ModelForms
             {
                 ModelForm = form;
                 SetToolStripTxtboxText(tst_abqWorkingDir, form.WorkingDir.WorkingDirectory);
-                Text = $"{Constants.Project.ProjectTitle} - {form.Model.DescriptionName} - {form.Model.ModelName}";
+                Text = $"{Constants.ProjectConsts.ProjectTitle} - {form.Model.DescriptionName} - {form.Model.ModelName}";
             }
             //
         }
@@ -358,7 +369,7 @@ namespace SDSS.ModelForms
         {
             tstb.Text = text;
             var width = tstb.TextBox.CreateGraphics().MeasureString(text, tstb.Font).Width;
-            var size = new Size((int) width, tstb.Height);
+            var size = new Size((int)width, tstb.Height);
             tstb.TextBox.Size = size;
             // tstb.Size = size;
         }

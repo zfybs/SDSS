@@ -14,14 +14,15 @@ using Timer = System.Timers.Timer;
 namespace SDSS.Solver
 {
     /// <summary>
-    /// Abaqus 计算求解器
+    /// Ansys 计算求解器
     /// </summary>
-    internal class AbaqusSolver : IDisposable
+    internal class AnsysSolver : IDisposable
     {
         #region ---   Fields
 
-        /// <summary> Abaqus 的工作文件夹 </summary>
-        public readonly AbqWorkingDir WorkingDir;
+        /// <summary> Ansys 的工作文件夹 </summary>
+        public readonly AnsysWorkingDir WorkingDir;
+
 
         private readonly SolverGUI _solverGui;
 
@@ -30,22 +31,24 @@ namespace SDSS.Solver
 
         public Process AbqProcess { get; private set; }
 
-        /// <summary> 是否要强制退出 Abaqus 计算过程 </summary>
+        /// <summary> 是否要强制退出 Ansys 计算过程 </summary>
         public bool ForceKillProcess { get; private set; }
 
         #endregion
 
         /// <summary> 构造函数 </summary>
-        /// <param name="workingDir">Abaqus 的工作文件夹</param>
+        /// <param name="workingDir">Ansys 的工作文件夹</param>
+        /// <param name="modelName"> 模型名称 </param>
         /// <param name="solverGui">  </param>
-        public AbaqusSolver(AbqWorkingDir workingDir, SolverGUI solverGui)
+        public AnsysSolver(AnsysWorkingDir workingDir, SolverGUI solverGui)
         {
-            //workingDir = @"C:\Users\zengfy\Desktop\AbaqusScriptTest\run.cmd";
+            //workingDir = @"C:\Users\zengfy\Desktop\AnsysScriptTest\run.cmd";
             WorkingDir = workingDir;
-            // ProjectPaths.SetAbaqusWorkingDir(workingDir);
+
+            // ProjectPaths.SetAnsysWorkingDir(workingDir);
             //
             State = SolverState.NotStarted;
-            _solverGui = solverGui;
+            _solverGui = SolverGUI.NoGUI;
             //
         }
 
@@ -54,89 +57,33 @@ namespace SDSS.Solver
             // TerminateAbqCmd();
         }
 
-        #region ---   创建 .bat 命令文件，以启动 Abaqus 的计算
+        #region ---   ！ 配置计算环境，将“前处理”的数据与“中间计算过程”进行连接
 
-        public bool CreateBatCommand()
-        {
-            if (!string.IsNullOrEmpty(ProjectPaths.F_PySolver))
-            {
-                StreamWriter sw = new StreamWriter(ProjectPaths.F_InitialBat, append: false);
-
-                string fp = CreateBatCommand(workingDir: WorkingDir.WorkingDirectory, pyFile: ProjectPaths.F_PySolver);
-                sw.WriteLine(fp);
-                sw.Close();
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary> 通过cmd启动Abaqus的 .bat 命令 </summary>
-        /// <param name="workingDir">Abaqus 的工作文件夹</param>
-        /// <param name="pyFile"> Abaqus 的脚本文件的绝对路径 </param>
-        /// <returns></returns>
-        private string CreateBatCommand(string workingDir, string pyFile)
-        {
-            string solGui = "";
-            switch (_solverGui)
-            {
-                case SolverGUI.CAE:
-                    solGui = "script";
-                    break;
-                default:
-                    solGui = "noGUI";
-                    break;
-            }
-
-            string cmd = @"@echo off
-rem : The directory containing the files created during the calcution as well as the results.
-cd /d " + workingDir + @"
-
-rem : Execute Abaqus without showing the users interface.
-abaqus cae " + solGui + "=" + pyFile; // 如果要显示 Abaqus CAE 界面，则将 noGUI 修改为 script
-            return cmd;
-
-            /* 写入 .bat 文件中的内容如下：
-@echo off
-rem : The directory containing the files created during the calcution as well as the results.
-cd /d C:\Users\zengfy\Desktop\AbaqusScriptTest
-
-rem : Execute Abaqus without showing the users interface.
-abaqus cae noGUI=beamExample.py         
-*/
-        }
-
-        #endregion
-
-        #region ---   计算环境检查
-
-        /// <summary> 检查计算环境，文件配置 </summary>
+        /// <summary> 配置计算环境，文件配置 </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public bool CheckEnvironment(ModelBase sm, ref StringBuilder errorMessage)
+        public bool SetEnvironment(ModelBase sm, ref StringBuilder errorMessage)
         {
             try
             {
                 if (!Directory.Exists(WorkingDir.WorkingDirectory))
                 {
-                    errorMessage.AppendLine("指定的Abaqus工作文件夹不存在");
+                    errorMessage.AppendLine("指定的Ansys工作文件夹不存在");
                     return false;
                 }
 
                 // 1. 指定用来计算的车站模型文件
+                sm.WriteCalculateFileForAnsys(WorkingDir.F_ModelParameter, ref errorMessage);
 
-                sdUtils.ExportToXmlFile(xmlFilePath: WorkingDir.F_CalculationModel, src: sm,
-                    errorMessage: ref errorMessage);
-                //
+                // 2. 创建启动 Ansys 的 .bat 文件
+                CreateBatCommand(sm);
 
-                // 2. 创建启动 Abaqus 的 .bat 文件
-                CreateBatCommand();
+                //// 这一条在最后程序完成后要删除：将此文件写入 MiddleFiles 文件夹只是为了在调试时方便。
+                //ProjectPaths.WriteAnsysCalcFilePaths(WorkingDir,
+                //    Path.Combine(ProjectPaths.D_MiddleFiles, Path.GetFileName(WorkingDir.F_FilePaths)));
 
-                // 这一条在最后程序完成后要删除：将此文件写入 MiddleFiles 文件夹只是为了在调试时方便。
-                ProjectPaths.WriteAbqCalcFilePaths(WorkingDir,
-                    Path.Combine(ProjectPaths.D_MiddleFiles, Path.GetFileName(WorkingDir.F_FilePaths)));
-
-                // 3. 将存储有模型参数、计算参数的文件所在的路径写入到一个单独的文本中，以供 Python 程序读取。
-                ProjectPaths.WriteAbqCalcFilePaths(WorkingDir, WorkingDir.F_FilePaths);
+                //// 3. 将存储有模型参数、计算参数的文件所在的路径写入到一个单独的文本中，以供 Python 程序读取。
+                //ProjectPaths.WriteAnsysCalcFilePaths(WorkingDir, WorkingDir.F_FilePaths);
 
 
                 //
@@ -150,27 +97,55 @@ abaqus cae noGUI=beamExample.py
             }
         }
 
+        /// <summary> 创建 .bat 命令文件，以启动 Ansys 的计算 </summary>
+        public bool CreateBatCommand(ModelBase sm)
+        {
+            if (File.Exists(WorkingDir.F_ModelParameter))
+            {
+                using (StreamWriter sw = new StreamWriter(ProjectPaths.F_InitialBat, append: false))
+                {
+                    string ansysExe = Options.AnsysExePath; //  Ansys 计算程序所对应的文件路径，比如 C:\Softwares\Ansys\v150\ANSYS\bin\winx64\ansys150.exe
+                    string wkDir = WorkingDir.WorkingDirectory;
+                    string inputFile = ProjectPaths.GetAnsysModelSolverFile(sm);
+                    string outputFile = WorkingDir.F_Output;
+                    string jobName = sm.ModelName;
+
+                    string cmd = @"@echo off
+cd /d " + WorkingDir.WorkingDirectory + "\r\n\r\n";
+                    cmd += $"\"{ansysExe}\"  -p struct -dir \"{wkDir}\" -j \"{jobName}\" - s read -l en-us -b " +
+                           $"-i \"{inputFile}\" -o \"{outputFile}\"";
+                    sw.WriteLine(cmd);
+                }
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(@"用来进行Ansys计算的输入文件未找到！", @"出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         #endregion
 
         #region ---   Execute 执行计算
 
         /// <summary>
-        /// 开始执行 Abaqus 的计算
+        /// 开始执行 Ansys 的计算
         /// </summary>
         /// <param name="waitingSeconds"> 每隔一段时间提示用户是否还要继续等待计算完成。</param>
         /// <returns>如果计算完成且成功，则返回true，如果计算中断，或者计算失败，则返回 false</returns>
         public SolverState Execute(uint waitingSeconds, out string errorMessage)
         {
-            // 1. delete the abaqus lock file,if this file exists, the cmd will be terminated.
-            var lockFiles = Directory.EnumerateFiles(path: WorkingDir.WorkingDirectory, searchPattern: "*.lck",
-                searchOption: SearchOption.TopDirectoryOnly);
-            if (lockFiles.Any())
-            {
-                foreach (string lockfile in lockFiles)
-                {
-                    File.Delete(lockfile);
-                }
-            }
+            // 1. delete the Ansys lock file,if this file exists, the cmd will be terminated.
+            //var lockFiles = Directory.EnumerateFiles(path: WorkingDir.WorkingDirectory, searchPattern: "*.lck",
+            //    searchOption: SearchOption.TopDirectoryOnly);
+            //if (lockFiles.Any())
+            //{
+            //    foreach (string lockfile in lockFiles)
+            //    {
+            //        File.Delete(lockfile);
+            //    }
+            //}
 
             // 2. 开始计算
             var succ = RunAndWaitforExit(batFileName: ProjectPaths.F_InitialBat, waitingSeconds: waitingSeconds);
@@ -196,10 +171,10 @@ abaqus cae noGUI=beamExample.py
         private SolverState RunAndWaitforExit(string batFileName, uint waitingSeconds)
         {
             State = SolverState.Calculating;
-            //batFileName = @"C:\Users\zengfy\Desktop\AbaqusScriptTest\run.cmd";
+            //batFileName = @"C:\Users\zengfy\Desktop\AnsysScriptTest\run.cmd";
 
             // var t = IO.ShellExecute(IntPtr.Zero, "open", batFileName, "", "", ShowCommands.SW_HIDE);
-            // 上面的这种方式也可以达到通过 cmd 运行 Abaqus，并隐藏 cmd窗口的效果，但是 ShellExecute() 为异步操作
+            // 上面的这种方式也可以达到通过 cmd 运行 Ansys，并隐藏 cmd窗口的效果，但是 ShellExecute() 为异步操作
             AbqProcess = new Process();
             AbqProcess.StartInfo.FileName = batFileName;
 
@@ -231,7 +206,7 @@ abaqus cae noGUI=beamExample.py
         /// <summary> 用户上次刷新等待的时间点 </summary>
         private DateTime _lastWaitingTime;
 
-        /// <summary> Abaqus 开始计算的时间点 </summary>
+        /// <summary> Ansys 开始计算的时间点 </summary>
         private DateTime _calcStartTime;
 
         private Timer _timer;
@@ -247,13 +222,13 @@ abaqus cae noGUI=beamExample.py
 
         #region ---   计算 的终止
 
-        /// <summary> 从外部强制终止 Abaqus 的计算过程（任意线程） </summary>
+        /// <summary> 从外部强制终止 Ansys 的计算过程（任意线程） </summary>
         public void TerminateAbqCalculation()
         {
             ForceKillProcess = true;
         }
 
-        /// <summary> 从外部强制终止 Abaqus 的计算过程（任意线程） </summary>
+        /// <summary> 从外部强制终止 Ansys 的计算过程（任意线程） </summary>
         private void WaitForTerminate(uint waitingSeconds)
         {
             if (AbqProcess != null)
@@ -287,7 +262,7 @@ abaqus cae noGUI=beamExample.py
             }
         }
 
-        /// <summary> 终止 Abaqus 的计算进程树 </summary>
+        /// <summary> 终止 Ansys 的计算进程树 </summary>
         /// <remarks> 注意此进程从哪个线程中启动，也只能从哪个线程中终止 </remarks>
         private void TerminateAbqCmd()
         {

@@ -134,10 +134,10 @@ namespace SDSS.Project
             }
         }
         #endregion
-
-
+        
         private void buttonOK_Click(object sender, EventArgs e)
         {
+            Options.Save();
             this.Close();
         }
 

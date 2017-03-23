@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Model3 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ModelName="ShangHaiNan" ID="39435a5f-0b8c-4712-bc14-5110ffe2b2eb" ModelType="Tunnel" CalculationMethod="InertialForce">
+  <Definitions>
+    <Materials>
+      <Material Name="c30" Type="Elastic" Density="1900" Elasticity="200000000" PoissonRatio="0.3">
+        <ID>e18f93e5-c3eb-4bfc-bf69-e50530a6fb4a</ID>
+      </Material>
+      <Material Name="c40" Type="Elastic" Density="1900" Elasticity="200000000" PoissonRatio="0.3">
+        <ID>9fb1d535-3dae-44f4-9b4d-0c43145c50f1</ID>
+      </Material>
+    </Materials>
+    <Profiles />
+  </Definitions>
+  <SoilLayers />
+  <Tunnel SegmentNum="10" Radius="4">
+    <TunnelVertices>
+      <TunnelVertice ID="1" R="4" Angle="-108" />
+      <TunnelVertice ID="2" R="4" Angle="-72" />
+      <TunnelVertice ID="3" R="4" Angle="-36" />
+      <TunnelVertice ID="4" R="4" Angle="0" />
+      <TunnelVertice ID="5" R="4" Angle="36" />
+      <TunnelVertice ID="6" R="4" Angle="72" />
+      <TunnelVertice ID="7" R="4" Angle="108" />
+      <TunnelVertice ID="8" R="4" Angle="144" />
+      <TunnelVertice ID="9" R="4" Angle="180" />
+      <TunnelVertice ID="10" R="4" Angle="216" />
+      <TunnelVertice ID="11" R="4" Angle="252" />
+    </TunnelVertices>
+    <Segments>
+      <Segment GeomType="Arc" ComponentType="Segment" ID="18" LocationTag="(-108,-72)" Material="c30" Profile="" Vertice1Id="1" Vertice2Id="2" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="19" LocationTag="(-72,-36)" Material="c40" Profile="" Vertice1Id="2" Vertice2Id="3" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="20" LocationTag="(-36,0)" Material="c40" Profile="" Vertice1Id="3" Vertice2Id="4" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="21" LocationTag="(0,36)" Material="c40" Profile="" Vertice1Id="4" Vertice2Id="5" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="22" LocationTag="(36,72)" Material="c40" Profile="" Vertice1Id="5" Vertice2Id="6" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="23" LocationTag="(72,108)" Material="c30" Profile="" Vertice1Id="6" Vertice2Id="7" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="24" LocationTag="(108,144)" Material="c30" Profile="" Vertice1Id="7" Vertice2Id="8" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="25" LocationTag="(144,180)" Material="c30" Profile="" Vertice1Id="8" Vertice2Id="9" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="26" LocationTag="(180,216)" Material="c30" Profile="" Vertice1Id="9" Vertice2Id="10" />
+      <Segment GeomType="Arc" ComponentType="Segment" ID="27" LocationTag="(216,252)" Material="c30" Profile="" Vertice1Id="10" Vertice2Id="11" />
+    </Segments>
+  </Tunnel>
+  <MethodProperty Kx="1000000" Ky="1000000" Kc="0.5" TopElevation="0" OverLayingSoilHeight="0" />
+</Model3>
